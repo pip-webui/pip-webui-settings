@@ -1,0 +1,137 @@
+@-webkit-keyframes blink-hint {
+  0% {
+    opacity: 0.38;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.38;
+  }
+}
+@-moz-keyframes blink-hint {
+  0% {
+    opacity: 0.38;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.38;
+  }
+}
+@-o-keyframes blink-hint {
+  0% {
+    opacity: 0.38;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.38;
+  }
+}
+@keyframes blink-hint {
+  0% {
+    opacity: 0.38;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.38;
+  }
+}
+@media (min-width: 1200px) {
+  .pip-settings md-list.pip-menu {
+    width: 300px;
+    min-width: 300px;
+  }
+  .pip-settings .pip-content-container {
+    width: 800px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1200px) {
+  .pip-settings md-list.pip-menu {
+    width: 300px;
+    min-width: 300px;
+  }
+  .pip-settings .pip-content-container {
+    width: calc(100% - 300px);
+  }
+}
+.pip-settings.pip-card .pip-header ~ .pip-body,
+.pip-settings.pip-document .pip-header ~ .pip-body {
+  padding-top: 24px !important;
+}
+.change-password-dialog,
+.verify-email-dialog {
+  width: 440px;
+}
+.pip-settings {
+  font-size: 14px;
+}
+.pip-settings .pip-date md-input-container {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.pip-settings .pip-body {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+@media (max-width: 768px) {
+  .pip-settings .pip-body {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+@media (min-width: 1200px) {
+  .pip-settings md-list:first-of-type {
+    width: 300px;
+  }
+  .pip-settings .pip-content-container {
+    width: 800px;
+    position: absolute;
+    left: 300px;
+    max-height: 100%;
+    -ms-overflow-y: auto;
+  }
+}
+@media (min-width: 1000px) and (max-width: 1200px) {
+  .pip-settings .pip-content-container {
+    width: calc(100% - 300px);
+    -ms-overflow-y: auto;
+  }
+}
+@media (min-width: 768px) and (max-width: 1200px) {
+  .pip-settings md-list:first-of-type {
+    width: 30%;
+  }
+  .pip-settings .pip-content-container {
+    width: 70%;
+    position: absolute;
+    left: 30%;
+    max-height: 100%;
+    -ms-overflow-y: auto;
+  }
+}
+.pip-settings.pip-card .pip-header ~ .pip-body,
+.pip-settings.pip-document .pip-header ~ .pip-body {
+  padding-top: 24px !important;
+}
+.pip-settings .pip-contact-info md-select {
+  min-width: 150px;
+}
+.pip-settings .pip-contact-info .pip-select {
+  margin-top: 4px;
+}
+.pip-settings .pip-contact-info .pip-select md-select {
+  height: 44px;
+}
+.pip-settings .pip-contact-info md-input-container {
+  margin-bottom: 8px;
+}
+.pip-settings .pip-contact-info md-input-container .md-errors-spacer {
+  height: 0px !important;
+  min-height: 0px;
+}

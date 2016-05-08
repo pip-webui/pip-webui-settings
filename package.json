@@ -1,0 +1,70 @@
+{
+  "name": "pip-webui-settings",
+  "version": "1.0.0",
+  "author": "Digital Living Software Corp. <www.digitallivingsoftware.com>",
+  "description": "Settings components for Pip.WebUI applications",
+  "contributors": [
+    {
+      "name": "Sergey Seroukhov",
+      "email": "seroukhov@gmail.com"
+    },
+    {
+      "name": "Katerina Negrienko",
+      "email": "katya@negrienko.com"
+    }
+  ],
+  "keywords": [
+    "pip",
+    "webui",
+    "settings"
+  ],
+  "noAnalyze": true,
+  "license": "Commercial",
+  "private": true,
+  "scripts": {
+    "build": "gulp build",
+    "jshint": "gulp jshint",
+    "test": "mocha -t 5000 -R spec --recursive ./test"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "pip-webui-tasks": "git+ssh://git@github.com:pip-webui/pip-webui-tasks.git",
+    "pip-webui-lib": "git+ssh://git@github.com:pip-webui/pip-webui-lib.git",
+    "pip-webui-css": "git+ssh://git@github.com:pip-webui/pip-webui-css.git",
+    "pip-webui-core": "git+ssh://git@github.com:pip-webui/pip-webui-core.git",
+    "pip-webui-rest": "git+ssh://git@github.com:pip-webui/pip-webui-rest.git",
+    "pip-webui-controls": "git+ssh://git@github.com:pip-webui/pip-webui-controls.git",
+    "pip-webui-layouts": "git+ssh://git@github.com:pip-webui/pip-webui-layouts.git",
+    "pip-webui-nav": "git+ssh://git@github.com:pip-webui/pip-webui-nav.git",
+    "pip-webui-locations": "git+ssh://git@github.com:pip-webui/pip-webui-locations.git",
+    "pip-webui-pictures": "git+ssh://git@github.com:pip-webui/pip-webui-pictures.git",
+    "pip-webui-entry": "git+ssh://git@github.com:pip-webui/pip-webui-entry.git",
+    "pip-webui-test": "git+ssh://git@github.com:pip-webui/pip-webui-test.git",
+    "angular-mocks": "*",
+    "karma": "*",
+    "karma-chrome-launcher": "*",
+    "karma-mocha": "*",
+    "karma-chai": "*",
+    "karma-sinon": "*",
+    "jshint": "*",
+    "gulp": "*",
+    "gulp-concat": "*",
+    "gulp-less": "*",
+    "gulp-rename": "*",
+    "gulp-clean-css": "*",
+    "gulp-uglify": "*",
+    "gulp-minify-html": "*",
+    "gulp-minify-css": "*",
+    "gulp-ng-annotate": "*",
+    "gulp-sourcemaps": "*",
+    "gulp-ng-html2js": "*",
+    "gulp-merge": "*",
+    "gulp-typescript": "*",
+    "gulp-jshint": "*",
+    "gulp-replace": "*",
+    "gulp-add-src": "*",
+    "gulp-webserver": "*",
+    "gulp-awspublish": "*"
+  }
+}
