@@ -62,6 +62,7 @@
             pipAppBar.showTitleText('SETTINGS_TITLE');
             pipAppBar.showLocalActions(null, []);
             pipAppBar.hideShadow();
+            pipAppBar.hideSearch();
         };
 
         function onDropdownSelect(state) {
