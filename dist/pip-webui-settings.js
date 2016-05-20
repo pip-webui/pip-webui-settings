@@ -660,7 +660,6 @@ module.run(['$templateCache', function($templateCache) {
                 if ($scope.form)
                     $scope.form.$setSubmitted();
 
-                console.log('aa', $rootScope.$party);
                 if ($rootScope.$party) {
 
                     if ($rootScope.$party.type == 'person')
