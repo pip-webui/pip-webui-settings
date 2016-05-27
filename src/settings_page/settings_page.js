@@ -61,7 +61,7 @@
             pipAppBar.showMenuNavIcon();
             pipAppBar.showTitleText('SETTINGS_TITLE');
             pipAppBar.showLocalActions(null, []);
-            pipAppBar.hideShadow();
+            pipAppBar.showShadowSm();
             pipAppBar.hideSearch();
         };
 
