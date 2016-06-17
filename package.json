@@ -63,6 +63,7 @@
     "gulp-merge": "*",
     "gulp-typescript": "*",
     "gulp-jshint": "*",
+    "gulp-eslint": "*",
     "gulp-replace": "*",
     "gulp-add-src": "*",
     "gulp-webserver": "*",
