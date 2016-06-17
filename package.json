@@ -24,6 +24,7 @@
   "scripts": {
     "build": "gulp build",
     "jshint": "gulp jshint",
+    "samples": "gulp launch",
     "test": "mocha -t 5000 -R spec --recursive ./test"
   },
   "dependencies": {
