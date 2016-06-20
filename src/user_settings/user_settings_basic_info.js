@@ -3,14 +3,13 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-/* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.BasicInfo', ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail']);
 
-    thisModule.config(function (pipSettingsProvider, pipUserSettingsPageDataProvider, pipAuthStateProvider) {
+    thisModule.config(function (pipSettingsProvider) {
         pipSettingsProvider.addPage({
             state: 'basic_info',
             index: 1,
@@ -69,7 +68,7 @@
                         console.error(error);
                     }
                 );
-            };
+            }
 
             function onPictureCreated($event) {
                 $scope.picture = $event.sender;
@@ -81,8 +80,7 @@
                         console.error(error);
                     }
                 );
-            };
-
+            }
 
             function saveChanges() {
                 if ($scope.form)
@@ -110,7 +108,7 @@
                     }
                 }
 
-            };
+            }
 
             function updateUser() {
 
@@ -139,7 +137,7 @@
                 }
 
 
-            };
+            }
 
             function onChangePassword(event) {
                 $mdDialog.show({
@@ -154,7 +152,7 @@
                             pipToasts.showNotification(pipTranslate.translate(message), null, null, null);
                         }
                     });
-            };
+            }
 
             function onVerifyEmail(event) {
                 $mdDialog.show({
@@ -172,8 +170,8 @@
                         }
                     }
                 );
-            };
+            }
         }
     );
 
-})();
+})(window.angular);
