@@ -90,9 +90,7 @@
 
                 if ($rootScope.$party) {
 
-                    if ($rootScope.$party.type == 'person')
-                        if ($scope.form.$invalid)
-                            return;
+                    if ($rootScope.$party.type == 'person' && $scope.form.$invalid) return;
 
                     // Check to avoid unnecessary savings
                     $rootScope.$party.loc_pos = $scope.loc_pos;
