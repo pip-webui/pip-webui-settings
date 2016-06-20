@@ -394,9 +394,7 @@ module.run(['$templateCache', function($templateCache) {
             }
         });
 
-        $scope.pages = _.sortBy($scope.pages, function (page) {
-            return page.index;
-        });
+        $scope.pages = _.sortBy($scope.pages, 'index');
 
         $scope.selected = {};
         if ($state.current.name != 'settings')
@@ -573,8 +571,8 @@ module.run(['$templateCache', function($templateCache) {
 
         'pipUserSettings.Data',
         'pipUserSettings.Strings',
-        'pipUserSettings.BasicInfo',
         'pipUserSettings.Sessions',
+        'pipUserSettings.BasicInfo',
         'pipSettings.Templates'
 
     ]);

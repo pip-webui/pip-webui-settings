@@ -25,9 +25,7 @@
             }
         });
 
-        $scope.pages = _.sortBy($scope.pages, function (page) {
-            return page.index;
-        });
+        $scope.pages = _.sortBy($scope.pages, 'index');
 
         $scope.selected = {};
         if ($state.current.name != 'settings')
