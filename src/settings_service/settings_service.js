@@ -1,4 +1,4 @@
-(function () {
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipSettings.Service', []);
@@ -97,4 +97,4 @@
         }
     });
 
-})();
+})(window.angular, window._);

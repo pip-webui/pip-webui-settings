@@ -1,6 +1,6 @@
 /* global angular */
 
-(function () {
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipSettings.Page', [
@@ -87,4 +87,4 @@
     });
 
 
-})();
+})(window.angular, window._);

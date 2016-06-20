@@ -367,7 +367,7 @@ module.run(['$templateCache', function($templateCache) {
 
 /* global angular */
 
-(function () {
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipSettings.Page', [
@@ -454,8 +454,8 @@ module.run(['$templateCache', function($templateCache) {
     }]);
 
 
-})();
-(function () {
+})(window.angular, window._);
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipSettings.Service', []);
@@ -554,7 +554,7 @@ module.run(['$templateCache', function($templateCache) {
         }
     }]);
 
-})();
+})(window.angular, window._);
 /**
  * @file Settings page logic
  * @copyright Digital Living Software Corp. 2014-2016

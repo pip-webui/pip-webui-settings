@@ -98,6 +98,6 @@
   margin-bottom: 8px;
 }
 .pip-settings .pip-contact-info md-input-container .md-errors-spacer {
-  height: 0px !important;
-  min-height: 0px;
+  height: 0 !important;
+  min-height: 0;
 }
