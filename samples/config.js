@@ -3,6 +3,7 @@
  * @copyright Digital Living Software Corp. 2014-2015
  */
 
+
 (function (angular) {
     'use strict';
 
@@ -11,8 +12,8 @@
 
     // Configure application services before start
     thisModule.config(
-        function ($mdThemingProvider, $urlRouterProvider, pipAuthStateProvider, pipRestProvider, pipSideNavProvider, 
-                  pipSettingsDataProvider, pipAppBarProvider, pipEntryProvider, $mdIconProvider, pipSettingsProvider) {
+        function ($mdThemingProvider, $urlRouterProvider, pipAuthStateProvider, pipRestProvider, pipSideNavProvider,
+                   pipAppBarProvider, $mdIconProvider, pipSettingsProvider) {
 
             $mdIconProvider.iconSet('icons', 'images/icons.svg', 512);
 
@@ -23,11 +24,8 @@
             ]);
 
             // Configure REST API
-            //pipRestProvider.version('1.0');
             pipRestProvider.serverUrl('http://alpha.pipservices.net');
 
-            // Configure entry pages
-            //pipEntryProvider.fixedServerUrl('http://alpha.pipservices.net');
 
             // Configure default states
             pipAuthStateProvider.unauthorizedState('signin');

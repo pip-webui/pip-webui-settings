@@ -26,8 +26,8 @@
     });
 
     thisModule.controller('pipUserSettingsBasicInfoController',
-        function ($scope, $rootScope, $mdDialog, $state, pipTranslate, pipTransaction, pipFormErrors,
-                  pipUserSettingsPageData, pipToasts, $window, pipTheme, $mdTheming) {
+        function ($scope, $rootScope, $mdDialog, $state, $window, pipTranslate, pipTransaction, pipTheme, $mdTheming,
+                  pipToasts, pipUserSettingsPageData, pipFormErrors) {
 
             $scope.originalParty = angular.toJson($rootScope.$party);
 
