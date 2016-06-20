@@ -5,7 +5,7 @@
 
 /* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     angular.module('pipSettings', [
@@ -14,7 +14,7 @@
         'pipUserSettings'
     ]);
     
-})();
+})(window.angular);
 (function(module) {
 try {
   module = angular.module('pipSettings.Templates');
@@ -365,7 +365,7 @@ module.run(['$templateCache', function($templateCache) {
 }]);
 })();
 
-/* global angular */
+
 
 (function (angular, _) {
     'use strict';
@@ -560,17 +560,20 @@ module.run(['$templateCache', function($templateCache) {
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-/* global angular */
 
 (function () {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings', [
-        'ngMaterial', 'pipData', 'pipSettings.Service', 'pipSettings.Page',
-        'pipUserSettings.Data', 'pipUserSettings.Strings',  //'pipUserSettings.Blacklist',
+        'ngMaterial', 'pipData',
+        'pipSettings.Service',
+        'pipSettings.Page',
+
+        'pipUserSettings.Data',
+        'pipUserSettings.Strings',
         'pipUserSettings.BasicInfo',
-        //'pipUserSettings.ContactInfo',
-        'pipUserSettings.Sessions', 'pipSettings.Templates'
+        'pipUserSettings.Sessions',
+        'pipSettings.Templates'
 
     ]);
 
@@ -581,7 +584,7 @@ module.run(['$templateCache', function($templateCache) {
  */
 
 
-(function (angular) {
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.BasicInfo', ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail']);
@@ -751,7 +754,7 @@ module.run(['$templateCache', function($templateCache) {
         }]
     );
 
-})(window.angular);
+})(window.angular, window._);
 
 /**
  * @file Settings change password controller
@@ -760,7 +763,7 @@ module.run(['$templateCache', function($templateCache) {
  
 /* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.ChangePassword', []);
@@ -837,7 +840,7 @@ module.run(['$templateCache', function($templateCache) {
         }]
     );
 	
-})();
+})(window.angular);
 
 /**
  * @file Settings data model
@@ -846,7 +849,7 @@ module.run(['$templateCache', function($templateCache) {
 
 /* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Data', ['pipDataModel']);
@@ -1125,7 +1128,7 @@ module.run(['$templateCache', function($templateCache) {
         }];
     });
 
-})();
+})(window.angular);
 /**
  * @file Settings sessions controller
  * @copyright Digital Living Software Corp. 2014-2016
@@ -1133,7 +1136,7 @@ module.run(['$templateCache', function($templateCache) {
  
 /* global angular */
 
-(function () {
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Sessions', []);
@@ -1193,7 +1196,7 @@ module.run(['$templateCache', function($templateCache) {
         }]
     );
 	
-})();
+})(window.angular, window._);
 
 /**
  * @file Settings string resources
@@ -1202,7 +1205,7 @@ module.run(['$templateCache', function($templateCache) {
  
 /* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Strings', ['pipTranslate']);
@@ -1335,7 +1338,7 @@ module.run(['$templateCache', function($templateCache) {
         });
     }]);
 
-})();
+})(window.angular);
 /**
  * @file Settings verify email controller
  * @copyright Digital Living Software Corp. 2014-2016
@@ -1343,7 +1346,7 @@ module.run(['$templateCache', function($templateCache) {
 
 /* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.VerifyEmail', []);
@@ -1406,6 +1409,6 @@ module.run(['$templateCache', function($templateCache) {
         }]
     );
 
-})();
+})(window.angular);
 
 //# sourceMappingURL=pip-webui-settings.js.map

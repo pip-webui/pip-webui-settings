@@ -5,7 +5,7 @@
  
 /* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Strings', ['pipTranslate']);
@@ -138,4 +138,4 @@
         });
     });
 
-})();
+})(window.angular);

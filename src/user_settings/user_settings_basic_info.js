@@ -4,7 +4,7 @@
  */
 
 
-(function (angular) {
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.BasicInfo', ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail']);
@@ -174,4 +174,4 @@
         }
     );
 
-})(window.angular);
+})(window.angular, window._);

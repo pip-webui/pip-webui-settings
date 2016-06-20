@@ -5,7 +5,7 @@
  
 /* global angular */
 
-(function () {
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Sessions', []);
@@ -65,4 +65,4 @@
         }
     );
 	
-})();
+})(window.angular, window._);

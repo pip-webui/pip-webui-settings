@@ -5,7 +5,7 @@
 
 /* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     angular.module('pipSettings', [
@@ -14,4 +14,4 @@
         'pipUserSettings'
     ]);
     
-})();
+})(window.angular);
