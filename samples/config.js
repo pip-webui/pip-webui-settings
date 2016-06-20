@@ -14,8 +14,7 @@
     // Configure application services before start
     thisModule.config(
         function ($mdThemingProvider, $urlRouterProvider, pipAuthStateProvider, pipRestProvider, pipSideNavProvider, 
-                  pipSettingsDataProvider, pipAppBarProvider, pipEntryProvider, $mdIconProvider, pipSettingsProvider, 
-                  pipUserSettingsPageDataProvider) {
+                  pipSettingsDataProvider, pipAppBarProvider, pipEntryProvider, $mdIconProvider, pipSettingsProvider) {
 
             $mdIconProvider.iconSet('icons', 'images/icons.svg', 512);
 
