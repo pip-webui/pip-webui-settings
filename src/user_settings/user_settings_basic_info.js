@@ -36,6 +36,7 @@
             }
 
             $scope.nameCopy = $rootScope.$party.name;
+
             $timeout(function () {
                 $scope.loc_pos = $rootScope.$party.loc_pos;
                 $scope.$apply();
