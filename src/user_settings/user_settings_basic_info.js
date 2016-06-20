@@ -3,7 +3,6 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-
 (function (angular, _) {
     'use strict';
 
@@ -26,13 +25,14 @@
     });
 
     thisModule.controller('pipUserSettingsBasicInfoController',
-        function ($scope, $rootScope, $mdDialog, $state, $window, pipTranslate, pipTransaction, pipTheme, $mdTheming,
+        function ($scope, $rootScope, $mdDialog, $state, $window, $timeout,
+                  pipTranslate, pipTransaction, pipTheme, $mdTheming,
                   pipToasts, pipUserSettingsPageData, pipFormErrors) {
 
             $scope.originalParty = angular.toJson($rootScope.$party);
 
             $scope.nameCopy = $rootScope.$party.name;
-            setTimeout(function () {
+            $timeout(function () {
                 $scope.loc_pos = $rootScope.$party.loc_pos;
                 $scope.$apply();
             });

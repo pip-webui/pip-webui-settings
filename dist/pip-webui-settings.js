@@ -384,7 +384,7 @@ module.run(['$templateCache', function($templateCache) {
         });
     }]);
 
-    thisModule.controller('pipSettingsPageController', ['$scope', '$state', '$rootScope', 'pipAppBar', 'pipSettings', function ($scope, $state, $rootScope, pipAppBar, pipSettings) {
+    thisModule.controller('pipSettingsPageController', ['$scope', '$state', '$rootScope', '$timeout', 'pipAppBar', 'pipSettings', function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings) {
 
         $scope.pages = _.filter(pipSettings.getPages(), function (page) {
             if (page.visible === true && (page.access ? page.access($rootScope.$user, page) : true)) {
@@ -403,7 +403,7 @@ module.run(['$templateCache', function($templateCache) {
             if (pipSettings.getDefaultPage())
                 initSelect(pipSettings.getDefaultPage().state);
             else {
-                setTimeout(function () {
+                $timeout(function () {
                     if (pipSettings.getDefaultPage())
                         initSelect(pipSettings.getDefaultPage().state);
                     else {
@@ -606,13 +606,14 @@ module.run(['$templateCache', function($templateCache) {
     }]);
 
     thisModule.controller('pipUserSettingsBasicInfoController',
-        ['$scope', '$rootScope', '$mdDialog', '$state', '$window', 'pipTranslate', 'pipTransaction', 'pipTheme', '$mdTheming', 'pipToasts', 'pipUserSettingsPageData', 'pipFormErrors', function ($scope, $rootScope, $mdDialog, $state, $window, pipTranslate, pipTransaction, pipTheme, $mdTheming,
+        ['$scope', '$rootScope', '$mdDialog', '$state', '$window', '$timeout', 'pipTranslate', 'pipTransaction', 'pipTheme', '$mdTheming', 'pipToasts', 'pipUserSettingsPageData', 'pipFormErrors', function ($scope, $rootScope, $mdDialog, $state, $window, $timeout,
+                  pipTranslate, pipTransaction, pipTheme, $mdTheming,
                   pipToasts, pipUserSettingsPageData, pipFormErrors) {
 
             $scope.originalParty = angular.toJson($rootScope.$party);
 
             $scope.nameCopy = $rootScope.$party.name;
-            setTimeout(function () {
+            $timeout(function () {
                 $scope.loc_pos = $rootScope.$party.loc_pos;
                 $scope.$apply();
             });

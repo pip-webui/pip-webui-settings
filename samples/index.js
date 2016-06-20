@@ -2,8 +2,6 @@
  * @file Sample application to provide end-to-end example of WebUI
  * @copyright Digital Living Software Corp. 2014-2015
  */
- 
-/* global angular */
 
 (function (angular) {
     'use strict';
@@ -21,9 +19,7 @@
     ]);
 
     thisModule.controller('pipSampleController',
-        function($scope, $rootScope) {
-
-        }
+        function() {}
     );
     
 })(window.angular);

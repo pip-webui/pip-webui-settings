@@ -3,7 +3,6 @@
  * @copyright Digital Living Software Corp. 2014-2015
  */
 
-
 (function (angular) {
     'use strict';
 
@@ -26,7 +25,6 @@
             // Configure REST API
             pipRestProvider.serverUrl('http://alpha.pipservices.net');
 
-
             // Configure default states
             pipAuthStateProvider.unauthorizedState('signin');
             pipAuthStateProvider.authorizedState('settings');
@@ -42,12 +40,11 @@
                     links: [
                         {title: 'Settings', url: '/settings'}
                     ]
-                },
-                {
+                }, {
                     links: [
                         {title: 'Signout', url: '/signout'}
                     ]
-                },
+                }
             ]);
 
             pipSettingsProvider.addPage({
