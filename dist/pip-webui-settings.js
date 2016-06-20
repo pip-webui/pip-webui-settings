@@ -580,14 +580,13 @@ module.run(['$templateCache', function($templateCache) {
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-/* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.BasicInfo', ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail']);
 
-    thisModule.config(['pipSettingsProvider', 'pipUserSettingsPageDataProvider', 'pipAuthStateProvider', function (pipSettingsProvider, pipUserSettingsPageDataProvider, pipAuthStateProvider) {
+    thisModule.config(['pipSettingsProvider', function (pipSettingsProvider) {
         pipSettingsProvider.addPage({
             state: 'basic_info',
             index: 1,
@@ -646,7 +645,7 @@ module.run(['$templateCache', function($templateCache) {
                         console.error(error);
                     }
                 );
-            };
+            }
 
             function onPictureCreated($event) {
                 $scope.picture = $event.sender;
@@ -658,8 +657,7 @@ module.run(['$templateCache', function($templateCache) {
                         console.error(error);
                     }
                 );
-            };
-
+            }
 
             function saveChanges() {
                 if ($scope.form)
@@ -667,9 +665,7 @@ module.run(['$templateCache', function($templateCache) {
 
                 if ($rootScope.$party) {
 
-                    if ($rootScope.$party.type == 'person')
-                        if ($scope.form.$invalid)
-                            return;
+                    if ($rootScope.$party.type == 'person' && $scope.form.$invalid) return;
 
                     // Check to avoid unnecessary savings
                     $rootScope.$party.loc_pos = $scope.loc_pos;
@@ -689,7 +685,7 @@ module.run(['$templateCache', function($templateCache) {
                     }
                 }
 
-            };
+            }
 
             function updateUser() {
 
@@ -718,7 +714,7 @@ module.run(['$templateCache', function($templateCache) {
                 }
 
 
-            };
+            }
 
             function onChangePassword(event) {
                 $mdDialog.show({
@@ -733,7 +729,7 @@ module.run(['$templateCache', function($templateCache) {
                             pipToasts.showNotification(pipTranslate.translate(message), null, null, null);
                         }
                     });
-            };
+            }
 
             function onVerifyEmail(event) {
                 $mdDialog.show({
@@ -751,11 +747,11 @@ module.run(['$templateCache', function($templateCache) {
                         }
                     }
                 );
-            };
+            }
         }]
     );
 
-})();
+})(window.angular);
 
 /**
  * @file Settings change password controller
