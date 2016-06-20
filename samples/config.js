@@ -3,13 +3,11 @@
  * @copyright Digital Living Software Corp. 2014-2015
  */
 
-/* global angular */
-
 (function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipSampleConfig', ['pipRest.State', 'pipRest', 'pipEntry', 'pipSideNav', 
-        'pipAppBar', 'pipUserSettings', 'pipSettingsData'  ]);
+        'pipAppBar', 'pipUserSettings', 'pipSettingsData']);
 
     // Configure application services before start
     thisModule.config(
