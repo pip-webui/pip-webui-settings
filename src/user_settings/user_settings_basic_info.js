@@ -29,7 +29,11 @@
                   pipTranslate, pipTransaction, pipTheme,
                   pipToasts, pipUserSettingsPageData, pipFormErrors) {
 
-            $scope.originalParty = angular.toJson($rootScope.$party);
+            try {
+                $scope.originalParty = angular.toJson($rootScope.$party);
+            } catch (err) {
+                throw err;
+            }
 
             $scope.nameCopy = $rootScope.$party.name;
             $timeout(function () {
@@ -91,7 +95,11 @@
 
                     // Check to avoid unnecessary savings
                     $rootScope.$party.loc_pos = $scope.loc_pos;
-                    var party = angular.toJson($rootScope.$party);
+                    try {
+                        var party = angular.toJson($rootScope.$party);
+                    } catch (err) {
+                        throw err;
+                    }
 
                     if (party != $scope.originalParty) {
                         pipUserSettingsPageData.updateParty($scope.transaction, $rootScope.$party,
