@@ -1,12 +1,12 @@
-<md-dialog class="pip-dialog" layout="column"  width="440">
+<md-dialog class="pip-dialog layout-column"  width="440">
     <div class="pip-body">
         <div class="pip-content">
                 <md-progress-linear ng-show="transaction.busy()" md-mode="indeterminate" class="pip-progress-top" >
                 </md-progress-linear>
 
-                <h2>{{'VERIFY_EMAIL_TITLE' | translate}}</h2>
+                <h2>{{::'VERIFY_EMAIL_TITLE' | translate}}</h2>
 
-                <p class="title-padding">{{'VERIFY_EMAIL_TEXT_1' | translate}} </p>
+                <p class="title-padding">{{::'VERIFY_EMAIL_TEXT_1' | translate}} </p>
 
                 <form name='form' novalidate>
                     <div ng-messages="form.$serverError" class="text-error bm8">
@@ -28,19 +28,19 @@
                     </md-input-container>
 
                     <md-input-container class="md-block">
-                        <label>{{'ENTRY_VERIFICATION_CODE' | translate}}</label>
+                        <label>{{::'ENTRY_VERIFICATION_CODE' | translate}}</label>
                         <input name="code" ng-disabled="transaction.busy()" tabindex="0"
                                ng-model="data.code" required pip-clear-errors/>
                         <div ng-messages="errorsWithHint(form, form.code)">
-                            <div ng-message="required"> {{ 'ERROR_CODE_INVALID' | translate }}</div>
-                            <div ng-message="ERROR_1103"> {{ 'ERROR_CODE_WRONG' | translate }}</div>
+                            <div ng-message="required"> {{::'ERROR_CODE_INVALID' | translate }}</div>
+                            <div ng-message="ERROR_1103"> {{::'ERROR_CODE_WRONG' | translate }}</div>
                         </div>
                     </md-input-container>
 
                     <p>
-                        {{'VERIFY_EMAIL_TEXT_21' | translate}} 
-                        <a ng-click="onRequestVerificationClick()" class="pointer" tabindex="0">{{'VERIFY_EMAIL_RESEND' | translate}}</a>
-                        {{'VERIFY_EMAIL_TEXT_22' | translate}} 
+                        {{::'VERIFY_EMAIL_TEXT_21' | translate}}
+                        <a ng-click="onRequestVerificationClick()" class="pointer" tabindex="0">{{::'VERIFY_EMAIL_RESEND' | translate}}</a>
+                        {{::'VERIFY_EMAIL_TEXT_22' | translate}}
                     </p>
                 </form>
             </div>

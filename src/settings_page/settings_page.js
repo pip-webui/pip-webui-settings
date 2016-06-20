@@ -1,6 +1,6 @@
-/* global angular */
 
-(function () {
+
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipSettings.Page', [
@@ -25,7 +25,7 @@
             }
         });
 
-        $scope.pages =_.sortBy($scope.pages, function(page){
+        $scope.pages = _.sortBy($scope.pages, function (page) {
             return page.index;
         });
 
@@ -40,7 +40,7 @@
                     if (pipSettings.getDefaultPage())
                         initSelect(pipSettings.getDefaultPage().state);
                     else {
-                        if($scope.pages.length >0)
+                        if ($scope.pages.length > 0)
                             initSelect($scope.pages[0].state);
 
                     }
@@ -63,7 +63,7 @@
             pipAppBar.showLocalActions(null, []);
             pipAppBar.showShadowSm();
             pipAppBar.hideSearch();
-        };
+        }
 
         function onDropdownSelect(state) {
             onNavigationSelect(state.state);
@@ -73,11 +73,9 @@
             initSelect(state);
 
             if ($scope.selected.page) {
-
                 $state.go(state);
-
             }
-        };
+        }
 
         function initSelect(state) {
             $scope.selected.page = _.find($scope.pages, function (page) {
@@ -89,4 +87,4 @@
     });
 
 
-})();
+})(window.angular, window._);

@@ -4,11 +4,11 @@
     <div class="pip-menu-container" ng-hide="manager === false || !pages || pages.length < 1">
         <md-list class="pip-menu pip-simple-list hide-xs" pip-selected="selected.pageIndex"
                  pip-selected-watch="selected.navId" pip-select="onNavigationSelect($event.id)">
-            <md-list-item class="pip-simple-list-item pip-selectable flex" md-ink-ripple pip-id="{{ page.state }}"
+            <md-list-item class="pip-simple-list-item pip-selectable flex" md-ink-ripple pip-id="{{:: page.state }}"
                           ng-repeat="page in pages track by page.state" ng-if="$party.id == $user.id ||
                           page.state == 'settings.basic_info'|| page.state =='settings.contact_info'
                           || page.state =='settings.blacklist'">
-                <p> {{page.title | translate}}</p>
+                <p> {{::page.title | translate}}</p>
             </md-list-item>
         </md-list>
 

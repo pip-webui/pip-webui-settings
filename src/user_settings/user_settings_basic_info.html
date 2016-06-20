@@ -34,7 +34,8 @@
                type="email" required
                ng-change="onChangeBasicInfo()"/>
 
-        <div class="hint" ng-if="errorsWithHint(form, form.email).hint && !$user.email_ver">{{::'SETTINGS_BASIC_INFO_VERIFY_HINT' |
+        <div class="hint" ng-if="errorsWithHint(form, form.email).hint && !$user.email_ver">
+            {{::'SETTINGS_BASIC_INFO_VERIFY_HINT' |
             translate}}
         </div>
         <div ng-messages="errorsWithHint(form.email)" ng-hide=" $party.type =='team'">
@@ -84,8 +85,8 @@
         <label>{{::'THEME' | translate}}</label>
         <md-select ng-model="$user.theme" ng-change="onChangeUser()" class="w-stretch theme-text-primary"
                    ng-disabled="transaction.busy()">
-            <md-option ng-value="theme" ng-repeat="theme in themes" ng-selected="$theme == theme ? true : false">{{
-                theme | translate }}
+            <md-option ng-value="theme" ng-repeat="theme in themes" ng-selected="$theme == theme ? true : false">
+                {{ theme | translate }}
             </md-option>
         </md-select>
     </md-input-container>

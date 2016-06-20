@@ -5,7 +5,7 @@
 
 /* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.VerifyEmail', []);
@@ -68,4 +68,4 @@
         }
     );
 
-})();
+})(window.angular);

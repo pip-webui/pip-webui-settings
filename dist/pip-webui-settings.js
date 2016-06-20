@@ -5,7 +5,7 @@
 
 /* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     angular.module('pipSettings', [
@@ -14,7 +14,7 @@
         'pipUserSettings'
     ]);
     
-})();
+})(window.angular);
 (function(module) {
 try {
   module = angular.module('pipSettings.Templates');
@@ -29,11 +29,11 @@ module.run(['$templateCache', function($templateCache) {
     '    <div class="pip-menu-container" ng-hide="manager === false || !pages || pages.length < 1">\n' +
     '        <md-list class="pip-menu pip-simple-list hide-xs" pip-selected="selected.pageIndex"\n' +
     '                 pip-selected-watch="selected.navId" pip-select="onNavigationSelect($event.id)">\n' +
-    '            <md-list-item class="pip-simple-list-item pip-selectable flex" md-ink-ripple pip-id="{{ page.state }}"\n' +
+    '            <md-list-item class="pip-simple-list-item pip-selectable flex" md-ink-ripple pip-id="{{:: page.state }}"\n' +
     '                          ng-repeat="page in pages track by page.state" ng-if="$party.id == $user.id ||\n' +
     '                          page.state == \'settings.basic_info\'|| page.state ==\'settings.contact_info\'\n' +
     '                          || page.state ==\'settings.blacklist\'">\n' +
-    '                <p> {{page.title | translate}}</p>\n' +
+    '                <p> {{::page.title | translate}}</p>\n' +
     '            </md-list-item>\n' +
     '        </md-list>\n' +
     '\n' +
@@ -95,7 +95,8 @@ module.run(['$templateCache', function($templateCache) {
     '               type="email" required\n' +
     '               ng-change="onChangeBasicInfo()"/>\n' +
     '\n' +
-    '        <div class="hint" ng-if="errorsWithHint(form, form.email).hint && !$user.email_ver">{{::\'SETTINGS_BASIC_INFO_VERIFY_HINT\' |\n' +
+    '        <div class="hint" ng-if="errorsWithHint(form, form.email).hint && !$user.email_ver">\n' +
+    '            {{::\'SETTINGS_BASIC_INFO_VERIFY_HINT\' |\n' +
     '            translate}}\n' +
     '        </div>\n' +
     '        <div ng-messages="errorsWithHint(form.email)" ng-hide=" $party.type ==\'team\'">\n' +
@@ -145,8 +146,8 @@ module.run(['$templateCache', function($templateCache) {
     '        <label>{{::\'THEME\' | translate}}</label>\n' +
     '        <md-select ng-model="$user.theme" ng-change="onChangeUser()" class="w-stretch theme-text-primary"\n' +
     '                   ng-disabled="transaction.busy()">\n' +
-    '            <md-option ng-value="theme" ng-repeat="theme in themes" ng-selected="$theme == theme ? true : false">{{\n' +
-    '                theme | translate }}\n' +
+    '            <md-option ng-value="theme" ng-repeat="theme in themes" ng-selected="$theme == theme ? true : false">\n' +
+    '                {{ theme | translate }}\n' +
     '            </md-option>\n' +
     '        </md-select>\n' +
     '    </md-input-container>\n' +
@@ -172,7 +173,7 @@ module.run(['$templateCache', function($templateCache) {
     '<md-dialog class="pip-dialog" layout="column"  width="440">\n' +
     '    <form name="form" ng-submit="onApply()" >\n' +
     '    <div class="pip-header">\n' +
-    '        <h3 class="m0">{{\'SETTINGS_CHANGE_PASSWORD_TITLE\' | translate : module}}</h3>\n' +
+    '        <h3 class="m0">{{::\'SETTINGS_CHANGE_PASSWORD_TITLE\' | translate : module}}</h3>\n' +
     '    </div>\n' +
     '    <div class="pip-body">\n' +
     '        <div class="pip-content">\n' +
@@ -181,13 +182,13 @@ module.run(['$templateCache', function($templateCache) {
     '            </div>\n' +
     '\n' +
     '            <md-input-container class="md-block">\n' +
-    '                <label>{{ \'SETTINGS_CHANGE_PASSWORD_CURRENT_PASSWORD\' | translate }}</label>\n' +
+    '                <label>{{::\'SETTINGS_CHANGE_PASSWORD_CURRENT_PASSWORD\' | translate }}</label>\n' +
     '                <input name="oldPassword" ng-model="changePasData.old_password"\n' +
     '                       type="password" ng-required="change_password.$submitted" pip-clear-errors/>\n' +
     '\n' +
     '                <div ng-messages="errorsWithHint(form, form.oldPassword)">\n' +
-    '                    <div ng-message="required">{{ \'ERROR_REQUIRED\' | translate }}</div>\n' +
-    '                    <div ng-message="ERROR_1107">{{ \'ERROR_WRONG_PASSWORD\' | translate }}</div>\n' +
+    '                    <div ng-message="required">{{::\'ERROR_REQUIRED\' | translate }}</div>\n' +
+    '                    <div ng-message="ERROR_1107">{{::\'ERROR_WRONG_PASSWORD\' | translate }}</div>\n' +
     '                </div>\n' +
     '\n' +
     '            </md-input-container>\n' +
@@ -199,9 +200,9 @@ module.run(['$templateCache', function($templateCache) {
     '                       ng-minlength="6" type="password" ng-required="change_password.$submitted" pip-clear-errors/>\n' +
     '                <div class="hint" ng-if="errorsWithHint(form, form.newPassword).hint">{{ \'HINT_PASSWORD\' | translate }}</div>\n' +
     '                <div ng-messages="errorsWithHint(form, form.newPassword)">\n' +
-    '                    <div ng-message="required">{{ \'ERROR_REQUIRED\' | translate }}</div>\n' +
-    '                    <div ng-message="minlength">{{ \'HINT_PASSWORD\' | translate }}</div>\n' +
-    '                    <div ng-message="ERROR_1105">{{ \'ERROR_IDENTICAL_PASSWORDS\' | translate }}</div>\n' +
+    '                    <div ng-message="required">{{::\'ERROR_REQUIRED\' | translate }}</div>\n' +
+    '                    <div ng-message="minlength">{{::\'HINT_PASSWORD\' | translate }}</div>\n' +
+    '                    <div ng-message="ERROR_1105">{{::\'ERROR_IDENTICAL_PASSWORDS\' | translate }}</div>\n' +
     '                </div>\n' +
     '            </md-input-container>\n' +
     '\n' +
@@ -210,19 +211,19 @@ module.run(['$templateCache', function($templateCache) {
     '                <input name="repeat" ng-model="repeat" ng-change="onCheckRepeatPassword()"\n' +
     '                       ng-minlength="6" type="password" ng-required="change_password.$submitted"/>\n' +
     '\n' +
-    '                <div class="hint" ng-if="errorsRepeatWithHint(form.repeat).hint">{{ \'HINT_REPEAT_PASSWORD\' | translate }}</div>\n' +
+    '                <div class="hint" ng-if="errorsRepeatWithHint(form.repeat).hint">{{::\'HINT_REPEAT_PASSWORD\' | translate }}</div>\n' +
     '                <div ng-messages="errorsRepeatWithHint(form.repeat)">\n' +
-    '                    <div ng-message="required">{{ \'ERROR_REQUIRED\' | translate }}</div>\n' +
-    '                    <div ng-message="minlength">{{ \'HINT_PASSWORD\' | translate }}</div>\n' +
-    '                    <div ng-message="repeat">{{ \'REPEAT_PASSWORD_INVALID\' | translate }}</div>\n' +
+    '                    <div ng-message="required">{{::\'ERROR_REQUIRED\' | translate }}</div>\n' +
+    '                    <div ng-message="minlength">{{::\'HINT_PASSWORD\' | translate }}</div>\n' +
+    '                    <div ng-message="repeat">{{::\'REPEAT_PASSWORD_INVALID\' | translate }}</div>\n' +
     '                </div>\n' +
     '            </md-input-container>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="pip-footer">\n' +
     '        <div>\n' +
-    '            <md-button ng-click="onCancel()" aria-label="xxx">{{ \'CANCEL\' | translate }} </md-button>\n' +
-    '            <md-button type="submit" class="md-accent" aria-label="xxx">{{ \'APPLY\' | translate : module}}  </md-button>\n' +
+    '            <md-button ng-click="onCancel()" aria-label="xxx">{{::\'CANCEL\' | translate }} </md-button>\n' +
+    '            <md-button type="submit" class="md-accent" aria-label="xxx">{{::\'APPLY\' | translate : module}}  </md-button>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    </form>\n' +
@@ -247,18 +248,18 @@ module.run(['$templateCache', function($templateCache) {
     '    <md-progress-linear ng-show="transaction.busy()" md-mode="indeterminate" class="pip-progress-top">\n' +
     '    </md-progress-linear>\n' +
     '    <div class="pip-details-title">\n' +
-    '        <p class="pip-title bm16">{{\'SETTINGS_ACTIVE_SESSIONS_TITLE\' | translate}}</p>\n' +
+    '        <p class="pip-title bm16">{{::\'SETTINGS_ACTIVE_SESSIONS_TITLE\' | translate}}</p>\n' +
     '\n' +
-    '        <p class="pip-subtitle">{{\'SETTINGS_ACTIVE_SESSIONS_SUBTITLE\' | translate}}</p>\n' +
+    '        <p class="pip-subtitle">{{::\'SETTINGS_ACTIVE_SESSIONS_SUBTITLE\' | translate}}</p>\n' +
     '    </div>\n' +
     '\n' +
     '\n' +
     '<md-list class="w-stretch">\n' +
     '    <md-item ng-repeat="session in sessions" >\n' +
-    '        <div layout="row" ng-init="session.id != sessionId ? showBlock = true : showBlock = false"\n' +
+    '        <div layout="row" ng-init="showBlock = session.id != sessionId"\n' +
     '                          ng-click="showBlock = !showBlock" >\n' +
     '            <p class="m0 text-subhead2 text-overflow max-w50-stretch" >{{session.client}}</p>\n' +
-    '            <p class="m0 lp4 text-body1 color-secondary-text " flex>{{\'SETTINGS_ACTIVE_SESSION_ACTIVE\' | translate}} </p>\n' +
+    '            <p class="m0 lp4 text-body1 color-secondary-text flex">{{::\'SETTINGS_ACTIVE_SESSION_ACTIVE\' | translate}} </p>\n' +
     '            <p class="m0 text-body1 color-secondary-text ">\n' +
     '                {{country}}\n' +
     '                <md-icon ng-if="showBlock" md-svg-icon="icons:triangle-up"></md-icon>\n' +
@@ -268,10 +269,10 @@ module.run(['$templateCache', function($templateCache) {
     '        <div layout="row" class="bm8 bp8" ng-class="{\' divider-bottom\':!$last}" >\n' +
     '            <div flex="50">\n' +
     '                <p class="m0 bm4 text-body1 text-overflow color-secondary-text " >{{ session.last_req | date : \'medium\' }}</p>\n' +
-    '                <p class="m0 bm4 text-body1 text-overflow color-secondary-text " ng-show="showBlock">{{\'SETTINGS_ACTIVE_SESSION_OS\' | translate}}{{session.platform}}</p>\n' +
-    '                <p class="m0 bm4 text-body1 text-overflow color-secondary-text " ng-show="showBlock">{{\'SETTINGS_ACTIVE_SESSION_IP\' | translate}}{{session.address}}</p>\n' +
+    '                <p class="m0 bm4 text-body1 text-overflow color-secondary-text " ng-show="showBlock">{{::\'SETTINGS_ACTIVE_SESSION_OS\' | translate}}{{session.platform}}</p>\n' +
+    '                <p class="m0 bm4 text-body1 text-overflow color-secondary-text " ng-show="showBlock">{{::\'SETTINGS_ACTIVE_SESSION_IP\' | translate}}{{session.address}}</p>\n' +
     '                <md-button class="md-raised" ng-show="showBlock && session.id != sessionId" ng-click="onRemove(session)">\n' +
-    '                    {{\'SETTINGS_ACTIVE_SESSIONS_CLOSE_SESSION\' | translate}}\n' +
+    '                    {{::\'SETTINGS_ACTIVE_SESSIONS_CLOSE_SESSION\' | translate}}\n' +
     '                </md-button>\n' +
     '            </div>\n' +
     '\n' +
@@ -285,7 +286,7 @@ module.run(['$templateCache', function($templateCache) {
     '</md-list>\n' +
     '<div layout="row" layout-align="end center">\n' +
     '    <md-button class="md-raised" ng-show="sessions.length > 1" ng-click="onRemoveAll()">\n' +
-    '        {{\'SETTINGS_ACTIVE_SESSIONS_CLOSE_ACTIVE_SESSIONS\' | translate}}\n' +
+    '        {{::\'SETTINGS_ACTIVE_SESSIONS_CLOSE_ACTIVE_SESSIONS\' | translate}}\n' +
     '    </md-button>\n' +
     '</div>\n' +
     '');
@@ -300,15 +301,15 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('user_settings/user_settings_verify_email.html',
-    '<md-dialog class="pip-dialog" layout="column"  width="440">\n' +
+    '<md-dialog class="pip-dialog layout-column"  width="440">\n' +
     '    <div class="pip-body">\n' +
     '        <div class="pip-content">\n' +
     '                <md-progress-linear ng-show="transaction.busy()" md-mode="indeterminate" class="pip-progress-top" >\n' +
     '                </md-progress-linear>\n' +
     '\n' +
-    '                <h2>{{\'VERIFY_EMAIL_TITLE\' | translate}}</h2>\n' +
+    '                <h2>{{::\'VERIFY_EMAIL_TITLE\' | translate}}</h2>\n' +
     '\n' +
-    '                <p class="title-padding">{{\'VERIFY_EMAIL_TEXT_1\' | translate}} </p>\n' +
+    '                <p class="title-padding">{{::\'VERIFY_EMAIL_TEXT_1\' | translate}} </p>\n' +
     '\n' +
     '                <form name=\'form\' novalidate>\n' +
     '                    <div ng-messages="form.$serverError" class="text-error bm8">\n' +
@@ -330,19 +331,19 @@ module.run(['$templateCache', function($templateCache) {
     '                    </md-input-container>\n' +
     '\n' +
     '                    <md-input-container class="md-block">\n' +
-    '                        <label>{{\'ENTRY_VERIFICATION_CODE\' | translate}}</label>\n' +
+    '                        <label>{{::\'ENTRY_VERIFICATION_CODE\' | translate}}</label>\n' +
     '                        <input name="code" ng-disabled="transaction.busy()" tabindex="0"\n' +
     '                               ng-model="data.code" required pip-clear-errors/>\n' +
     '                        <div ng-messages="errorsWithHint(form, form.code)">\n' +
-    '                            <div ng-message="required"> {{ \'ERROR_CODE_INVALID\' | translate }}</div>\n' +
-    '                            <div ng-message="ERROR_1103"> {{ \'ERROR_CODE_WRONG\' | translate }}</div>\n' +
+    '                            <div ng-message="required"> {{::\'ERROR_CODE_INVALID\' | translate }}</div>\n' +
+    '                            <div ng-message="ERROR_1103"> {{::\'ERROR_CODE_WRONG\' | translate }}</div>\n' +
     '                        </div>\n' +
     '                    </md-input-container>\n' +
     '\n' +
     '                    <p>\n' +
-    '                        {{\'VERIFY_EMAIL_TEXT_21\' | translate}} \n' +
-    '                        <a ng-click="onRequestVerificationClick()" class="pointer" tabindex="0">{{\'VERIFY_EMAIL_RESEND\' | translate}}</a>\n' +
-    '                        {{\'VERIFY_EMAIL_TEXT_22\' | translate}} \n' +
+    '                        {{::\'VERIFY_EMAIL_TEXT_21\' | translate}}\n' +
+    '                        <a ng-click="onRequestVerificationClick()" class="pointer" tabindex="0">{{::\'VERIFY_EMAIL_RESEND\' | translate}}</a>\n' +
+    '                        {{::\'VERIFY_EMAIL_TEXT_22\' | translate}}\n' +
     '                    </p>\n' +
     '                </form>\n' +
     '            </div>\n' +
@@ -364,99 +365,7 @@ module.run(['$templateCache', function($templateCache) {
 }]);
 })();
 
-/* global angular */
-
-(function () {
-    'use strict';
-
-    var thisModule = angular.module('pipSettings.Page', [
-        'pipState', 'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
-        'pipSettings.Templates'
-    ]);
-
-    thisModule.config(['pipAuthStateProvider', function (pipAuthStateProvider) {
-        pipAuthStateProvider.state('settings', {
-            url: '/settings?party_id',
-            auth: true,
-            controller: 'pipSettingsPageController',
-            templateUrl: 'settings_page/settings_page.html'
-        });
-    }]);
-
-    thisModule.controller('pipSettingsPageController', ['$scope', '$state', '$rootScope', 'pipAppBar', 'pipSettings', function ($scope, $state, $rootScope, pipAppBar, pipSettings) {
-
-        $scope.pages = _.filter(pipSettings.getPages(), function (page) {
-            if (page.visible === true && (page.access ? page.access($rootScope.$user, page) : true)) {
-                return page;
-            }
-        });
-
-        $scope.pages =_.sortBy($scope.pages, function(page){
-            return page.index;
-        });
-
-        $scope.selected = {};
-        if ($state.current.name != 'settings')
-            initSelect($state.current.name);
-        else {
-            if (pipSettings.getDefaultPage())
-                initSelect(pipSettings.getDefaultPage().state);
-            else {
-                setTimeout(function () {
-                    if (pipSettings.getDefaultPage())
-                        initSelect(pipSettings.getDefaultPage().state);
-                    else {
-                        if($scope.pages.length >0)
-                            initSelect($scope.pages[0].state);
-
-                    }
-                }, 0);
-
-            }
-
-        }
-
-        appHeader();
-
-        $scope.onNavigationSelect = onNavigationSelect;
-        $scope.onDropdownSelect = onDropdownSelect;
-
-        return;
-
-        function appHeader() {
-            pipAppBar.showMenuNavIcon();
-            pipAppBar.showTitleText('SETTINGS_TITLE');
-            pipAppBar.showLocalActions(null, []);
-            pipAppBar.showShadowSm();
-            pipAppBar.hideSearch();
-        };
-
-        function onDropdownSelect(state) {
-            onNavigationSelect(state.state);
-        }
-
-        function onNavigationSelect(state) {
-            initSelect(state);
-
-            if ($scope.selected.page) {
-
-                $state.go(state);
-
-            }
-        };
-
-        function initSelect(state) {
-            $scope.selected.page = _.find($scope.pages, function (page) {
-                return page.state == state;
-            });
-            $scope.selected.pageIndex = _.indexOf($scope.pages, $scope.selected.page);
-            $scope.selected.pageId = state;
-        }
-    }]);
-
-
-})();
-(function () {
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipSettings.Service', []);
@@ -491,14 +400,18 @@ module.run(['$templateCache', function($templateCache) {
         }
 
         function getDefaultPage() {
-            var defaultPage = _.find(pages, function(p) { return p.state == defaultPage; })
+            var defaultPage = _.find(pages, function (p) {
+                return p.state == defaultPage;
+            });
             return _.clone(defaultPage, true);
         }
 
         function addPage(pageObj) {
             validatePage(pageObj);
 
-            var existingPage = _.find(pages, function (p) { return p.state == getFullStateName(pageObj.state); });
+            var existingPage = _.find(pages, function (p) {
+                return p.state == getFullStateName(pageObj.state);
+            });
             if (existingPage) {
                 throw new Error('Page with state name "' + pageObj.state + '" is already registered');
             }
@@ -521,7 +434,9 @@ module.run(['$templateCache', function($templateCache) {
         }
 
         function setDefaultPage(name) {
-            if (!_.find(pages, function(page) { return page.state == getFullStateName(name); })) {
+            if (!_.find(pages, function (page) {
+                    return page.state == getFullStateName(name);
+                })) {
                 throw new Error('Page with state name "' + name + '" is not registered');
             }
 
@@ -549,23 +464,116 @@ module.run(['$templateCache', function($templateCache) {
         }
     }]);
 
-})();
+})(window.angular, window._);
+
+
+(function (angular, _) {
+    'use strict';
+
+    var thisModule = angular.module('pipSettings.Page', [
+        'pipState', 'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
+        'pipSettings.Templates'
+    ]);
+
+    thisModule.config(['pipAuthStateProvider', function (pipAuthStateProvider) {
+        pipAuthStateProvider.state('settings', {
+            url: '/settings?party_id',
+            auth: true,
+            controller: 'pipSettingsPageController',
+            templateUrl: 'settings_page/settings_page.html'
+        });
+    }]);
+
+    thisModule.controller('pipSettingsPageController', ['$scope', '$state', '$rootScope', 'pipAppBar', 'pipSettings', function ($scope, $state, $rootScope, pipAppBar, pipSettings) {
+
+        $scope.pages = _.filter(pipSettings.getPages(), function (page) {
+            if (page.visible === true && (page.access ? page.access($rootScope.$user, page) : true)) {
+                return page;
+            }
+        });
+
+        $scope.pages = _.sortBy($scope.pages, function (page) {
+            return page.index;
+        });
+
+        $scope.selected = {};
+        if ($state.current.name != 'settings')
+            initSelect($state.current.name);
+        else {
+            if (pipSettings.getDefaultPage())
+                initSelect(pipSettings.getDefaultPage().state);
+            else {
+                setTimeout(function () {
+                    if (pipSettings.getDefaultPage())
+                        initSelect(pipSettings.getDefaultPage().state);
+                    else {
+                        if ($scope.pages.length > 0)
+                            initSelect($scope.pages[0].state);
+
+                    }
+                }, 0);
+
+            }
+
+        }
+
+        appHeader();
+
+        $scope.onNavigationSelect = onNavigationSelect;
+        $scope.onDropdownSelect = onDropdownSelect;
+
+        return;
+
+        function appHeader() {
+            pipAppBar.showMenuNavIcon();
+            pipAppBar.showTitleText('SETTINGS_TITLE');
+            pipAppBar.showLocalActions(null, []);
+            pipAppBar.showShadowSm();
+            pipAppBar.hideSearch();
+        }
+
+        function onDropdownSelect(state) {
+            onNavigationSelect(state.state);
+        }
+
+        function onNavigationSelect(state) {
+            initSelect(state);
+
+            if ($scope.selected.page) {
+                $state.go(state);
+            }
+        }
+
+        function initSelect(state) {
+            $scope.selected.page = _.find($scope.pages, function (page) {
+                return page.state == state;
+            });
+            $scope.selected.pageIndex = _.indexOf($scope.pages, $scope.selected.page);
+            $scope.selected.pageId = state;
+        }
+    }]);
+
+
+})(window.angular, window._);
 /**
  * @file Settings page logic
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-/* global angular */
 
 (function () {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings', [
-        'ngMaterial', 'pipData', 'pipSettings.Service', 'pipSettings.Page',
-        'pipUserSettings.Data', 'pipUserSettings.Strings',  //'pipUserSettings.Blacklist',
+        'ngMaterial', 'pipData',
+        'pipSettings.Service',
+        'pipSettings.Page',
+
+        'pipUserSettings.Data',
+        'pipUserSettings.Strings',
         'pipUserSettings.BasicInfo',
-        //'pipUserSettings.ContactInfo',
-        'pipUserSettings.Sessions', 'pipSettings.Templates'
+        'pipUserSettings.Sessions',
+        'pipSettings.Templates'
 
     ]);
 
@@ -575,14 +583,13 @@ module.run(['$templateCache', function($templateCache) {
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-/* global angular */
 
-(function () {
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.BasicInfo', ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail']);
 
-    thisModule.config(['pipSettingsProvider', 'pipUserSettingsPageDataProvider', 'pipAuthStateProvider', function (pipSettingsProvider, pipUserSettingsPageDataProvider, pipAuthStateProvider) {
+    thisModule.config(['pipSettingsProvider', function (pipSettingsProvider) {
         pipSettingsProvider.addPage({
             state: 'basic_info',
             index: 1,
@@ -641,7 +648,7 @@ module.run(['$templateCache', function($templateCache) {
                         console.error(error);
                     }
                 );
-            };
+            }
 
             function onPictureCreated($event) {
                 $scope.picture = $event.sender;
@@ -653,8 +660,7 @@ module.run(['$templateCache', function($templateCache) {
                         console.error(error);
                     }
                 );
-            };
-
+            }
 
             function saveChanges() {
                 if ($scope.form)
@@ -662,9 +668,7 @@ module.run(['$templateCache', function($templateCache) {
 
                 if ($rootScope.$party) {
 
-                    if ($rootScope.$party.type == 'person')
-                        if ($scope.form.$invalid)
-                            return;
+                    if ($rootScope.$party.type == 'person' && $scope.form.$invalid) return;
 
                     // Check to avoid unnecessary savings
                     $rootScope.$party.loc_pos = $scope.loc_pos;
@@ -684,7 +688,7 @@ module.run(['$templateCache', function($templateCache) {
                     }
                 }
 
-            };
+            }
 
             function updateUser() {
 
@@ -713,7 +717,7 @@ module.run(['$templateCache', function($templateCache) {
                 }
 
 
-            };
+            }
 
             function onChangePassword(event) {
                 $mdDialog.show({
@@ -728,7 +732,7 @@ module.run(['$templateCache', function($templateCache) {
                             pipToasts.showNotification(pipTranslate.translate(message), null, null, null);
                         }
                     });
-            };
+            }
 
             function onVerifyEmail(event) {
                 $mdDialog.show({
@@ -746,11 +750,11 @@ module.run(['$templateCache', function($templateCache) {
                         }
                     }
                 );
-            };
+            }
         }]
     );
 
-})();
+})(window.angular, window._);
 
 /**
  * @file Settings change password controller
@@ -759,7 +763,7 @@ module.run(['$templateCache', function($templateCache) {
  
 /* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.ChangePassword', []);
@@ -836,7 +840,7 @@ module.run(['$templateCache', function($templateCache) {
         }]
     );
 	
-})();
+})(window.angular);
 
 /**
  * @file Settings data model
@@ -845,7 +849,7 @@ module.run(['$templateCache', function($templateCache) {
 
 /* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Data', ['pipDataModel']);
@@ -1124,7 +1128,7 @@ module.run(['$templateCache', function($templateCache) {
         }];
     });
 
-})();
+})(window.angular);
 /**
  * @file Settings sessions controller
  * @copyright Digital Living Software Corp. 2014-2016
@@ -1132,7 +1136,7 @@ module.run(['$templateCache', function($templateCache) {
  
 /* global angular */
 
-(function () {
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Sessions', []);
@@ -1192,7 +1196,7 @@ module.run(['$templateCache', function($templateCache) {
         }]
     );
 	
-})();
+})(window.angular, window._);
 
 /**
  * @file Settings string resources
@@ -1201,7 +1205,7 @@ module.run(['$templateCache', function($templateCache) {
  
 /* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Strings', ['pipTranslate']);
@@ -1334,7 +1338,7 @@ module.run(['$templateCache', function($templateCache) {
         });
     }]);
 
-})();
+})(window.angular);
 /**
  * @file Settings verify email controller
  * @copyright Digital Living Software Corp. 2014-2016
@@ -1342,7 +1346,7 @@ module.run(['$templateCache', function($templateCache) {
 
 /* global angular */
 
-(function () {
+(function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.VerifyEmail', []);
@@ -1405,6 +1409,6 @@ module.run(['$templateCache', function($templateCache) {
         }]
     );
 
-})();
+})(window.angular);
 
 //# sourceMappingURL=pip-webui-settings.js.map

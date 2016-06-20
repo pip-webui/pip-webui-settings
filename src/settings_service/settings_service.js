@@ -1,4 +1,4 @@
-(function () {
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipSettings.Service', []);
@@ -33,14 +33,18 @@
         }
 
         function getDefaultPage() {
-            var defaultPage = _.find(pages, function(p) { return p.state == defaultPage; })
+            var defaultPage = _.find(pages, function (p) {
+                return p.state == defaultPage;
+            });
             return _.clone(defaultPage, true);
         }
 
         function addPage(pageObj) {
             validatePage(pageObj);
 
-            var existingPage = _.find(pages, function (p) { return p.state == getFullStateName(pageObj.state); });
+            var existingPage = _.find(pages, function (p) {
+                return p.state == getFullStateName(pageObj.state);
+            });
             if (existingPage) {
                 throw new Error('Page with state name "' + pageObj.state + '" is already registered');
             }
@@ -63,7 +67,9 @@
         }
 
         function setDefaultPage(name) {
-            if (!_.find(pages, function(page) { return page.state == getFullStateName(name); })) {
+            if (!_.find(pages, function (page) {
+                    return page.state == getFullStateName(name);
+                })) {
                 throw new Error('Page with state name "' + name + '" is not registered');
             }
 
@@ -91,4 +97,4 @@
         }
     });
 
-})();
+})(window.angular, window._);

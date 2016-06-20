@@ -75,85 +75,29 @@
 .verify-email-dialog {
   width: 440px;
 }
-/*
-.pip-settings {
-  font-size: @font-size-body2;
-
-
-  .pip-body {
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-
-    @media (max-width: 768px) {
-      padding-left: 16px !important;
-      padding-right: 16px !important;
-    }
-  }
-
-  @media (min-width: 1200px ) {
-    md-list:first-of-type {
-      width: 300px;
-    }
-
-    .pip-content-container {
-      width: 1100px - 300px;
-      position: absolute;
-      left: 300px;
-      max-height: 100%;
-      -ms-overflow-y: auto;
-    }
-  }
-
-  @media (min-width: 1000px) and (max-width: 1200px) {
-    .pip-content-container {
-      width: ~"calc(100% - 300px)";
-      -ms-overflow-y: auto;
-    }
-  }
-  @media (min-width: 768px) and (max-width: 1200px) {
-    md-list:first-of-type {
-      width: 30%;
-      min-width: 0px;
-    }
-
-    .pip-content-container {
-      width: 70%;
-      position: absolute;
-      left: 30%;
-      max-height: 100%;
-      -ms-overflow-y: auto;
-    }
-  }
-
-  &.pip-card .pip-header ~ .pip-body, &.pip-document .pip-header ~ .pip-body {
-    padding-top: 24px !important;
-  }
-
-
-}*/
-.md-tile-left {
+.pip-settings .md-tile-left {
   position: relative;
   margin-right: 16px;
   height: 80px;
   width: 80px;
 }
-.pip-date md-input-container {
+.pip-settings .pip-date md-input-container {
   margin-top: 4px;
   margin-bottom: 4px;
 }
-.pip-contact-info md-select {
+.pip-settings .pip-contact-info md-select {
   min-width: 150px;
 }
-.pip-contact-info .pip-select {
+.pip-settings .pip-contact-info .pip-select {
   margin-top: 4px;
 }
-.pip-contact-info .pip-select md-select {
+.pip-settings .pip-contact-info .pip-select md-select {
   height: 44px;
 }
-.pip-contact-info md-input-container {
+.pip-settings .pip-contact-info md-input-container {
   margin-bottom: 8px;
 }
-.pip-contact-info md-input-container .md-errors-spacer {
-  height: 0px !important;
-  min-height: 0px;
+.pip-settings .pip-contact-info md-input-container .md-errors-spacer {
+  height: 0 !important;
+  min-height: 0;
 }

@@ -3,19 +3,16 @@
  * @copyright Digital Living Software Corp. 2014-2015
  */
 
-/* global angular */
-
-(function () {
+(function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipSampleConfig', ['pipRest.State', 'pipRest', 'pipEntry', 'pipSideNav', 
-        'pipAppBar', 'pipUserSettings', 'pipSettingsData'  ]);
+        'pipAppBar', 'pipUserSettings', 'pipSettingsData']);
 
     // Configure application services before start
     thisModule.config(
         function ($mdThemingProvider, $urlRouterProvider, pipAuthStateProvider, pipRestProvider, pipSideNavProvider, 
-                  pipSettingsDataProvider, pipAppBarProvider, pipEntryProvider, $mdIconProvider, pipSettingsProvider, 
-                  pipUserSettingsPageDataProvider) {
+                  pipSettingsDataProvider, pipAppBarProvider, pipEntryProvider, $mdIconProvider, pipSettingsProvider) {
 
             $mdIconProvider.iconSet('icons', 'images/icons.svg', 512);
 
@@ -68,5 +65,5 @@
         }
     );
 
-})();
+})(window.angular);
 

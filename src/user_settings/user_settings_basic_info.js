@@ -3,14 +3,13 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-/* global angular */
 
-(function () {
+(function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.BasicInfo', ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail']);
 
-    thisModule.config(function (pipSettingsProvider, pipUserSettingsPageDataProvider, pipAuthStateProvider) {
+    thisModule.config(function (pipSettingsProvider) {
         pipSettingsProvider.addPage({
             state: 'basic_info',
             index: 1,
@@ -69,7 +68,7 @@
                         console.error(error);
                     }
                 );
-            };
+            }
 
             function onPictureCreated($event) {
                 $scope.picture = $event.sender;
@@ -81,8 +80,7 @@
                         console.error(error);
                     }
                 );
-            };
-
+            }
 
             function saveChanges() {
                 if ($scope.form)
@@ -90,9 +88,7 @@
 
                 if ($rootScope.$party) {
 
-                    if ($rootScope.$party.type == 'person')
-                        if ($scope.form.$invalid)
-                            return;
+                    if ($rootScope.$party.type == 'person' && $scope.form.$invalid) return;
 
                     // Check to avoid unnecessary savings
                     $rootScope.$party.loc_pos = $scope.loc_pos;
@@ -112,7 +108,7 @@
                     }
                 }
 
-            };
+            }
 
             function updateUser() {
 
@@ -141,7 +137,7 @@
                 }
 
 
-            };
+            }
 
             function onChangePassword(event) {
                 $mdDialog.show({
@@ -156,7 +152,7 @@
                             pipToasts.showNotification(pipTranslate.translate(message), null, null, null);
                         }
                     });
-            };
+            }
 
             function onVerifyEmail(event) {
                 $mdDialog.show({
@@ -174,8 +170,8 @@
                         }
                     }
                 );
-            };
+            }
         }
     );
 
-})();
+})(window.angular, window._);
