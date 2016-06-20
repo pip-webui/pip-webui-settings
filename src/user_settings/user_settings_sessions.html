@@ -1,7 +1,7 @@
 
     <md-progress-linear ng-show="transaction.busy()" md-mode="indeterminate" class="pip-progress-top">
     </md-progress-linear>
-    <div class="pip-details-title">
+    <div class="pip-details-title pip-sessions">
         <p class="pip-title bm16">{{::'SETTINGS_ACTIVE_SESSIONS_TITLE' | translate}}</p>
 
         <p class="pip-subtitle">{{::'SETTINGS_ACTIVE_SESSIONS_SUBTITLE' | translate}}</p>
@@ -9,9 +9,10 @@
 
 
 <md-list class="w-stretch">
-    <md-item ng-repeat="session in sessions" >
-        <div layout="row" ng-init="showBlock = session.id != sessionId"
-                          ng-click="showBlock = !showBlock" >
+    <div ng-repeat="session in sessions" >
+        <div class="layout-row"
+             ng-init="showBlock = session.id != sessionId"
+             ng-click="showBlock = !showBlock" >
             <p class="m0 text-subhead2 text-overflow max-w50-stretch" >{{session.client}}</p>
             <p class="m0 lp4 text-body1 color-secondary-text flex">{{::'SETTINGS_ACTIVE_SESSION_ACTIVE' | translate}} </p>
             <p class="m0 text-body1 color-secondary-text ">
@@ -20,7 +21,7 @@
                 <md-icon ng-if="!showBlock" md-svg-icon="icons:triangle-down"></md-icon>
             </p>
         </div>
-        <div layout="row" class="bm8 bp8" ng-class="{' divider-bottom':!$last}" >
+        <div class="layout-row bm8 bp8" ng-class="{' divider-bottom':!$last}" >
             <div flex="50">
                 <p class="m0 bm4 text-body1 text-overflow color-secondary-text " >{{ session.last_req | date : 'medium' }}</p>
                 <p class="m0 bm4 text-body1 text-overflow color-secondary-text " ng-show="showBlock">{{::'SETTINGS_ACTIVE_SESSION_OS' | translate}}{{session.platform}}</p>
@@ -36,9 +37,9 @@
             </pip-location-ip>
         </div>
 
-    </md-item>
+    </div>
 </md-list>
-<div layout="row" layout-align="end center">
+<div class="layout-row layout-align-end-center">
     <md-button class="md-raised" ng-show="sessions.length > 1" ng-click="onRemoveAll()">
         {{::'SETTINGS_ACTIVE_SESSIONS_CLOSE_ACTIVE_SESSIONS' | translate}}
     </md-button>

@@ -25,8 +25,8 @@
     });
 
     thisModule.controller('pipUserSettingsBasicInfoController',
-        function ($scope, $rootScope, $mdDialog, $state, $window, $timeout,
-                  pipTranslate, pipTransaction, pipTheme, $mdTheming,
+        function ($scope, $rootScope, $mdDialog, $state, $window, $timeout, $mdTheming,
+                  pipTranslate, pipTransaction, pipTheme,
                   pipToasts, pipUserSettingsPageData, pipFormErrors) {
 
             $scope.originalParty = angular.toJson($rootScope.$party);
@@ -62,7 +62,6 @@
                 $scope.picture.save(
                     function () {
                         $rootScope.$broadcast('pipPartyAvatarUpdated');
-
                     },
                     function (error) {
                         console.error(error);

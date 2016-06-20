@@ -41,10 +41,11 @@ module.run(['$templateCache', function($templateCache) {
     '            <pip-dropdown pip-actions="pages" class="hide-gt-xs" pip-dropdown-select="onDropdownSelect"\n' +
     '                          pip-active-index="selected.pageIndex"></pip-dropdown>\n' +
     '\n' +
-    '            <div class="pip-body tp24-flex" ui-view layout="column"></div>\n' +
+    '            <div class="pip-body tp24-flex layout-column" ui-view></div>\n' +
     '        </div>\n' +
     '    </div>\n' +
-    '    <div ng-show="manager === false || !pages || pages.length < 1" layout="column" layout-align="center center" flex>\n' +
+    '    <div class="layout-column layout-align-center-center flex"\n' +
+    '         ng-show="manager === false || !pages || pages.length < 1">\n' +
     '        {{::\'ERROR_400\' | translate}}\n' +
     '    </div>\n' +
     '</pip-document>');
@@ -62,13 +63,13 @@ module.run(['$templateCache', function($templateCache) {
     '<form name="form" novalidate class="w-stretch">\n' +
     '    <md-progress-linear ng-show="transaction.busy()" md-mode="indeterminate" class="pip-progress-top">\n' +
     '    </md-progress-linear>\n' +
-    '    <div layout="row" class="bm12">\n' +
+    '    <div class="layout-row bm12">\n' +
     '        <div class="md-tile-left">\n' +
     '            <pip-avatar-edit pip-party-id="$party.id"\n' +
     '                             pip-created="onPictureCreated($event)" pip-changed="onPictureChanged($control, $event)">\n' +
     '            </pip-avatar-edit>\n' +
     '        </div>\n' +
-    '        <div class="md-tile-content tp0" layout-align="center">\n' +
+    '        <div class="md-tile-content tp0 layout-align-center">\n' +
     '            <h3 class="tm16 bm8 text-one-line">{{ nameCopy }}</h3>\n' +
     '\n' +
     '            <p class="text-primary text-overflow m0"> {{::\'SETTINGS_BASIC_INFO_FROM\' | translate}}\n' +
@@ -170,7 +171,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('user_settings/user_settings_change_password.html',
-    '<md-dialog class="pip-dialog" layout="column"  width="440">\n' +
+    '<md-dialog class="pip-dialog layout-column"  width="440">\n' +
     '    <form name="form" ng-submit="onApply()" >\n' +
     '    <div class="pip-header">\n' +
     '        <h3 class="m0">{{::\'SETTINGS_CHANGE_PASSWORD_TITLE\' | translate : module}}</h3>\n' +
@@ -247,7 +248,7 @@ module.run(['$templateCache', function($templateCache) {
     '\n' +
     '    <md-progress-linear ng-show="transaction.busy()" md-mode="indeterminate" class="pip-progress-top">\n' +
     '    </md-progress-linear>\n' +
-    '    <div class="pip-details-title">\n' +
+    '    <div class="pip-details-title pip-sessions">\n' +
     '        <p class="pip-title bm16">{{::\'SETTINGS_ACTIVE_SESSIONS_TITLE\' | translate}}</p>\n' +
     '\n' +
     '        <p class="pip-subtitle">{{::\'SETTINGS_ACTIVE_SESSIONS_SUBTITLE\' | translate}}</p>\n' +
@@ -255,9 +256,10 @@ module.run(['$templateCache', function($templateCache) {
     '\n' +
     '\n' +
     '<md-list class="w-stretch">\n' +
-    '    <md-item ng-repeat="session in sessions" >\n' +
-    '        <div layout="row" ng-init="showBlock = session.id != sessionId"\n' +
-    '                          ng-click="showBlock = !showBlock" >\n' +
+    '    <div ng-repeat="session in sessions" >\n' +
+    '        <div class="layout-row"\n' +
+    '             ng-init="showBlock = session.id != sessionId"\n' +
+    '             ng-click="showBlock = !showBlock" >\n' +
     '            <p class="m0 text-subhead2 text-overflow max-w50-stretch" >{{session.client}}</p>\n' +
     '            <p class="m0 lp4 text-body1 color-secondary-text flex">{{::\'SETTINGS_ACTIVE_SESSION_ACTIVE\' | translate}} </p>\n' +
     '            <p class="m0 text-body1 color-secondary-text ">\n' +
@@ -266,7 +268,7 @@ module.run(['$templateCache', function($templateCache) {
     '                <md-icon ng-if="!showBlock" md-svg-icon="icons:triangle-down"></md-icon>\n' +
     '            </p>\n' +
     '        </div>\n' +
-    '        <div layout="row" class="bm8 bp8" ng-class="{\' divider-bottom\':!$last}" >\n' +
+    '        <div class="layout-row bm8 bp8" ng-class="{\' divider-bottom\':!$last}" >\n' +
     '            <div flex="50">\n' +
     '                <p class="m0 bm4 text-body1 text-overflow color-secondary-text " >{{ session.last_req | date : \'medium\' }}</p>\n' +
     '                <p class="m0 bm4 text-body1 text-overflow color-secondary-text " ng-show="showBlock">{{::\'SETTINGS_ACTIVE_SESSION_OS\' | translate}}{{session.platform}}</p>\n' +
@@ -282,9 +284,9 @@ module.run(['$templateCache', function($templateCache) {
     '            </pip-location-ip>\n' +
     '        </div>\n' +
     '\n' +
-    '    </md-item>\n' +
+    '    </div>\n' +
     '</md-list>\n' +
-    '<div layout="row" layout-align="end center">\n' +
+    '<div class="layout-row layout-align-end-center">\n' +
     '    <md-button class="md-raised" ng-show="sessions.length > 1" ng-click="onRemoveAll()">\n' +
     '        {{::\'SETTINGS_ACTIVE_SESSIONS_CLOSE_ACTIVE_SESSIONS\' | translate}}\n' +
     '    </md-button>\n' +
@@ -583,7 +585,6 @@ module.run(['$templateCache', function($templateCache) {
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-
 (function (angular, _) {
     'use strict';
 
@@ -606,8 +607,8 @@ module.run(['$templateCache', function($templateCache) {
     }]);
 
     thisModule.controller('pipUserSettingsBasicInfoController',
-        ['$scope', '$rootScope', '$mdDialog', '$state', '$window', '$timeout', 'pipTranslate', 'pipTransaction', 'pipTheme', '$mdTheming', 'pipToasts', 'pipUserSettingsPageData', 'pipFormErrors', function ($scope, $rootScope, $mdDialog, $state, $window, $timeout,
-                  pipTranslate, pipTransaction, pipTheme, $mdTheming,
+        ['$scope', '$rootScope', '$mdDialog', '$state', '$window', '$timeout', '$mdTheming', 'pipTranslate', 'pipTransaction', 'pipTheme', 'pipToasts', 'pipUserSettingsPageData', 'pipFormErrors', function ($scope, $rootScope, $mdDialog, $state, $window, $timeout, $mdTheming,
+                  pipTranslate, pipTransaction, pipTheme,
                   pipToasts, pipUserSettingsPageData, pipFormErrors) {
 
             $scope.originalParty = angular.toJson($rootScope.$party);
@@ -643,7 +644,6 @@ module.run(['$templateCache', function($templateCache) {
                 $scope.picture.save(
                     function () {
                         $rootScope.$broadcast('pipPartyAvatarUpdated');
-
                     },
                     function (error) {
                         console.error(error);

@@ -1,13 +1,13 @@
 <form name="form" novalidate class="w-stretch">
     <md-progress-linear ng-show="transaction.busy()" md-mode="indeterminate" class="pip-progress-top">
     </md-progress-linear>
-    <div layout="row" class="bm12">
+    <div class="layout-row bm12">
         <div class="md-tile-left">
             <pip-avatar-edit pip-party-id="$party.id"
                              pip-created="onPictureCreated($event)" pip-changed="onPictureChanged($control, $event)">
             </pip-avatar-edit>
         </div>
-        <div class="md-tile-content tp0" layout-align="center">
+        <div class="md-tile-content tp0 layout-align-center">
             <h3 class="tm16 bm8 text-one-line">{{ nameCopy }}</h3>
 
             <p class="text-primary text-overflow m0"> {{::'SETTINGS_BASIC_INFO_FROM' | translate}}
