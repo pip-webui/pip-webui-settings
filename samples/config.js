@@ -7,7 +7,7 @@
     'use strict';
 
     var thisModule = angular.module('pipSampleConfig', ['pipRest.State', 'pipRest', 'pipEntry', 'pipSideNav', 
-        'pipAppBar', 'pipUserSettings', 'pipSettingsData']);
+        'pipAppBar', 'pipUserSettings', 'pipSettingsData', 'pipSettingsConfig']);
 
     // Configure application services before start
     thisModule.config(
@@ -47,15 +47,6 @@
                 }
             ]);
 
-            pipSettingsProvider.addPage({
-                state: 'test1',
-                title: 'Test1 settings page',
-                auth: true,
-                stateConfig: {
-                    url: '/test1',
-                    template: '<h1>This is test 1 page in settings inserted through provider</h1>'
-                }
-            });
 
         }
     );
