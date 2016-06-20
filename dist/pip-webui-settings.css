@@ -73,29 +73,13 @@
 }
 .pip-settings .md-tile-left {
   position: relative;
-  margin-right: 16px;
+  margin-right: 16px !important;
   height: 80px;
   width: 80px;
 }
 .pip-settings .pip-date md-input-container {
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-.pip-settings .pip-contact-info md-select {
-  min-width: 150px;
-}
-.pip-settings .pip-contact-info .pip-select {
-  margin-top: 4px;
-}
-.pip-settings .pip-contact-info .pip-select md-select {
-  height: 44px;
-}
-.pip-settings .pip-contact-info md-input-container {
-  margin-bottom: 8px;
-}
-.pip-settings .pip-contact-info md-input-container .md-errors-spacer {
-  height: 0 !important;
-  min-height: 0;
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
 }
 .pip-settings .pip-sessions.pip-details-title .pip-subtitle {
   min-height: 24px;
