@@ -65,7 +65,7 @@
             'THEME':'Theme',
                         
             //Hints
-// определено в entry           'HINT_PASSWORD' : 'Minimum 6 characters',
+            'HINT_PASSWORD' : 'Minimum 6 characters',
             'HINT_REPEAT_PASSWORD' : 'Repeat password',
 
             //Errors
@@ -127,7 +127,7 @@
             'THEME':'Тема',
 
             //Hints
-// определено в entry               'HINT_PASSWORD' : 'Минимум 6 знаков',
+            'HINT_PASSWORD' : 'Минимум 6 знаков',
             'HINT_REPEAT_PASSWORD' : 'Повторите пароль',
             
             //Errors
