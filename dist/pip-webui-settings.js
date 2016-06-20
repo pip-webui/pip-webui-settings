@@ -37,11 +37,11 @@ module.run(['$templateCache', function($templateCache) {
     '            </md-list-item>\n' +
     '        </md-list>\n' +
     '\n' +
-    '        <div class="pip-content-container" ng-if="selected.page" style="min-height: 100%;">\n' +
+    '        <div class="pip-content-container" ng-if="selected.page">\n' +
     '            <pip-dropdown pip-actions="pages" class="hide-gt-xs" pip-dropdown-select="onDropdownSelect"\n' +
     '                          pip-active-index="selected.pageIndex"></pip-dropdown>\n' +
     '\n' +
-    '            <div class="pip-body tp24-flex" ui-view layout="column"  style="max-width: none !important; min-height: 100%"></div>\n' +
+    '            <div class="pip-body tp24-flex" ui-view layout="column"></div>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div ng-show="manager === false || !pages || pages.length < 1" layout="column" layout-align="center center" flex>\n' +
@@ -59,11 +59,11 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('user_settings/user_settings_basic_info.html',
-    '<form name="form" style="width:100%;" novalidate>\n' +
+    '<form name="form" novalidate class="w-stretch">\n' +
     '    <md-progress-linear ng-show="transaction.busy()" md-mode="indeterminate" class="pip-progress-top">\n' +
     '    </md-progress-linear>\n' +
     '    <div layout="row" class="bm12">\n' +
-    '        <div class="md-tile-left" style="position: relative; margin-right: 16px; height: 80px; width: 80px">\n' +
+    '        <div class="md-tile-left">\n' +
     '            <pip-avatar-edit pip-party-id="$party.id"\n' +
     '                             pip-created="onPictureCreated($event)" pip-changed="onPictureChanged($control, $event)">\n' +
     '            </pip-avatar-edit>\n' +
