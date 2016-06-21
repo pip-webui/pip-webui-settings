@@ -17,7 +17,7 @@
         });
     });
 
-    thisModule.controller('pipSettingsPageController', function ($scope, $state, $rootScope, pipAppBar, pipSettings) {
+    thisModule.controller('pipSettingsPageController', function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings) {
 
         $scope.pages = _.filter(pipSettings.getPages(), function (page) {
             if (page.visible === true && (page.access ? page.access($rootScope.$user, page) : true)) {
@@ -25,9 +25,7 @@
             }
         });
 
-        $scope.pages = _.sortBy($scope.pages, function (page) {
-            return page.index;
-        });
+        $scope.pages = _.sortBy($scope.pages, 'index');
 
         $scope.selected = {};
         if ($state.current.name != 'settings')
@@ -36,7 +34,7 @@
             if (pipSettings.getDefaultPage())
                 initSelect(pipSettings.getDefaultPage().state);
             else {
-                setTimeout(function () {
+                $timeout(function () {
                     if (pipSettings.getDefaultPage())
                         initSelect(pipSettings.getDefaultPage().state);
                     else {

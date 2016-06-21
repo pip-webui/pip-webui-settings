@@ -14,8 +14,8 @@
 
         'pipUserSettings.Data',
         'pipUserSettings.Strings',
-        'pipUserSettings.BasicInfo',
         'pipUserSettings.Sessions',
+        'pipUserSettings.BasicInfo',
         'pipSettings.Templates'
 
     ]);

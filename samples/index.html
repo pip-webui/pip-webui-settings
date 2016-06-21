@@ -15,7 +15,24 @@
     <link rel="stylesheet" href="../lib/pip-webui-entry.css"/>
     <link rel="stylesheet" href="../dist/pip-webui-settings.css"/>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+    <style>
+        html, body {
+            overflow-x: hidden !important;
+        }
+    </style>
+</head>
+
+<body ng-app="pipSample" ng-controller="pipSampleController" >
+    <pip-main ng-if="!$reset">
+        <pip-appbar title="Sample Application" show-menu="true">
+        </pip-appbar>
+
+        <pip-sidenav></pip-sidenav>
+
+        <pip-main-body class="layout-column" ui-view ng-cloak></pip-main-body>
+    </pip-main>
+    <pip-routing-progress></pip-routing-progress>
 
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script src="https://www.google.com/jsapi"></script>
@@ -30,26 +47,8 @@
     <script src="../lib/pip-webui-entry.js"></script>
     <script src="../dist/pip-webui-settings.js"></script>
 
+    <script src="settings_config.js"></script>
     <script src="config.js"></script>
     <script src="index.js"></script>
-    <style>
-        html, body {
-            overflow-x: hidden !important;
-        }
-    </style>
-</head>
-
-<body ng-app="pipSample" ng-controller="pipSampleController" >
-    <pip-main ng-if="!$reset">
-        <pip-appbar title="Sample Application" show-menu="true">
-        </pip-appbar>
-
-        <pip-sidenav>
-        </pip-sidenav>
-
-        <pip-main-body ui-view ng-cloak layout="column">
-        </pip-main-body>
-    </pip-main>
-    <pip-routing-progress></pip-routing-progress>
 </body>
 </html>

@@ -10,7 +10,7 @@
 
     var thisModule = angular.module('pipUserSettings.Sessions', []);
 
-    thisModule.config(function (pipSettingsProvider, pipUserSettingsPageDataProvider,  pipAuthStateProvider) {
+    thisModule.config(function (pipSettingsProvider, pipUserSettingsPageDataProvider) {
         pipSettingsProvider.addPage({
             state: 'sessions',
             index: 3,

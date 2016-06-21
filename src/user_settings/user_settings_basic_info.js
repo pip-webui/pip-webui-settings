@@ -3,7 +3,6 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-
 (function (angular, _) {
     'use strict';
 
@@ -26,13 +25,19 @@
     });
 
     thisModule.controller('pipUserSettingsBasicInfoController',
-        function ($scope, $rootScope, $mdDialog, $state, pipTranslate, pipTransaction, pipFormErrors,
-                  pipUserSettingsPageData, pipToasts, $window, pipTheme, $mdTheming) {
+        function ($scope, $rootScope, $mdDialog, $state, $window, $timeout, $mdTheming,
+                  pipTranslate, pipTransaction, pipTheme,
+                  pipToasts, pipUserSettingsPageData, pipFormErrors) {
 
-            $scope.originalParty = angular.toJson($rootScope.$party);
+            try {
+                $scope.originalParty = angular.toJson($rootScope.$party);
+            } catch (err) {
+                throw err;
+            }
 
             $scope.nameCopy = $rootScope.$party.name;
-            setTimeout(function () {
+
+            $timeout(function () {
                 $scope.loc_pos = $rootScope.$party.loc_pos;
                 $scope.$apply();
             });
@@ -62,7 +67,6 @@
                 $scope.picture.save(
                     function () {
                         $rootScope.$broadcast('pipPartyAvatarUpdated');
-
                     },
                     function (error) {
                         console.error(error);
@@ -92,7 +96,11 @@
 
                     // Check to avoid unnecessary savings
                     $rootScope.$party.loc_pos = $scope.loc_pos;
-                    var party = angular.toJson($rootScope.$party);
+                    try {
+                        var party = angular.toJson($rootScope.$party);
+                    } catch (err) {
+                        throw err;
+                    }
 
                     if (party != $scope.originalParty) {
                         pipUserSettingsPageData.updateParty($scope.transaction, $rootScope.$party,

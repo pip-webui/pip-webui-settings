@@ -7,12 +7,12 @@
     'use strict';
 
     var thisModule = angular.module('pipSampleConfig', ['pipRest.State', 'pipRest', 'pipEntry', 'pipSideNav', 
-        'pipAppBar', 'pipUserSettings', 'pipSettingsData']);
+        'pipAppBar', 'pipUserSettings', 'pipSettingsData', 'pipSettingsConfig']);
 
     // Configure application services before start
     thisModule.config(
-        function ($mdThemingProvider, $urlRouterProvider, pipAuthStateProvider, pipRestProvider, pipSideNavProvider, 
-                  pipSettingsDataProvider, pipAppBarProvider, pipEntryProvider, $mdIconProvider, pipSettingsProvider) {
+        function ($mdThemingProvider, $urlRouterProvider, pipAuthStateProvider, pipRestProvider, pipSideNavProvider,
+                   pipAppBarProvider, $mdIconProvider, pipSettingsProvider) {
 
             $mdIconProvider.iconSet('icons', 'images/icons.svg', 512);
 
@@ -23,11 +23,7 @@
             ]);
 
             // Configure REST API
-            //pipRestProvider.version('1.0');
             pipRestProvider.serverUrl('http://alpha.pipservices.net');
-
-            // Configure entry pages
-            //pipEntryProvider.fixedServerUrl('http://alpha.pipservices.net');
 
             // Configure default states
             pipAuthStateProvider.unauthorizedState('signin');
@@ -44,23 +40,13 @@
                     links: [
                         {title: 'Settings', url: '/settings'}
                     ]
-                },
-                {
+                }, {
                     links: [
                         {title: 'Signout', url: '/signout'}
                     ]
-                },
+                }
             ]);
 
-            pipSettingsProvider.addPage({
-                state: 'test1',
-                title: 'Test1 settings page',
-                auth: true,
-                stateConfig: {
-                    url: '/test1',
-                    template: '<h1>This is test 1 page in settings inserted through provider</h1>'
-                }
-            });
 
         }
     );

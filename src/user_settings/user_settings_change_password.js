@@ -11,7 +11,7 @@
     var thisModule = angular.module('pipUserSettings.ChangePassword', []);
 	
     thisModule.controller('pipUserSettingsChangePasswordController',
-        function($scope, $rootScope, $mdDialog, pipRest, pipTransaction, pipFormErrors, email) {
+        function($scope, $rootScope, $mdDialog, email, pipRest, pipTransaction, pipFormErrors ) {
         
             $scope.transaction = pipTransaction('settings.change_password', $scope);
             $scope.errorsRepeatWithHint = function (form,formPart) {

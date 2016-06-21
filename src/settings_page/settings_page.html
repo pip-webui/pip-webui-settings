@@ -1,25 +1,34 @@
 <md-toolbar class="pip-appbar-ext"></md-toolbar>
-<pip-document width="800" min-height="400" class="pip-settings">
+<pip-document width="800" min-height="400"
+              class="pip-settings">
 
-    <div class="pip-menu-container" ng-hide="manager === false || !pages || pages.length < 1">
-        <md-list class="pip-menu pip-simple-list hide-xs" pip-selected="selected.pageIndex"
-                 pip-selected-watch="selected.navId" pip-select="onNavigationSelect($event.id)">
-            <md-list-item class="pip-simple-list-item pip-selectable flex" md-ink-ripple pip-id="{{:: page.state }}"
+    <div class="pip-menu-container"
+         ng-hide="manager === false || !pages || pages.length < 1">
+        <md-list class="pip-menu pip-simple-list hide-xs"
+                 pip-selected="selected.pageIndex"
+                 pip-selected-watch="selected.navId"
+                 pip-select="onNavigationSelect($event.id)">
+            <md-list-item class="pip-simple-list-item pip-selectable flex"
                           ng-repeat="page in pages track by page.state" ng-if="$party.id == $user.id ||
                           page.state == 'settings.basic_info'|| page.state =='settings.contact_info'
-                          || page.state =='settings.blacklist'">
-                <p> {{::page.title | translate}}</p>
+                          || page.state =='settings.blacklist'"
+                          md-ink-ripple
+                          pip-id="{{:: page.state }}">
+                <p>{{::page.title | translate}}</p>
             </md-list-item>
         </md-list>
 
         <div class="pip-content-container" ng-if="selected.page">
-            <pip-dropdown pip-actions="pages" class="hide-gt-xs" pip-dropdown-select="onDropdownSelect"
+            <pip-dropdown class="hide-gt-xs"
+                          pip-actions="pages"
+                          pip-dropdown-select="onDropdownSelect"
                           pip-active-index="selected.pageIndex"></pip-dropdown>
 
-            <div class="pip-body tp24-flex" ui-view layout="column"></div>
+            <div class="pip-body tp24-flex layout-column" ui-view></div>
         </div>
     </div>
-    <div ng-show="manager === false || !pages || pages.length < 1" layout="column" layout-align="center center" flex>
+    <div class="layout-column layout-align-center-center flex"
+         ng-show="manager === false || !pages || pages.length < 1">
         {{::'ERROR_400' | translate}}
     </div>
 </pip-document>

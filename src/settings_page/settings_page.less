@@ -1,3 +1,8 @@
+// CSS styles for settings module
+// (ñ) Digital Living Software Corp. 2014-2016
+
+@pip-settings-list-width: 300px;
+@pip-settings-document-width: 1100px;
 
 .pip-settings {
 
@@ -11,19 +16,19 @@
 
   @media (min-width: 1200px ) {
     md-list.pip-menu {
-      width: 300px;
-      min-width: 300px;
+      width: @pip-settings-list-width;
+      min-width: @pip-settings-list-width;
     }
 
     .pip-content-container {
-      width: 1100px - 300px;
+      width: @pip-settings-document-width - @pip-settings-list-width;
     }
   }
 
   @media (min-width: 768px) and (max-width: 1200px) {
     md-list.pip-menu {
-      width: 300px;
-      min-width: 300px;
+      width: @pip-settings-list-width;
+      min-width: @pip-settings-list-width;
     }
 
     .pip-content-container {
@@ -35,8 +40,4 @@
     padding-top: 24px !important;
   }
 
-}
-
-.change-password-dialog, .verify-email-dialog {
-  width: 440px;
 }
