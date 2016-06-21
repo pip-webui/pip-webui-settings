@@ -1,12 +1,12 @@
 'use strict';
 
-suite('Settings', function () {
+describe('Settings', function () {
     var settingsProvider, service, addPageSpy, setDefaultPageSpy;
 
-    setup(module('pipRest'));
+    beforeEach(module('pipRest'));
 
 
-    setup(function () {
+    beforeEach(function () {
         module('pipSettings', function (pipSettingsProvider) {
             settingsProvider = pipSettingsProvider;
             addPageSpy = sinon.spy(settingsProvider, 'addPage');
@@ -17,7 +17,7 @@ suite('Settings', function () {
         module('pipUserSettings');
     });
 
-    test('should register 4 pages in settings and set "basic_info" as default one', inject(function () {
+    it('should register 4 pages in settings and set "basic_info" as default one', inject(function () {
         assert.equal(addPageSpy.callCount, 5);
         assert.equal(addPageSpy.args[0][0].state, 'basic_info');
         assert.equal(addPageSpy.args[1][0].state, 'contact_info');

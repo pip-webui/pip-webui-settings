@@ -1,13 +1,13 @@
 'use strict';
 
-suite('Settings', function () {
+describe('Settings', function () {
     var stateProvider,
         service, stateSpy;
 
-    setup(module('pipRest'));
+    beforeEach(module('pipRest'));
 
 
-    setup(function () {
+    beforeEach(function () {
         module('pipState', function (pipAuthStateProvider) {
             stateProvider = pipAuthStateProvider;
             stateSpy = sinon.spy(stateProvider, 'state');
@@ -16,12 +16,12 @@ suite('Settings', function () {
         module('pipSettings');
     });
 
-    setup(inject(function (pipSettings) {
+    beforeEach(inject(function (pipSettings) {
         service = pipSettings;
     }));
 
 
-    test('should be able to add new page and get list of added pages', function (done) {
+    it('should be able to add new page and get list of added pages', function (done) {
         var access = function () {
         };
 
@@ -59,7 +59,7 @@ suite('Settings', function () {
         done();
     });
 
-    test('should be able to add new page and get list of added pages', function (done) {
+    it('should be able to add new page and get list of added pages', function (done) {
         var access = function () {
         };
 

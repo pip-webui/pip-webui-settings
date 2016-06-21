@@ -1,14 +1,14 @@
 'use strict';
 
-suite('Settings Basic info', function () {
+describe('Settings Basic info', function () {
     this.timeout(1000000);
     var settingsProvider, scope, service, addPageSpy, setDefaultPageSpy,
         controller, pipTransaction, party, $timeout, rootScope, $httpBackend;
     var pipTestUserParty, beginTransactionSpy;
 
-    setup(module('pipRest'));
+    beforeEach(module('pipRest'));
 
-    setup(function () {
+    beforeEach(function () {
         module('pipSettings', function (pipSettingsProvider) {
             settingsProvider = pipSettingsProvider;
             addPageSpy = sinon.spy(settingsProvider, 'addPage');
@@ -21,7 +21,7 @@ suite('Settings Basic info', function () {
         module('pipUserSettings.BasicInfo');
     });
 
-    setup(inject(function ($controller, $rootScope, _$state_, _pipTestUserParty_, _$timeout_, $injector, _pipRest_,
+    beforeEach(inject(function ($controller, $rootScope, _$state_, _pipTestUserParty_, _$timeout_, $injector, _pipRest_,
                            $mdDialog, _pipTranslate_, _pipTransaction_, _pipFormErrors_, _pipUserSettingsPageData_,
                            _pipToasts_) {
         pipTestUserParty = _pipTestUserParty_;
@@ -53,7 +53,7 @@ suite('Settings Basic info', function () {
         scope.form.$setSubmitted = function () {};
 
     }));
-    test('should init transaction and set various properties to $scope on start', function () {
+    it('should init transaction and set various properties to $scope on start', function () {
 
         assert.deepEqual(scope.genders, [{id: 'male', name: 'male'}, {id: 'female', name: 'female'}, {
             id: 'n/s',
@@ -63,7 +63,7 @@ suite('Settings Basic info', function () {
 
     });
 
-    test('should be able to change', function (done) {
+    it('should be able to change', function (done) {
 
         var setSubmittedSpy = sinon.spy(scope.form, '$setSubmitted');
         rootScope.$party.name = '1';
@@ -83,7 +83,7 @@ suite('Settings Basic info', function () {
 
     });
 
-    test('should be able to save changes to user profile (error case)', function (done) {
+    it('should be able to save changes to user profile (error case)', function (done) {
 
         var setSubmittedSpy = sinon.spy(scope.form, '$setSubmitted');
         rootScope.$party.name = '1';

@@ -1,13 +1,13 @@
 'use strict';
 
-suite('Settings Sessions', function () {
+describe('Settings Sessions', function () {
     var settingsProvider, scope, service, addPageSpy, setDefaultPageSpy,
         controller, pipTransaction, party, $timeout, rootScope, $httpBackend;
     var pipTestUserParty, beginTransactionSpy;
 
-    setup(module('pipRest'));
+    beforeEach(module('pipRest'));
 
-    setup(function () {
+    beforeEach(function () {
         module('pipSettings', function (pipSettingsProvider) {
             settingsProvider = pipSettingsProvider;
             addPageSpy = sinon.spy(settingsProvider, 'addPage');
@@ -20,7 +20,7 @@ suite('Settings Sessions', function () {
         module('pipUserSettings.Sessions');
     });
 
-    setup(inject(function ($controller, $rootScope, _$state_, _pipTestUserParty_, _$timeout_, $injector, _pipRest_,
+    beforeEach(inject(function ($controller, $rootScope, _$state_, _pipTestUserParty_, _$timeout_, $injector, _pipRest_,
                            $mdDialog, _pipTranslate_, _pipTransaction_, _pipFormErrors_, _pipUserSettingsPageData_,
                            _pipToasts_) {
         pipTestUserParty = _pipTestUserParty_;
@@ -60,7 +60,7 @@ suite('Settings Sessions', function () {
 
     }));
 
-    test('should be able to reject user (error case, empty case)', function (done) {
+    it('should be able to reject user (error case, empty case)', function (done) {
 
         var requestHandler = $httpBackend
             .when('DELETE', 'http://alpha.pipservices.net/api/users/sessions/'+scope.sessions[0].id)
@@ -73,7 +73,7 @@ suite('Settings Sessions', function () {
 
     });
 
-    test.only('should be able to reject user (success case)', function (done) {
+    it('should be able to reject user (success case)', function (done) {
 
         var requestHandler = $httpBackend
             .when('DELETE', 'http://alpha.pipservices.net/api/users/sessions/'+scope.sessions[0].id)
