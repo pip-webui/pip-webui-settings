@@ -26,25 +26,24 @@
             $scope.onVerify = onVerify;
             $scope.onCancel = onCancel;
 
-            return;
-            //-----------------------------
-
             function onAbort() {
                 $scope.transaction.abort();
-            };
+            }
 
             function onCancel() {
                 $mdDialog.cancel();
-            };
+            }
 
             function onRequestVerificationClick() {
                 pipUserSettingsPageData.requestEmailVerification($scope.transaction);
-            };
+            }
 
             function onVerify() {
                 $scope.form.$setSubmitted();
 
-                if ($scope.form.$invalid) return;
+                if ($scope.form.$invalid) {
+                    return;
+                }
 
                 pipUserSettingsPageData.verifyEmail(
                     $scope.transaction,
@@ -53,7 +52,6 @@
                         $mdDialog.hide(true);
                     },
                     function (error) {
-                        //pipFormErrors.resetFormErrors($scope.form, true);
                         pipFormErrors.setFormError(
                             $scope.form, error,
                             {
@@ -63,8 +61,8 @@
                         );
 
                     }
-                )
-            };
+                );
+            }
         }
     );
 

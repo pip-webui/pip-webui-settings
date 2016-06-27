@@ -74,9 +74,8 @@
                         function (updatedParty) {
                             if (transaction.aborted(tid)) {
                                 return;
-                            } else {
-                                transaction.end();
                             }
+                            transaction.end();
 
                             if (successCallback) {
                                 successCallback(updatedParty);
@@ -103,10 +102,8 @@
                         function (savedContacts) {
                             if (transaction.aborted(tid)) {
                                 return;
-                            } else {
-                                transaction.end();
                             }
-
+                            transaction.end();
                             if (successCallback) {
                                 successCallback(savedContacts);
                             }
@@ -132,9 +129,8 @@
                         function (updatedContact) {
                             if (transaction.aborted(tid)) {
                                 return;
-                            } else {
-                                transaction.end();
                             }
+                            transaction.end();
                             if (successCallback) {
                                 successCallback(updatedContact);
                             }
@@ -159,10 +155,8 @@
                         function (updatedUser) {
                             if (transaction.aborted(tid)) {
                                 return;
-                            } else {
-                                transaction.end();
                             }
-
+                            transaction.end();
                             if (successCallback) {
                                 successCallback(updatedUser);
                             }
@@ -187,10 +181,8 @@
                         function (removedBlock) {
                             if (transaction.aborted(tid)) {
                                 return;
-                            } else {
-                                transaction.end();
                             }
-
+                            transaction.end();
                             if (successCallback) {
                                 successCallback(removedBlock);
                             }

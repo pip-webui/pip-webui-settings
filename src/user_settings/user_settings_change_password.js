@@ -17,9 +17,9 @@
             $scope.errorsRepeatWithHint = function (form, formPart) {
                 if ($scope.showRepeatHint) {
                     return pipFormErrors.errorsWithHint(form, formPart);
-                } else {
-                    return {};
                 }
+
+                return {};
             };
             $scope.showRepeatHint = true;
             $scope.changePasData = {};
@@ -35,7 +35,7 @@
 
             function onCheckRepeatPassword() {
                 if ($scope.changePasData) {
-                    if ($scope.repeat === $scope.changePasData.new_password || $scope.repeat == "" || !$scope.repeat) {
+                    if ($scope.repeat === $scope.changePasData.new_password || $scope.repeat === '' || !$scope.repeat) {
                         $scope.form.repeat.$setValidity('repeat', true);
                         if ($scope.repeat === $scope.changePasData.new_password) {
                             $scope.showRepeatHint = false;

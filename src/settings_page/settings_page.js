@@ -32,8 +32,7 @@
             }
             if ($state.current.name === 'settings' && pipSettings.getDefaultPage()) {
                 initSelect(pipSettings.getDefaultPage().state);
-            }
-            else {
+            } else {
                 $timeout(function () {
                     if (pipSettings.getDefaultPage()) {
                         initSelect(pipSettings.getDefaultPage().state);
@@ -42,16 +41,12 @@
                         initSelect($scope.pages[0].state);
                     }
                 }, 0);
-
             }
 
             appHeader();
 
             $scope.onNavigationSelect = onNavigationSelect;
             $scope.onDropdownSelect = onDropdownSelect;
-
-            return;
-
             function appHeader() {
                 pipAppBar.showMenuNavIcon();
                 pipAppBar.showTitleText('SETTINGS_TITLE');
