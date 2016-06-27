@@ -36,7 +36,8 @@
             'SETTINGS_CHANGE_PASSWORD_REPEAT_RASSWORD': 'Repeat password',
             'SETTINGS_CHANGE_PASSWORD_CURRENT_PASSWORD': 'Current password',
 
-            'SETTINGS_ACTIVE_SESSIONS_SUBTITLE': " If you notice any unfamiliar devices or locations, click 'Close Session' to end the session.",
+            'SETTINGS_ACTIVE_SESSIONS_SUBTITLE': ' If you notice any unfamiliar devices or locations, click' +
+            '"Close Session" to end the session.',
             'SETTINGS_ACTIVE_SESSIONS_CLOSE_SESSION': 'Close session',
             'SETTINGS_ACTIVE_SESSIONS_CLOSE_ACTIVE_SESSIONS': 'Close active sessions',
             'SETTINGS_ACTIVE_SESSION_OS': 'OS: ',
@@ -44,7 +45,8 @@
             'SETTINGS_ACTIVE_SESSION_ACTIVE': 'active',
 
             'SETTINGS_BLACKLIST_TITLE': 'Blacklist',
-            'SETTINGS_BLACKLIST_SUBTITLE': 'Parties from blacklist will not be able to send you invitations and private messages.',
+            'SETTINGS_BLACKLIST_SUBTITLE': 'Parties from blacklist will not be able to send you invitations and ' +
+            'private messages.',
             'SETTINGS_BLACKLIST_UNBLOCK': 'Unblock',
             'SETTINGS_BLACKLIST_EMPTY': 'You have no blocked parties',
 
@@ -62,11 +64,9 @@
 
             'THEME': 'Theme',
 
-            //Hints
             'HINT_PASSWORD': 'Minimum 6 characters',
             'HINT_REPEAT_PASSWORD': 'Repeat password',
 
-            //Errors
             'ERROR_WRONG_PASSWORD': 'Wrong password',
             'ERROR_IDENTICAL_PASSWORDS': 'Old and new passwords are identical',
             'REPEAT_PASSWORD_INVALID': 'Password does not match',
@@ -98,7 +98,8 @@
             'SETTINGS_CHANGE_PASSWORD_REPEAT_RASSWORD': 'Повтор',
             'SETTINGS_CHANGE_PASSWORD_CURRENT_PASSWORD': 'Текущий пароль',
 
-            'SETTINGS_ACTIVE_SESSIONS_SUBTITLE': 'Если вы заметили какие-либо незнакомые устройства или месторасположение, нажмите кнопку "Закончить сеанс", чтобы завершить сеанс.',
+            'SETTINGS_ACTIVE_SESSIONS_SUBTITLE': 'Если вы заметили какие-либо незнакомые устройства или ' +
+            'месторасположение, нажмите кнопку "Закончить сеанс", чтобы завершить сеанс.',
             'SETTINGS_ACTIVE_SESSIONS_CLOSE_SESSION': 'Закрыть сессию',
             'SETTINGS_ACTIVE_SESSIONS_CLOSE_ACTIVE_SESSIONS': 'Закрыть активные сессии',
             'SETTINGS_ACTIVE_SESSION_OS': 'ОС: ',
@@ -106,7 +107,8 @@
             'SETTINGS_ACTIVE_SESSION_ACTIVE': 'Активно',
 
             'SETTINGS_BLACKLIST_TITLE': 'Блокировки',
-            'SETTINGS_BLACKLIST_SUBTITLE': 'Участники из черного списка не смогут посылать вам приглашения и личные сообщения.',
+            'SETTINGS_BLACKLIST_SUBTITLE': 'Участники из черного списка не смогут' +
+            ' посылать вам приглашения и личные сообщения.',
             'SETTINGS_BLACKLIST_UNBLOCK': 'Разблокировать',
             'SETTINGS_BLACKLIST_EMPTY': 'У вас нет заблокированных участников',
 
@@ -124,11 +126,9 @@
 
             'THEME': 'Тема',
 
-            //Hints
             'HINT_PASSWORD': 'Минимум 6 знаков',
             'HINT_REPEAT_PASSWORD': 'Повторите пароль',
 
-            //Errors
             'ERROR_WRONG_PASSWORD': 'Неправильный пароль',
             'ERROR_IDENTICAL_PASSWORDS': 'Старый и новый пароли идентичны',
             'REPEAT_PASSWORD_INVALID': 'Пароль не совпадает',

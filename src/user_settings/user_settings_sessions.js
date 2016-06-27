@@ -2,10 +2,8 @@
  * @file Settings sessions controller
  * @copyright Digital Living Software Corp. 2014-2016
  */
- 
-/* global angular */
 
-(function (angular, _) {
+(function (angular, _, async) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Sessions', []);
@@ -38,31 +36,29 @@
             $scope.onRemoveAll = onRemoveAll;
             $scope.onRemove = onRemove;
 
-            return;
-            //-----------------------------
-
             function onRemoveAll() {
                 async.each($scope.sessions, function (session) {
-                    if (session.id != $scope.sessionId)
+                    if (session.id !== $scope.sessionId) {
                         $scope.onRemove(session);
+                    }
                 });
             }
 
             function onRemove(session) {
-                if (session.id == $scope.sessionId) return;
+                if (session.id === $scope.sessionId) {
+                    return;
+                }
 
                 pipUserSettingsPageData.removeSession($scope.transaction, session,
                     function () {
                         $scope.sessions = _.without($scope.sessions, session);
-                    }, 
+                    },
                     function (error) {
                         $scope.message = 'ERROR_' + error.status || error.data.status_code;
-
-                        //$scope.onShowToast(message, 'error');
                     }
                 );
             }
         }
     );
-	
-})(window.angular, window._);
+
+})(window.angular, window._, window.async);
