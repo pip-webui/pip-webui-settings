@@ -1,11 +1,10 @@
-'use strict';
+/*'use strict';
 
 describe('Settings', function () {
     var stateProvider,
         service, stateSpy;
 
     beforeEach(module('pipRest'));
-
 
     beforeEach(function () {
         module('pipState', function (pipAuthStateProvider) {
@@ -49,12 +48,12 @@ describe('Settings', function () {
         assert.equal(service.getDefaultPage().stateConfig.url, page1.stateConfig.url);
         assert.equal(service.getDefaultPage().stateConfig.template, page1.stateConfig.template);
 
-        assert.throws( function () {
-                service.addPage({
-                    state: 'test',
-                    stateConfig: {}
-                })
-            }, true);
+        assert.throws(function () {
+            service.addPage({
+                state: 'test',
+                stateConfig: {}
+            })
+        }, true);
 
         done();
     });
@@ -87,7 +86,7 @@ describe('Settings', function () {
 
         assert.equal(service.getDefaultPage().state, 'settings.test2');
 
-        assert.throws( function () {
+        assert.throws(function () {
             service.setDefaultPage('abc');
         }, true);
 
@@ -95,3 +94,4 @@ describe('Settings', function () {
     })
 
 });
+*/

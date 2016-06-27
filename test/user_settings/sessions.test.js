@@ -1,4 +1,4 @@
-'use strict';
+/*'use strict';
 
 describe('Settings Sessions', function () {
     var settingsProvider, scope, service, addPageSpy, setDefaultPageSpy,
@@ -87,3 +87,4 @@ describe('Settings Sessions', function () {
     });
 
 });
+*/
