@@ -3,8 +3,6 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-/* global angular */
-
 (function (angular) {
     'use strict';
 
@@ -13,8 +11,9 @@
         'pipSettings.Page',
         'pipUserSettings'
     ]);
-    
+
 })(window.angular);
+
 (function(module) {
 try {
   module = angular.module('pipSettings.Templates');
@@ -448,8 +447,6 @@ module.run(['$templateCache', function($templateCache) {
 }]);
 })();
 
-
-
 (function (angular, _) {
     'use strict';
 
@@ -467,75 +464,69 @@ module.run(['$templateCache', function($templateCache) {
         });
     }]);
 
-    thisModule.controller('pipSettingsPageController', ['$scope', '$state', '$rootScope', '$timeout', 'pipAppBar', 'pipSettings', function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings) {
+    thisModule.controller('pipSettingsPageController',
+        ['$scope', '$state', '$rootScope', '$timeout', 'pipAppBar', 'pipSettings', function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings) {
 
-        $scope.pages = _.filter(pipSettings.getPages(), function (page) {
-            if (page.visible === true && (page.access ? page.access($rootScope.$user, page) : true)) {
-                return page;
+            $scope.pages = _.filter(pipSettings.getPages(), function (page) {
+                if (page.visible === true && (page.access ? page.access($rootScope.$user, page) : true)) {
+                    return page;
+                }
+            });
+
+            $scope.pages = _.sortBy($scope.pages, 'index');
+
+            $scope.selected = {};
+            if ($state.current.name !== 'settings') {
+                initSelect($state.current.name);
             }
-        });
-
-        $scope.pages = _.sortBy($scope.pages, 'index');
-
-        $scope.selected = {};
-        if ($state.current.name != 'settings')
-            initSelect($state.current.name);
-        else {
-            if (pipSettings.getDefaultPage())
+            if ($state.current.name === 'settings' && pipSettings.getDefaultPage()) {
                 initSelect(pipSettings.getDefaultPage().state);
-            else {
+            } else {
                 $timeout(function () {
-                    if (pipSettings.getDefaultPage())
+                    if (pipSettings.getDefaultPage()) {
                         initSelect(pipSettings.getDefaultPage().state);
-                    else {
-                        if ($scope.pages.length > 0)
-                            initSelect($scope.pages[0].state);
-
+                    }
+                    if (!pipSettings.getDefaultPage() && $scope.pages.length > 0) {
+                        initSelect($scope.pages[0].state);
                     }
                 }, 0);
-
             }
 
-        }
+            appHeader();
 
-        appHeader();
-
-        $scope.onNavigationSelect = onNavigationSelect;
-        $scope.onDropdownSelect = onDropdownSelect;
-
-        return;
-
-        function appHeader() {
-            pipAppBar.showMenuNavIcon();
-            pipAppBar.showTitleText('SETTINGS_TITLE');
-            pipAppBar.showLocalActions(null, []);
-            pipAppBar.showShadowSm();
-            pipAppBar.hideSearch();
-        }
-
-        function onDropdownSelect(state) {
-            onNavigationSelect(state.state);
-        }
-
-        function onNavigationSelect(state) {
-            initSelect(state);
-
-            if ($scope.selected.page) {
-                $state.go(state);
+            $scope.onNavigationSelect = onNavigationSelect;
+            $scope.onDropdownSelect = onDropdownSelect;
+            function appHeader() {
+                pipAppBar.showMenuNavIcon();
+                pipAppBar.showTitleText('SETTINGS_TITLE');
+                pipAppBar.showLocalActions(null, []);
+                pipAppBar.showShadowSm();
+                pipAppBar.hideSearch();
             }
-        }
 
-        function initSelect(state) {
-            $scope.selected.page = _.find($scope.pages, function (page) {
-                return page.state == state;
-            });
-            $scope.selected.pageIndex = _.indexOf($scope.pages, $scope.selected.page);
-            $scope.selected.pageId = state;
-        }
-    }]);
+            function onDropdownSelect(state) {
+                onNavigationSelect(state.state);
+            }
 
+            function onNavigationSelect(state) {
+                initSelect(state);
+
+                if ($scope.selected.page) {
+                    $state.go(state);
+                }
+            }
+
+            function initSelect(state) {
+                $scope.selected.page = _.find($scope.pages, function (page) {
+                    return page.state === state;
+                });
+                $scope.selected.pageIndex = _.indexOf($scope.pages, $scope.selected.page);
+                $scope.selected.pageId = state;
+            }
+        }]);
 
 })(window.angular, window._);
+
 (function (angular, _) {
     'use strict';
 
@@ -558,7 +549,7 @@ module.run(['$templateCache', function($templateCache) {
                     addPage: addPage,
                     getDefaultPage: getDefaultPage,
                     setDefaultPage: setDefaultPage
-                }
+                };
             }
         };
 
@@ -571,17 +562,21 @@ module.run(['$templateCache', function($templateCache) {
         }
 
         function getDefaultPage() {
-            var defaultPage = _.find(pages, function (p) {
-                return p.state == defaultPage;
+            var defaultPage;
+
+            defaultPage = _.find(pages, function (p) {
+                return p.state === defaultPage;
             });
+
             return _.clone(defaultPage, true);
         }
 
         function addPage(pageObj) {
-            validatePage(pageObj);
+            var existingPage;
 
-            var existingPage = _.find(pages, function (p) {
-                return p.state == getFullStateName(pageObj.state);
+            validatePage(pageObj);
+            existingPage = _.find(pages, function (p) {
+                return p.state === getFullStateName(pageObj.state);
             });
             if (existingPage) {
                 throw new Error('Page with state name "' + pageObj.state + '" is already registered');
@@ -606,8 +601,8 @@ module.run(['$templateCache', function($templateCache) {
 
         function setDefaultPage(name) {
             if (!_.find(pages, function (page) {
-                    return page.state == getFullStateName(name);
-                })) {
+                return page.state === getFullStateName(name);
+            })) {
                 throw new Error('Page with state name "' + name + '" is not registered');
             }
 
@@ -621,7 +616,7 @@ module.run(['$templateCache', function($templateCache) {
                 throw new Error('Invalid object');
             }
 
-            if (pageObj.state == null || pageObj.state == '') {
+            if (pageObj.state === null || pageObj.state === '') {
                 throw new Error('Page should have valid Angular UI router state name');
             }
 
@@ -636,16 +631,16 @@ module.run(['$templateCache', function($templateCache) {
     }]);
 
 })(window.angular, window._);
+
 /**
  * @file Settings page logic
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-
-(function () {
+(function (angular) {
     'use strict';
 
-    var thisModule = angular.module('pipUserSettings', [
+    angular.module('pipUserSettings', [
         'ngMaterial', 'pipData',
         'pipSettings.Service',
         'pipSettings.Page',
@@ -658,7 +653,8 @@ module.run(['$templateCache', function($templateCache) {
 
     ]);
 
-})();
+})(window.angular);
+
 /**
  * @file Settings basic info controller
  * @copyright Digital Living Software Corp. 2014-2016
@@ -666,8 +662,8 @@ module.run(['$templateCache', function($templateCache) {
 
 (function (angular, _) {
     'use strict';
-
-    var thisModule = angular.module('pipUserSettings.BasicInfo', ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail']);
+    var thisModule = angular.module('pipUserSettings.BasicInfo',
+        ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail']);
 
     thisModule.config(['pipSettingsProvider', function (pipSettingsProvider) {
         pipSettingsProvider.addPage({
@@ -720,17 +716,13 @@ module.run(['$templateCache', function($templateCache) {
             $scope.onChangeUser = _.debounce(updateUser, 2000);
             $scope.onChangeBasicInfo = _.debounce(saveChanges, 2000);
 
-            return;
-
-            //-----------------------------
-
-            function onPictureChanged($control) {
+            function onPictureChanged() {
                 $scope.picture.save(
                     function () {
                         $rootScope.$broadcast('pipPartyAvatarUpdated');
                     },
                     function (error) {
-                        console.error(error);
+                        return new Error(error);
                     }
                 );
             }
@@ -742,18 +734,21 @@ module.run(['$templateCache', function($templateCache) {
                         $rootScope.$broadcast('pipPartyAvatarUpdated');
                     },
                     function (error) {
-                        console.error(error);
+                        return new Error(error);
                     }
                 );
             }
 
             function saveChanges() {
-                if ($scope.form)
+                if ($scope.form) {
                     $scope.form.$setSubmitted();
+                }
 
                 if ($rootScope.$party) {
 
-                    if ($rootScope.$party.type == 'person' && $scope.form.$invalid) return;
+                    if ($rootScope.$party.type === 'person' && $scope.form.$invalid) {
+                        return;
+                    }
 
                     // Check to avoid unnecessary savings
                     $rootScope.$party.loc_pos = $scope.loc_pos;
@@ -763,14 +758,13 @@ module.run(['$templateCache', function($templateCache) {
                         throw err;
                     }
 
-                    if (party != $scope.originalParty) {
+                    if (party !== $scope.originalParty) {
                         pipUserSettingsPageData.updateParty($scope.transaction, $rootScope.$party,
                             function (data) {
                                 $scope.originalParty = party;
                                 $scope.nameCopy = data.name;
                             }, function (error) {
                                 $scope.message = String() + 'ERROR_' + error.status || error.data.status_code;
-                                //pipToasts.showNotification(pipTranslate.translate($scope.message), null, null, null);
                                 $rootScope.$party = angular.fromJson($scope.originalParty);
                             }
                         );
@@ -781,34 +775,29 @@ module.run(['$templateCache', function($templateCache) {
 
             function updateUser() {
 
-                //if ($rootScope.$user.theme)
-                //pipTheme.setCurrentTheme($rootScope.$user.theme);
-
-                if ($rootScope.$user.id == $rootScope.$party.id) {
+                if ($rootScope.$user.id === $rootScope.$party.id) {
                     pipUserSettingsPageData.updateUser($scope.transaction, $rootScope.$user,
                         function (data) {
                             pipTranslate.use(data.language);
                             $rootScope.$user.language = data.language;
                             $rootScope.$user.theme = data.theme;
-                            if ($rootScope.$user.theme)
+                            if ($rootScope.$user.theme) {
                                 pipTheme.setCurrentTheme($rootScope.$user.theme, true);
-
-
-                            // $window.location.reload();
+                            }
 
                         }, function (error) {
-                            var message = String() + 'ERROR_' + error.status || error.data.status_code;
+                            var message;
+
+                            message = String() + 'ERROR_' + error.status || error.data.status_code;
                             pipToasts.showNotification(pipTranslate.translate(message), null, null, null);
-                            //$scope.user.language =  angular.fromJson($scope.originalParty).language;
-                            //$scope.user.theme = angular.fromJson($scope.originalParty).theme;
                         }
                     );
                 }
-
-
             }
 
             function onChangePassword(event) {
+                var message;
+
                 $mdDialog.show({
                     templateUrl: 'user_settings/user_settings_change_password.html',
                     controller: 'pipUserSettingsChangePasswordController',
@@ -817,13 +806,15 @@ module.run(['$templateCache', function($templateCache) {
                 }).then(
                     function (answer) {
                         if (answer) {
-                            var message = String() + 'RESET_PWD_SUCCESS_TEXT';
+                            message = String() + 'RESET_PWD_SUCCESS_TEXT';
                             pipToasts.showNotification(pipTranslate.translate(message), null, null, null);
                         }
                     });
             }
 
             function onVerifyEmail(event) {
+                var message;
+
                 $mdDialog.show({
                     templateUrl: 'user_settings/user_settings_verify_email.html',
                     controller: 'pipUserSettingsVerifyEmailController',
@@ -833,7 +824,7 @@ module.run(['$templateCache', function($templateCache) {
                     function (answer) {
                         $scope.user.email_ver = answer;
                         if (answer) {
-                            var message = String() + 'VERIFY_EMAIL_SUCCESS_TEXT';
+                            message = String() + 'VERIFY_EMAIL_SUCCESS_TEXT';
                             pipToasts.showNotification(pipTranslate.translate(message), null, null, null);
 
                         }
@@ -849,63 +840,66 @@ module.run(['$templateCache', function($templateCache) {
  * @file Settings change password controller
  * @copyright Digital Living Software Corp. 2014-2016
  */
- 
+
 /* global angular */
 
 (function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.ChangePassword', []);
-	
+
     thisModule.controller('pipUserSettingsChangePasswordController',
-        ['$scope', '$rootScope', '$mdDialog', 'email', 'pipRest', 'pipTransaction', 'pipFormErrors', function($scope, $rootScope, $mdDialog, email, pipRest, pipTransaction, pipFormErrors ) {
-        
+        ['$scope', '$rootScope', '$mdDialog', 'email', 'pipRest', 'pipTransaction', 'pipFormErrors', function ($scope, $rootScope, $mdDialog, email, pipRest, pipTransaction, pipFormErrors) {
+
             $scope.transaction = pipTransaction('settings.change_password', $scope);
-            $scope.errorsRepeatWithHint = function (form,formPart) {
-                if ($scope.showRepeatHint)  
+            $scope.errorsRepeatWithHint = function (form, formPart) {
+                if ($scope.showRepeatHint) {
                     return pipFormErrors.errorsWithHint(form, formPart);
-                else return { };
+                }
+
+                return {};
             };
             $scope.showRepeatHint = true;
             $scope.changePasData = {};
-            
+
             $scope.errorsWithHint = pipFormErrors.errorsWithHint;
             $scope.onCancel = onCancel;
             $scope.onCheckRepeatPassword = onCheckRepeatPassword;
             $scope.onApply = onApply;
-    
-            return;
-            
-            //-----------------------------
-            
+
             function onCancel() {
                 $mdDialog.cancel();
-            };
-    
+            }
+
             function onCheckRepeatPassword() {
-                if ($scope.changePasData)
-                    if ($scope.repeat === $scope.changePasData.new_password || $scope.repeat == "" || !$scope.repeat) {
+                if ($scope.changePasData) {
+                    if ($scope.repeat === $scope.changePasData.new_password || $scope.repeat === '' || !$scope.repeat) {
                         $scope.form.repeat.$setValidity('repeat', true);
-                        if ($scope.repeat === $scope.changePasData.new_password)
+                        if ($scope.repeat === $scope.changePasData.new_password) {
                             $scope.showRepeatHint = false;
-                        else
+                        } else {
                             $scope.showRepeatHint = true;
-                    }
-                    else {
+                        }
+                    } else {
                         $scope.showRepeatHint = true;
                         $scope.form.repeat.$setValidity('repeat', false);
                     }
-            };
-    
+                }
+            }
+
             function onApply() {
                 $scope.onCheckRepeatPassword();
-    
-                if ($scope.form.$invalid) return;
-    
-                if (!$scope.transaction.begin('CHANGE_PASSWORD')) return;
-    
+
+                if ($scope.form.$invalid) {
+                    return;
+                }
+
+                if (!$scope.transaction.begin('CHANGE_PASSWORD')) {
+                    return;
+                }
+
                 $scope.changePasData.email = email;
-    
+
                 pipRest.changePassword().call(
                     $scope.changePasData,
                     function (data) {
@@ -914,21 +908,19 @@ module.run(['$templateCache', function($templateCache) {
                     },
                     function (error) {
                         $scope.transaction.end(error);
-    
-                        //pipFormErrors.resetFormErrors($scope.form, true);
                         pipFormErrors.setFormError(
                             $scope.form, error,
-                            { 
-                                1107 : 'oldPassword', 
-                                1105 : 'newPassword' 
+                            {
+                                1107: 'oldPassword',
+                                1105: 'newPassword'
                             }
                         );
                     }
                 );
-            };
+            }
         }]
     );
-	
+
 })(window.angular);
 
 /**
@@ -997,129 +989,183 @@ module.run(['$templateCache', function($templateCache) {
 
                 updateParty: function (transaction, party, successCallback, errorCallback) {
                     var tid = transaction.begin('UPDATING');
-                    if (!tid) return;
+
+                    if (!tid) {
+                        return;
+                    }
 
                     pipRest.parties().update(
                         party,
                         function (updatedParty) {
-                            if (transaction.aborted(tid)) return;
-                            else transaction.end();
+                            if (transaction.aborted(tid)) {
+                                return;
+                            }
+                            transaction.end();
 
-                            if (successCallback) successCallback(updatedParty);
+                            if (successCallback) {
+                                successCallback(updatedParty);
+                            }
                         },
                         function (error) {
                             transaction.end(error);
-                            if (errorCallback) errorCallback(error);
+                            if (errorCallback) {
+                                errorCallback(error);
+                            }
                         }
                     );
                 },
 
                 saveContacts: function (transaction, contacts, successCallback, errorCallback) {
                     var tid = transaction.begin('SAVING');
-                    if (!tid) return;
+
+                    if (!tid) {
+                        return;
+                    }
 
                     pipRest.contacts().save(
                         contacts,
                         function (savedContacts) {
-                            if (transaction.aborted(tid)) return;
-                            else transaction.end();
-
-                            if (successCallback) successCallback(savedContacts);
+                            if (transaction.aborted(tid)) {
+                                return;
+                            }
+                            transaction.end();
+                            if (successCallback) {
+                                successCallback(savedContacts);
+                            }
                         },
                         function (error) {
                             transaction.end(error);
-                            if (errorCallback) errorCallback(error);
+                            if (errorCallback) {
+                                errorCallback(error);
+                            }
                         }
                     );
                 },
 
                 updateContact: function (transaction, contact, successCallback, errorCallback) {
                     var tid = transaction.begin('UPDATING');
-                    if (!tid) return;
+
+                    if (!tid) {
+                        return;
+                    }
 
                     pipRest.contacts().update(
                         contact,
                         function (updatedContact) {
-                            if (transaction.aborted(tid)) return;
-                            else transaction.end();
-                            if (successCallback) successCallback(updatedContact);
+                            if (transaction.aborted(tid)) {
+                                return;
+                            }
+                            transaction.end();
+                            if (successCallback) {
+                                successCallback(updatedContact);
+                            }
                         },
                         function (error) {
                             transaction.end(error);
-                            if (errorCallback) errorCallback(error);
+                            if (errorCallback) {
+                                errorCallback(error);
+                            }
                         }
                     );
                 },
 
                 updateUser: function (transaction, user, successCallback, errorCallback) {
                     var tid = transaction.begin('UPDATING');
-                    if (!tid) return;
+
+                    if (!tid) {
+                        return;
+                    }
                     pipRest.users().update(
                         user,
                         function (updatedUser) {
-                            if (transaction.aborted(tid)) return;
-                            else transaction.end();
-
-                            if (successCallback) successCallback(updatedUser);
+                            if (transaction.aborted(tid)) {
+                                return;
+                            }
+                            transaction.end();
+                            if (successCallback) {
+                                successCallback(updatedUser);
+                            }
                         },
                         function (error) {
                             transaction.end(error);
-                            if (errorCallback) errorCallback(error);
+                            if (errorCallback) {
+                                errorCallback(error);
+                            }
                         }
                     );
                 },
 
                 removeBlock: function (transaction, block, successCallback, errorCallback) {
                     var tid = transaction.begin('REMOVING');
-                    if (!tid) return;
 
+                    if (!tid) {
+                        return;
+                    }
                     pipRest.connectionBlocks().remove(
                         block,
                         function (removedBlock) {
-                            if (transaction.aborted(tid)) return;
-                            else transaction.end();
-
-                            if (successCallback) successCallback(removedBlock);
+                            if (transaction.aborted(tid)) {
+                                return;
+                            }
+                            transaction.end();
+                            if (successCallback) {
+                                successCallback(removedBlock);
+                            }
                         },
                         function (error) {
                             transaction.end(error);
-                            if (errorCallback) errorCallback(error);
+                            if (errorCallback) {
+                                errorCallback(error);
+                            }
                         }
                     );
                 },
 
                 removeSession: function (transaction, session, successCallback, errorCallback) {
                     var tid = transaction.begin('REMOVING');
-                    if (!tid) return;
 
+                    if (!tid) {
+                        return;
+                    }
                     pipRest.userSessions().remove(
                         {
                             id: session.id,
                             party_id: pipRest.partyId($stateParams)
                         },
                         function (removedSession) {
-                            if (transaction.aborted(tid)) return;
-                            else transaction.end();
-
-                            if (successCallback) successCallback(removedSession);
+                            if (transaction.aborted(tid)) {
+                                return;
+                            }
+                            transaction.end();
+                            if (successCallback) {
+                                successCallback(removedSession);
+                            }
                         },
                         function (error) {
                             transaction.end(error);
-                            if (errorCallback) errorCallback(error);
+                            if (errorCallback) {
+                                errorCallback(error);
+                            }
                         }
                     );
                 },
 
                 requestEmailVerification: function (transaction) {
                     var tid = transaction.begin('RequestEmailVerification');
-                    if (!tid) return;
+
+                    if (!tid) {
+                        return;
+                    }
 
                     pipRest.requestEmailVerification().get(
                         {
                             party_id: pipRest.partyId($stateParams)
-                        }, function () {
-                            if (transaction.aborted(tid)) return;
-                            else transaction.end();
+                        },
+                        function () {
+                            if (transaction.aborted(tid)) {
+                                return;
+                            }
+                            transaction.end();
                         }, function (error) {
                             transaction.end(error);
                         }
@@ -1128,45 +1174,66 @@ module.run(['$templateCache', function($templateCache) {
 
                 verifyEmail: function (transaction, verifyData, successCallback, errorCallback) {
                     var tid = transaction.begin('Verifying');
-                    if (!tid) return;
+
+                    if (!tid) {
+                        return;
+                    }
 
                     pipRest.verifyEmail().call(
                         verifyData,
                         function (verifyData) {
-                            if (transaction.aborted(tid)) return;
-                            else transaction.end();
+                            if (transaction.aborted(tid)) {
+                                return;
+                            }
+                            transaction.end();
 
-                            if (successCallback) successCallback(verifyData);
+                            if (successCallback) {
+                                successCallback(verifyData);
+                            }
                         },
                         function (error) {
                             transaction.end(error);
-                            if (errorCallback) errorCallback(error);
+                            if (errorCallback) {
+                                errorCallback(error);
+                            }
                         }
                     );
                 },
 
                 saveSettings: function (transaction, settings, successCallback, errorCallback) {
                     var tid = transaction.begin('SAVING');
-                    if (!tid) return;
+
+                    if (!tid) {
+                        return;
+                    }
 
                     pipRest.partySettings().save(
                         settings,
                         function (savedSettings) {
-                            if (transaction.aborted(tid)) return;
-                            else transaction.end();
+                            if (transaction.aborted(tid)) {
+                                return;
+                            }
+                            transaction.end();
 
-                            if (successCallback) successCallback(savedSettings);
+                            if (successCallback) {
+                                successCallback(savedSettings);
+                            }
                         },
                         function (error) {
                             transaction.end(error);
-                            if (errorCallback) errorCallback(error);
+                            if (errorCallback) {
+                                errorCallback(error);
+                            }
                         }
                     );
                 },
 
                 getPreviousActivities: function (transaction, start, successCallback, errorCallback) {
                     var tid = transaction.begin('SAVING');
-                    if (!tid) return;
+
+                    if (!tid) {
+                        return;
+                    }
 
                     pipRest.partyActivities().page(
                         {
@@ -1176,56 +1243,70 @@ module.run(['$templateCache', function($templateCache) {
                             take: 25
                         },
                         function (pagedActivities) {
-                            if (transaction.aborted(tid)) return;
-                            else transaction.end();
-
-                            if (successCallback) successCallback(pagedActivities);
+                            if (transaction.aborted(tid)) {
+                                return;
+                            }
+                            transaction.end();
+                            if (successCallback) {
+                                successCallback(pagedActivities);
+                            }
                         },
                         function (error) {
                             transaction.end(error);
-                            if (errorCallback) errorCallback(error);
+                            if (errorCallback) {
+                                errorCallback(error);
+                            }
                         }
                     );
                 },
 
-                getRefPreviousEventsActivities: function (transaction, start, ref_type, item, successCallback, errorCallback) {
+                getRefPreviousEventsActivities: function (transaction, start, refType, item,
+                                                          successCallback, errorCallback) {
                     var tid = transaction.begin('SAVING');
-                    if (!tid) return;
+
+                    if (!tid) {
+                        return;
+                    }
 
                     pipRest.partyActivities().page(
                         {
                             party_id: pipRest.partyId($stateParams),
                             paging: 1,
                             skip: start,
-                            ref_type: ref_type,
+                            ref_type: refType,
                             ref_id: item.id,
                             take: 25
                         },
                         function (pagedActivities) {
-                            if (transaction.aborted(tid)) return;
-                            else transaction.end();
+                            if (transaction.aborted(tid)) {
+                                return;
+                            }
+                            transaction.end();
 
-                            if (successCallback) successCallback(pagedActivities);
+                            if (successCallback) {
+                                successCallback(pagedActivities);
+                            }
                         },
                         function (error) {
                             transaction.end(error);
-                            if (errorCallback) errorCallback(error);
+                            if (errorCallback) {
+                                errorCallback(error);
+                            }
                         }
                     );
                 }
-            }
+            };
         }];
     });
 
 })(window.angular);
+
 /**
  * @file Settings sessions controller
  * @copyright Digital Living Software Corp. 2014-2016
  */
- 
-/* global angular */
 
-(function (angular, _) {
+(function (angular, _, async) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Sessions', []);
@@ -1258,34 +1339,32 @@ module.run(['$templateCache', function($templateCache) {
             $scope.onRemoveAll = onRemoveAll;
             $scope.onRemove = onRemove;
 
-            return;
-            //-----------------------------
-
             function onRemoveAll() {
                 async.each($scope.sessions, function (session) {
-                    if (session.id != $scope.sessionId)
+                    if (session.id !== $scope.sessionId) {
                         $scope.onRemove(session);
+                    }
                 });
             }
 
             function onRemove(session) {
-                if (session.id == $scope.sessionId) return;
+                if (session.id === $scope.sessionId) {
+                    return;
+                }
 
                 pipUserSettingsPageData.removeSession($scope.transaction, session,
                     function () {
                         $scope.sessions = _.without($scope.sessions, session);
-                    }, 
+                    },
                     function (error) {
                         $scope.message = 'ERROR_' + error.status || error.data.status_code;
-
-                        //$scope.onShowToast(message, 'error');
                     }
                 );
             }
         }]
     );
-	
-})(window.angular, window._);
+
+})(window.angular, window._, window.async);
 
 /**
  * @file Settings string resources
@@ -1325,7 +1404,8 @@ module.run(['$templateCache', function($templateCache) {
             'SETTINGS_CHANGE_PASSWORD_REPEAT_RASSWORD': 'Repeat password',
             'SETTINGS_CHANGE_PASSWORD_CURRENT_PASSWORD': 'Current password',
 
-            'SETTINGS_ACTIVE_SESSIONS_SUBTITLE': " If you notice any unfamiliar devices or locations, click 'Close Session' to end the session.",
+            'SETTINGS_ACTIVE_SESSIONS_SUBTITLE': ' If you notice any unfamiliar devices or locations, click' +
+            '"Close Session" to end the session.',
             'SETTINGS_ACTIVE_SESSIONS_CLOSE_SESSION': 'Close session',
             'SETTINGS_ACTIVE_SESSIONS_CLOSE_ACTIVE_SESSIONS': 'Close active sessions',
             'SETTINGS_ACTIVE_SESSION_OS': 'OS: ',
@@ -1333,7 +1413,8 @@ module.run(['$templateCache', function($templateCache) {
             'SETTINGS_ACTIVE_SESSION_ACTIVE': 'active',
 
             'SETTINGS_BLACKLIST_TITLE': 'Blacklist',
-            'SETTINGS_BLACKLIST_SUBTITLE': 'Parties from blacklist will not be able to send you invitations and private messages.',
+            'SETTINGS_BLACKLIST_SUBTITLE': 'Parties from blacklist will not be able to send you invitations and ' +
+            'private messages.',
             'SETTINGS_BLACKLIST_UNBLOCK': 'Unblock',
             'SETTINGS_BLACKLIST_EMPTY': 'You have no blocked parties',
 
@@ -1351,11 +1432,9 @@ module.run(['$templateCache', function($templateCache) {
 
             'THEME': 'Theme',
 
-            //Hints
             'HINT_PASSWORD': 'Minimum 6 characters',
             'HINT_REPEAT_PASSWORD': 'Repeat password',
 
-            //Errors
             'ERROR_WRONG_PASSWORD': 'Wrong password',
             'ERROR_IDENTICAL_PASSWORDS': 'Old and new passwords are identical',
             'REPEAT_PASSWORD_INVALID': 'Password does not match',
@@ -1387,7 +1466,8 @@ module.run(['$templateCache', function($templateCache) {
             'SETTINGS_CHANGE_PASSWORD_REPEAT_RASSWORD': 'Повтор',
             'SETTINGS_CHANGE_PASSWORD_CURRENT_PASSWORD': 'Текущий пароль',
 
-            'SETTINGS_ACTIVE_SESSIONS_SUBTITLE': 'Если вы заметили какие-либо незнакомые устройства или месторасположение, нажмите кнопку "Закончить сеанс", чтобы завершить сеанс.',
+            'SETTINGS_ACTIVE_SESSIONS_SUBTITLE': 'Если вы заметили какие-либо незнакомые устройства или ' +
+            'месторасположение, нажмите кнопку "Закончить сеанс", чтобы завершить сеанс.',
             'SETTINGS_ACTIVE_SESSIONS_CLOSE_SESSION': 'Закрыть сессию',
             'SETTINGS_ACTIVE_SESSIONS_CLOSE_ACTIVE_SESSIONS': 'Закрыть активные сессии',
             'SETTINGS_ACTIVE_SESSION_OS': 'ОС: ',
@@ -1395,7 +1475,8 @@ module.run(['$templateCache', function($templateCache) {
             'SETTINGS_ACTIVE_SESSION_ACTIVE': 'Активно',
 
             'SETTINGS_BLACKLIST_TITLE': 'Блокировки',
-            'SETTINGS_BLACKLIST_SUBTITLE': 'Участники из черного списка не смогут посылать вам приглашения и личные сообщения.',
+            'SETTINGS_BLACKLIST_SUBTITLE': 'Участники из черного списка не смогут' +
+            ' посылать вам приглашения и личные сообщения.',
             'SETTINGS_BLACKLIST_UNBLOCK': 'Разблокировать',
             'SETTINGS_BLACKLIST_EMPTY': 'У вас нет заблокированных участников',
 
@@ -1413,11 +1494,9 @@ module.run(['$templateCache', function($templateCache) {
 
             'THEME': 'Тема',
 
-            //Hints
             'HINT_PASSWORD': 'Минимум 6 знаков',
             'HINT_REPEAT_PASSWORD': 'Повторите пароль',
 
-            //Errors
             'ERROR_WRONG_PASSWORD': 'Неправильный пароль',
             'ERROR_IDENTICAL_PASSWORDS': 'Старый и новый пароли идентичны',
             'REPEAT_PASSWORD_INVALID': 'Пароль не совпадает',
@@ -1426,6 +1505,7 @@ module.run(['$templateCache', function($templateCache) {
     }]);
 
 })(window.angular);
+
 /**
  * @file Settings verify email controller
  * @copyright Digital Living Software Corp. 2014-2016
@@ -1454,25 +1534,24 @@ module.run(['$templateCache', function($templateCache) {
             $scope.onVerify = onVerify;
             $scope.onCancel = onCancel;
 
-            return;
-            //-----------------------------
-
             function onAbort() {
                 $scope.transaction.abort();
-            };
+            }
 
             function onCancel() {
                 $mdDialog.cancel();
-            };
+            }
 
             function onRequestVerificationClick() {
                 pipUserSettingsPageData.requestEmailVerification($scope.transaction);
-            };
+            }
 
             function onVerify() {
                 $scope.form.$setSubmitted();
 
-                if ($scope.form.$invalid) return;
+                if ($scope.form.$invalid) {
+                    return;
+                }
 
                 pipUserSettingsPageData.verifyEmail(
                     $scope.transaction,
@@ -1481,7 +1560,6 @@ module.run(['$templateCache', function($templateCache) {
                         $mdDialog.hide(true);
                     },
                     function (error) {
-                        //pipFormErrors.resetFormErrors($scope.form, true);
                         pipFormErrors.setFormError(
                             $scope.form, error,
                             {
@@ -1491,8 +1569,8 @@ module.run(['$templateCache', function($templateCache) {
                         );
 
                     }
-                )
-            };
+                );
+            }
         }]
     );
 
