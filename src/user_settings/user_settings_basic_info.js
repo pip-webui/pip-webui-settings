@@ -5,8 +5,8 @@
 
 (function (angular, _) {
     'use strict';
-
-    var thisModule = angular.module('pipUserSettings.BasicInfo', ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail']);
+    var thisModule = angular.module('pipUserSettings.BasicInfo',
+        ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail']);
 
     thisModule.config(function (pipSettingsProvider) {
         pipSettingsProvider.addPage({
@@ -59,17 +59,13 @@
             $scope.onChangeUser = _.debounce(updateUser, 2000);
             $scope.onChangeBasicInfo = _.debounce(saveChanges, 2000);
 
-            return;
-
-            //-----------------------------
-
-            function onPictureChanged($control) {
+            function onPictureChanged() {
                 $scope.picture.save(
                     function () {
                         $rootScope.$broadcast('pipPartyAvatarUpdated');
                     },
                     function (error) {
-                        console.error(error);
+                        return new Error(error);
                     }
                 );
             }
@@ -81,18 +77,21 @@
                         $rootScope.$broadcast('pipPartyAvatarUpdated');
                     },
                     function (error) {
-                        console.error(error);
+                        return new Error(error);
                     }
                 );
             }
 
             function saveChanges() {
-                if ($scope.form)
+                if ($scope.form) {
                     $scope.form.$setSubmitted();
+                }
 
                 if ($rootScope.$party) {
 
-                    if ($rootScope.$party.type == 'person' && $scope.form.$invalid) return;
+                    if ($rootScope.$party.type === 'person' && $scope.form.$invalid) {
+                        return;
+                    }
 
                     // Check to avoid unnecessary savings
                     $rootScope.$party.loc_pos = $scope.loc_pos;
@@ -102,14 +101,13 @@
                         throw err;
                     }
 
-                    if (party != $scope.originalParty) {
+                    if (party !== $scope.originalParty) {
                         pipUserSettingsPageData.updateParty($scope.transaction, $rootScope.$party,
                             function (data) {
                                 $scope.originalParty = party;
                                 $scope.nameCopy = data.name;
                             }, function (error) {
                                 $scope.message = String() + 'ERROR_' + error.status || error.data.status_code;
-                                //pipToasts.showNotification(pipTranslate.translate($scope.message), null, null, null);
                                 $rootScope.$party = angular.fromJson($scope.originalParty);
                             }
                         );
@@ -120,34 +118,29 @@
 
             function updateUser() {
 
-                //if ($rootScope.$user.theme)
-                //pipTheme.setCurrentTheme($rootScope.$user.theme);
-
-                if ($rootScope.$user.id == $rootScope.$party.id) {
+                if ($rootScope.$user.id === $rootScope.$party.id) {
                     pipUserSettingsPageData.updateUser($scope.transaction, $rootScope.$user,
                         function (data) {
                             pipTranslate.use(data.language);
                             $rootScope.$user.language = data.language;
                             $rootScope.$user.theme = data.theme;
-                            if ($rootScope.$user.theme)
+                            if ($rootScope.$user.theme) {
                                 pipTheme.setCurrentTheme($rootScope.$user.theme, true);
-
-
-                            // $window.location.reload();
+                            }
 
                         }, function (error) {
-                            var message = String() + 'ERROR_' + error.status || error.data.status_code;
+                            var message;
+
+                            message = String() + 'ERROR_' + error.status || error.data.status_code;
                             pipToasts.showNotification(pipTranslate.translate(message), null, null, null);
-                            //$scope.user.language =  angular.fromJson($scope.originalParty).language;
-                            //$scope.user.theme = angular.fromJson($scope.originalParty).theme;
                         }
                     );
                 }
-
-
             }
 
             function onChangePassword(event) {
+                var message;
+
                 $mdDialog.show({
                     templateUrl: 'user_settings/user_settings_change_password.html',
                     controller: 'pipUserSettingsChangePasswordController',
@@ -156,13 +149,15 @@
                 }).then(
                     function (answer) {
                         if (answer) {
-                            var message = String() + 'RESET_PWD_SUCCESS_TEXT';
+                            message = String() + 'RESET_PWD_SUCCESS_TEXT';
                             pipToasts.showNotification(pipTranslate.translate(message), null, null, null);
                         }
                     });
             }
 
             function onVerifyEmail(event) {
+                var message;
+
                 $mdDialog.show({
                     templateUrl: 'user_settings/user_settings_verify_email.html',
                     controller: 'pipUserSettingsVerifyEmailController',
@@ -172,7 +167,7 @@
                     function (answer) {
                         $scope.user.email_ver = answer;
                         if (answer) {
-                            var message = String() + 'VERIFY_EMAIL_SUCCESS_TEXT';
+                            message = String() + 'VERIFY_EMAIL_SUCCESS_TEXT';
                             pipToasts.showNotification(pipTranslate.translate(message), null, null, null);
 
                         }
