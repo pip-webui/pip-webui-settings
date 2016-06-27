@@ -3,11 +3,10 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-
-(function () {
+(function (angular) {
     'use strict';
 
-    var thisModule = angular.module('pipUserSettings', [
+    angular.module('pipUserSettings', [
         'ngMaterial', 'pipData',
         'pipSettings.Service',
         'pipSettings.Page',
@@ -20,4 +19,4 @@
 
     ]);
 
-})();
+})(window.angular);

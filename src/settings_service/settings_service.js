@@ -20,7 +20,7 @@
                     addPage: addPage,
                     getDefaultPage: getDefaultPage,
                     setDefaultPage: setDefaultPage
-                }
+                };
             }
         };
 
@@ -33,17 +33,21 @@
         }
 
         function getDefaultPage() {
-            var defaultPage = _.find(pages, function (p) {
-                return p.state == defaultPage;
+            var defaultPage;
+
+            defaultPage = _.find(pages, function (p) {
+                return p.state === defaultPage;
             });
+
             return _.clone(defaultPage, true);
         }
 
         function addPage(pageObj) {
-            validatePage(pageObj);
+            var existingPage;
 
-            var existingPage = _.find(pages, function (p) {
-                return p.state == getFullStateName(pageObj.state);
+            validatePage(pageObj);
+            existingPage = _.find(pages, function (p) {
+                return p.state === getFullStateName(pageObj.state);
             });
             if (existingPage) {
                 throw new Error('Page with state name "' + pageObj.state + '" is already registered');
@@ -68,8 +72,8 @@
 
         function setDefaultPage(name) {
             if (!_.find(pages, function (page) {
-                    return page.state == getFullStateName(name);
-                })) {
+                return page.state === getFullStateName(name);
+            })) {
                 throw new Error('Page with state name "' + name + '" is not registered');
             }
 
@@ -83,7 +87,7 @@
                 throw new Error('Invalid object');
             }
 
-            if (pageObj.state == null || pageObj.state == '') {
+            if (pageObj.state === null || pageObj.state === '') {
                 throw new Error('Page should have valid Angular UI router state name');
             }
 
