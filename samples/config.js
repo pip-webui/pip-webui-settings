@@ -30,11 +30,7 @@
             pipAuthStateProvider.authorizedState('settings');
 
             $urlRouterProvider.otherwise(function ($injector, $location) {
-                if ($location.$$path === '') {
-                    return '/signin';
-                } else {
-                    return '/settings';
-                }
+                return $location.$$path === '' ? '/signin' : '/settings';
             });
 
             // Configure navigation menu
