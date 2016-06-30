@@ -5,7 +5,7 @@
 
 (function (angular) {
     'use strict';
-    
+
     var thisModule = angular.module('pipSample', [
         // 3rd Party Modules
         'ui.router', 'ui.utils', 'ngResource', 'ngAria', 'ngCookies', 'ngSanitize', 'ngMessages',
@@ -14,13 +14,15 @@
         'pipSampleConfig', 'pipSettings',
         // Modules from WebUI Framework
         'pipCore', 'pipRest', 'pipData', 'pipBasicControls', 'pipLayout', 'pipNav',
-         // Sample Application Modules
+        // Sample Application Modules
         'pipEntry', 'pipRest.State', 'pipUserSettings'
     ]);
 
     thisModule.controller('pipSampleController',
-        function() {}
+        function () {
+            // Sample controller code here...
+        }
     );
-    
+
 })(window.angular);
 

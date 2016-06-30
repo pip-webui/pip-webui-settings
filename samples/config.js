@@ -6,13 +6,13 @@
 (function (angular) {
     'use strict';
 
-    var thisModule = angular.module('pipSampleConfig', ['pipRest.State', 'pipRest', 'pipEntry', 'pipSideNav', 
+    var thisModule = angular.module('pipSampleConfig', ['pipRest.State', 'pipRest', 'pipEntry', 'pipSideNav',
         'pipAppBar', 'pipUserSettings', 'pipSettingsData', 'pipSettingsConfig']);
 
     // Configure application services before start
     thisModule.config(
         function ($mdThemingProvider, $urlRouterProvider, pipAuthStateProvider, pipRestProvider, pipSideNavProvider,
-                   pipAppBarProvider, $mdIconProvider, pipSettingsProvider) {
+                  pipAppBarProvider, $mdIconProvider, pipSettingsProvider) {
 
             $mdIconProvider.iconSet('icons', 'images/icons.svg', 512);
 
@@ -30,8 +30,11 @@
             pipAuthStateProvider.authorizedState('settings');
 
             $urlRouterProvider.otherwise(function ($injector, $location) {
-                if ($location.$$path == '') return '/signin';
-                else  return '/settings';
+                if ($location.$$path === '') {
+                    return '/signin';
+                } else {
+                    return '/settings';
+                }
             });
 
             // Configure navigation menu
@@ -46,8 +49,6 @@
                     ]
                 }
             ]);
-
-
         }
     );
 

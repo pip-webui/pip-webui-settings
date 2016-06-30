@@ -1,10 +1,8 @@
-(function (angular) {
-    'use strict';
+<h1>This is test 1 page in settings inserted through provider</h1>
 
-    var thisModule = angular.module('pipSettingsConfig', []);
-    
-    thisModule.config(function (pipSettingsProvider) {
-        pipSettingsProvider.addPage({
+<h2>Code to add this page</h2>
+<pre>
+     pipSettingsProvider.addPage({
             state: 'test1',
             title: 'Test1 settings page',
             auth: true,
@@ -13,7 +11,4 @@
                 templateUrl: 'settings_page.html'
             }
         });
-
-    });
-
-})(window.angular);
+</pre>
