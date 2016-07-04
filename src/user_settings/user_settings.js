@@ -16,7 +16,6 @@
         'pipUserSettings.Sessions',
         'pipUserSettings.BasicInfo',
         'pipSettings.Templates'
-
     ]);
 
 })(window.angular);

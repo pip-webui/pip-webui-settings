@@ -1,3 +1,8 @@
+/**
+ * @file Define controller for a settings page
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+
 (function (angular, _) {
     'use strict';
 
@@ -40,7 +45,7 @@
                     if (!pipSettings.getDefaultPage() && $scope.pages.length > 0) {
                         initSelect($scope.pages[0].state);
                     }
-                }, 0);
+                });
             }
 
             appHeader();

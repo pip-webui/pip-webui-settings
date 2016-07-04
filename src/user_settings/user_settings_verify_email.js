@@ -3,8 +3,6 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-/* global angular */
-
 (function (angular) {
     'use strict';
 
@@ -48,7 +46,7 @@
                 pipUserSettingsPageData.verifyEmail(
                     $scope.transaction,
                     $scope.data,
-                    function (verifyData) {
+                    function () {
                         $mdDialog.hide(true);
                     },
                     function (error) {

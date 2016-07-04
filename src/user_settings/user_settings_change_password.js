@@ -3,8 +3,6 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-/* global angular */
-
 (function (angular) {
     'use strict';
 
@@ -64,7 +62,7 @@
 
                 pipRest.changePassword().call(
                     $scope.changePasData,
-                    function (data) {
+                    function () {
                         $scope.transaction.end();
                         $mdDialog.hide(true);
                     },

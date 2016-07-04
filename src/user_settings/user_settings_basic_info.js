@@ -39,7 +39,6 @@
 
             $timeout(function () {
                 $scope.loc_pos = $rootScope.$party.loc_pos;
-                $scope.$apply();
             });
 
             $scope.genders = pipTranslate.translateSet(['male', 'female', 'n/s']);
@@ -169,7 +168,6 @@
                         if (answer) {
                             message = String() + 'VERIFY_EMAIL_SUCCESS_TEXT';
                             pipToasts.showNotification(pipTranslate.translate(message), null, null, null);
-
                         }
                     }
                 );
