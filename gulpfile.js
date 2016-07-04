@@ -1,14 +1,14 @@
 var gulp = require('gulp');
 
-// Add standard tasks    
+// Add standard tasks
 require('pip-webui-tasks').all();
 
-// Define build tasks        
+// Define build tasks
 gulp.task('build', ['build-dev', 'build-prod']);
 gulp.task('rebuild', ['build-dev']);
 gulp.task('clean', ['build-clean']);
 gulp.task('watch', ['build-watch']);
-gulp.task('jshint', ['test-jshint']);
+gulp.task('lint', ['less-lint', 'js-lint']);
 gulp.task('launch', ['samples-launch']);
 gulp.task('publish', ['samples-publish']);
 

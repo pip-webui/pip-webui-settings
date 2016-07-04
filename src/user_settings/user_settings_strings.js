@@ -3,6 +3,8 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
+/* eslint-disable quote-props */
+
 (function (angular) {
     'use strict';
 
