@@ -20,6 +20,19 @@
         });
     });
 
+    /**
+     * @ngdoc controller
+     * @name pipSettings.Page:pipSettingsPageController
+     *
+     * @description
+     * The controller is used for the whole settings pages and provides
+     * navigation menu on the left and load content into right panel.
+     * This component is integrated with `'pipAppBar'` component and adapt the pages header.
+     * The component has predefined states `'settings.base_info'` and `'settings.active_sessions'`. Each of these states
+     * require user's authorization.
+     *
+     * @requires pipAppBar
+     */
     thisModule.controller('pipSettingsPageController',
         function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings) {
 
@@ -50,8 +63,14 @@
 
             appHeader();
 
+            /** @see onNavigationSelect */
             $scope.onNavigationSelect = onNavigationSelect;
+            /** @see onDropdownSelect */
             $scope.onDropdownSelect = onDropdownSelect;
+
+            /**
+             * Config header panel
+             */
             function appHeader() {
                 pipAppBar.showMenuNavIcon();
                 pipAppBar.showTitleText('SETTINGS_TITLE');
@@ -60,10 +79,32 @@
                 pipAppBar.hideSearch();
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipSettings.Page:pipSettingsPageController
+             * @name pipSettings.Page:pipSettingsPageController:onDropdownSelect
+             *
+             * @description
+             * Method changes selected page in the navigation menu and transfer to selected page(state).
+             * It used on mobile screens.
+             *
+             * @param {Object} state    State configuration object
+             */
             function onDropdownSelect(state) {
                 onNavigationSelect(state.state);
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipSettings.Page:pipSettingsPageController
+             * @name pipSettings.Page:pipSettingsPageController:onNavigationSelect
+             *
+             * @description
+             * Method changes selected page in the navigation menu and transfer to selected page(state).
+             * It uses on screens more than mobile.
+             *
+             * @param {string} state    Name of new state
+             */
             function onNavigationSelect(state) {
                 initSelect(state);
 
@@ -72,6 +113,9 @@
                 }
             }
 
+            /**
+             * Establish selected page
+             */
             function initSelect(state) {
                 $scope.selected.page = _.find($scope.pages, function (page) {
                     return page.state === state;

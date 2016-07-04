@@ -26,6 +26,13 @@
         });
     });
 
+    /**
+     * @ngdoc controller
+     * @name pipUserSettings.Sessions:pipUserSettingsSessionsController
+     *
+     * @description
+     * Controller provides an interface for managing active sessions.
+     */
     thisModule.controller('pipUserSettingsSessionsController',
         function ($scope, pipTransaction, pipUserSettingsPageData, sessions, sessionId) {
 
@@ -36,6 +43,14 @@
             $scope.onRemoveAll = onRemoveAll;
             $scope.onRemove = onRemove;
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.Sessions:pipUserSettingsSessionsController
+             * @name pipUserSettings.Sessions.pipUserSettingsSessionsController:onRemoveAll
+             *
+             * @description
+             * Closes all active session.
+             */
             function onRemoveAll() {
                 async.each($scope.sessions, function (session) {
                     if (session.id !== $scope.sessionId) {
@@ -44,6 +59,16 @@
                 });
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.Sessions:pipUserSettingsSessionsController
+             * @name pipUserSettings.Sessions.pipUserSettingsSessionsController:onRemove
+             *
+             * @description
+             * Closes passed session.
+             *
+             * @param {Object} session  Session configuration object
+             */
             function onRemove(session) {
                 if (session.id === $scope.sessionId) {
                     return;

@@ -8,6 +8,13 @@
 
     var thisModule = angular.module('pipUserSettings.ChangePassword', []);
 
+    /**
+     * @ngdoc controller
+     * @name pipUserSettings.ChangePassword:pipUserSettingsChangePasswordController
+     *
+     * @description
+     * Controller for dialog panel of password change.
+     */
     thisModule.controller('pipUserSettingsChangePasswordController',
         function ($scope, $rootScope, $mdDialog, email, pipRest, pipTransaction, pipFormErrors) {
 
@@ -27,10 +34,26 @@
             $scope.onCheckRepeatPassword = onCheckRepeatPassword;
             $scope.onApply = onApply;
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.ChangePassword:pipUserSettingsChangePasswordController
+             * @name pipUserSettings.ChangePassword.pipUserSettingsChangePasswordController:onCancel
+             *
+             * @description
+             * Closes opened dialog panel.
+             */
             function onCancel() {
                 $mdDialog.cancel();
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.ChangePassword:pipUserSettingsChangePasswordController
+             * @name pipUserSettings.ChangePassword.pipUserSettingsChangePasswordController:onCheckRepeatPassword
+             *
+             * @description
+             * Validates a password typed into password fields.
+             */
             function onCheckRepeatPassword() {
                 if ($scope.changePasData) {
                     if ($scope.repeat === $scope.changePasData.new_password || $scope.repeat === '' || !$scope.repeat) {
@@ -47,6 +70,14 @@
                 }
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.ChangePassword:pipUserSettingsChangePasswordController
+             * @name pipUserSettings.ChangePassword.pipUserSettingsChangePasswordController:onApply
+             *
+             * @description
+             * Approves password change and sends request to the server on password change.
+             */
             function onApply() {
                 $scope.onCheckRepeatPassword();
 

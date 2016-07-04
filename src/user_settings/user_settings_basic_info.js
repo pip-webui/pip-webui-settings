@@ -24,6 +24,15 @@
         pipSettingsProvider.setDefaultPage('basic_info');
     });
 
+    /**
+     * @ngdoc controller
+     * @name pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
+     *
+     * @description
+     * Controller for the predefined 'basic_info' state.
+     * Provides sync changes user's profile with remote profile.
+     * On state exit everything is saved on the server.
+     */
     thisModule.controller('pipUserSettingsBasicInfoController',
         function ($scope, $rootScope, $mdDialog, $state, $window, $timeout, $mdTheming,
                   pipTranslate, pipTransaction, pipTheme,
@@ -51,11 +60,17 @@
             $state.get('settings.basic_info').onExit = saveChanges;
 
             $scope.errorsWithHint = pipFormErrors.errorsWithHint;
+            /** @see onChangePassword */
             $scope.onChangePassword = onChangePassword;
+            /** @see onVerifyEmail */
             $scope.onVerifyEmail = onVerifyEmail;
+            /** @see onPictureCreated */
             $scope.onPictureCreated = onPictureCreated;
+            /** @see onPictureChanged */
             $scope.onPictureChanged = onPictureChanged;
+            /** @see updateUser */
             $scope.onChangeUser = _.debounce(updateUser, 2000);
+            /** @see saveChanges */
             $scope.onChangeBasicInfo = _.debounce(saveChanges, 2000);
 
             function onPictureChanged() {
@@ -81,6 +96,16 @@
                 );
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
+             * @name pipUserSettings.BasicInfo.pipUserSettingsBasicInfoController:onChangeBasicInfo
+             *
+             * @description
+             * Saves changes onto server.
+             * This method responses on change of the input information.
+             * It is updated user's party profile. Also it updates user's profile in $rootScope.
+             */
             function saveChanges() {
                 if ($scope.form) {
                     $scope.form.$setSubmitted();
@@ -115,6 +140,16 @@
 
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
+             * @name pipUserSettings.BasicInfo.pipUserSettingsBasicInfoController:onChangeUser
+             *
+             * @description
+             * Saves changes onto server.
+             * This method responses on change of the user's profile information.
+             * Also it updates user's profile in $rootScope.
+             */
             function updateUser() {
 
                 if ($rootScope.$user.id === $rootScope.$party.id) {
@@ -137,6 +172,16 @@
                 }
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
+             * @name pipUserSettings.BasicInfo.pipUserSettingsBasicInfoController:onChangePassword
+             *
+             * @description
+             * It opens a dialog panel to change password.
+             *
+             * @param {Object} event    Triggered event object
+             */
             function onChangePassword(event) {
                 var message;
 
@@ -154,6 +199,16 @@
                     });
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
+             * @name pipUserSettings.BasicInfo.pipUserSettingsBasicInfoController:onVerifyEmail
+             *
+             * @description
+             * It opens a dialog panel to change password.
+             *
+             * @param {Object} event    Triggered event object
+             */
             function onVerifyEmail(event) {
                 var message;
 
