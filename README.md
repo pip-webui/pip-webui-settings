@@ -162,7 +162,7 @@ itemize all:
 
 ## <a name="build"></a>Build
 
-Projects environment deploy is occurred using npm and gulp.
+Projects environment deploy is occurred using npm.
 
 First install or update your local project's **npm** tools:
 
@@ -174,17 +174,17 @@ npm install
 npm update
 ```
 
-Then run the **gulp** tasks:
+Then run the **npm** tasks:
 
 ```bash
 # To clean '/build' and '/dist' directories
-gulp clean
+npm run clean
 
 # To build distribution files in the `/dist` directory
-gulp build
+npm run build
 
 # To launch samples (build will open samples/index page in web browser)
-gulp launch
+npm run samples
 ```
 
 For more details on how the build process works and additional commands (available for testing and

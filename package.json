@@ -23,6 +23,7 @@
   "private": true,
   "scripts": {
     "build": "gulp build",
+    "clean": "gulp clean",
     "lint": "gulp lint",
     "samples": "gulp launch",
     "test": "karma start"
