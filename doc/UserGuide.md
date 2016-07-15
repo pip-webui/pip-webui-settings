@@ -24,7 +24,7 @@ List of features:
 
 ### <a name="settings_sessions"></a>'Active sessions' page
 _<span style="color:red;">This page required authenticated state.<span>_
-<a href="images/img-settings-active-sessions.png" style="border: 1px ridge #ccc; width: 50%; display: block">
+<a href="images/img-settings-active-sessions.png" style="border: 1px ridge #ccc; width: 50%; display: block !important;">
     <img src="images/img-settings-active-sessions.png"/>
 </a>
 

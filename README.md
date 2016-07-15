@@ -24,7 +24,7 @@ Navigation through its pages demands user's authentication.
 - [API Reference]()
 - [Module Dependencies](#dependencies)
 - [Online Samples](http://webui.pipdevs.com/pip-webui-settings/index.html)
-- [Developer Guide](https://github.com/pip-webui/pip-webui/blob/master/doc/DeveloperGuide.md)
+- [Developer Guide](doc/DeveloperGuide.md)
 - [User Guide](doc/UserGuide.md)
 - [Forum](https://pip-webui.blogspot.com/)
 - [Pip.WebUI Framework](https://github.com/pip-webui/pip-webui)
