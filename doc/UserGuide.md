@@ -18,7 +18,8 @@ List of features:
 * add location
 * point out his/her personal info
 * upload avatar
-    <a href="images/pic_profile.png" style="border: 1px ridge #ccc; width: 260px; margin-left: 30px; display: block">
+    
+    <a href="images/pic_profile.png" style="border: 1px ridge #ccc; width: 260px; margin-left: 30px; display: block; float: left;">
         <img src="images/pic_profile.png"/>
     </a>
 
