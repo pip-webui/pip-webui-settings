@@ -1,6 +1,4 @@
-# <img src="https://github.com/pip-webui/pip-webui/blob/master/doc/Logo.png" alt="Pip.WebUI Logo" style="max-width:30%"> <br/> Guidance module
-
-# Pip.WebUI Settings
+# <img src="https://github.com/pip-webui/pip-webui/blob/master/doc/Logo.png" alt="Pip.WebUI Logo" style="max-width:30%"> Pip.WebUI Settings
 
 Settings web pages is a sub-module for Pip.Services platform and can be used in applications
 based on the platform.
