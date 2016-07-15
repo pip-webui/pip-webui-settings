@@ -1,6 +1,5 @@
 ## How to use it
 
-### 
 ### **Basic info** page features
 _<span style="color:red;">This page required authenticated state.<span>_
 
@@ -23,6 +22,9 @@ List of features:
         <img src="images/pic_profile.png"/>
     </a>
 
+```javascript
+
+```
 ### <a name="settings_sessions"></a>'Active sessions' page
 _<span style="color:red;">This page required authenticated state.<span>_
 <a href="images/img-settings-active-sessions.png" style="border: 1px ridge #ccc; width: 50%; display: block !important;">

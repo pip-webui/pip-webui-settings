@@ -60,33 +60,6 @@ angular
     });
 ```
 
-## <a name="build"></a>Build
-
-Projects environment deploy is occurred using npm.
-
-First install or update your local project's **npm** tools:
-
-```bash
-# First install all the NPM tools:
-npm install
-
-# Or update
-npm update
-```
-
-Then run the **npm** tasks:
-
-```bash
-# To clean '/build' and '/dist' directories
-npm run clean
-
-# To build distribution files in the `/dist` directory
-npm run build
-
-# To launch samples (build will open samples/index page in web browser)
-npm run samples
-```
-
 
 ## <a name="license"></a>License
 
