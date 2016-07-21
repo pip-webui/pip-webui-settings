@@ -1,4 +1,5 @@
-# <img src="https://github.com/pip-webui/pip-webui/blob/master/doc/Logo.png" alt="Pip.WebUI Logo" style="max-width:30%"> Settings
+# <img src="https://github.com/pip-webui/pip-webui/blob/master/doc/Logo.png" alt="Pip.WebUI Logo" style="max-width:30%"> 
+# Settings  ![](https://img.shields.io/badge/license-MIT-blue.svg)
 
 Settings web pages is a sub-module for Pip.Services platform and can be used in applications
 based on the platform.
@@ -9,12 +10,10 @@ This module provides:
 * User basic info settings page
 * Open sessions settings page
 
-This module provides predefined pages ('Basic info' and 'Active sessions'). It demands some fixed REST endpoints to retrieve user's personal data.
-Navigation through its pages demands user's authentication.
-
-<a name="settings_basic_info"></a>'Basic info' page example
-<a href="doc/images/img-settings-basic-info.png" style="border: 3px ridge #c8d2df; width: 50%; margin: auto; display: block">
+<a name="settings_basic_info"></a>
+<a href="doc/images/img-settings-basic-info.png" style="width: 300px;">
     <img src="doc/images/img-settings-basic-info.png"/>
+    <img src="doc/images/img-settings-active-sessions.png"/>
 </a>
 
 ## Learn more about the module
@@ -40,23 +39,6 @@ Navigation through its pages demands user's authentication.
 
 ### <a name="howto_use_it"></a>
 
-Example of adding a new page is reproduced below:
-
-```javascript
-angular
-    .module('appSettings', ['pipSettings'])
-    .config(function (pipSettingsProvider) {
-        pipSettingsProvider.addPage({
-            state: 'test',
-            title: 'Title of the page', //in left column
-            auth: true,
-            stateConfig: {
-                url: '/test',
-                template: '<h1>Here must be content which will be visible while this page will be active</h1>'
-            }
-        })
-    });
-```
 
 
 ## <a name="license"></a>License
