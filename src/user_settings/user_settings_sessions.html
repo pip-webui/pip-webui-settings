@@ -23,14 +23,14 @@
             <p class="m0 lp4 text-body1 color-secondary-text flex">
                 {{::'SETTINGS_ACTIVE_SESSION_ACTIVE' | translate}}
             </p>
-            <p class="m0 text-body1 color-secondary-text ">
+            <p class="m0 text-body1 color-secondary-text">
                 {{::country}}
                 <md-icon ng-if="showBlock" md-svg-icon="icons:triangle-up"></md-icon>
                 <md-icon ng-if="!showBlock" md-svg-icon="icons:triangle-down"></md-icon>
             </p>
         </div>
         <div class="layout-row bm8 bp8" ng-class="{'divider-bottom':!$last}" >
-            <div flex="50">
+            <div class="flex-50">
                 <p class="m0 bm4 text-body1 text-overflow color-secondary-text ">
                     {{session.last_req | date : 'medium'}}
                 </p>
