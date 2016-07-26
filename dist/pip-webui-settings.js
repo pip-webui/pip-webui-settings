@@ -128,7 +128,7 @@ module.run(['$templateCache', function($templateCache) {
     '        {{::\'SETTINGS_BASIC_INFO_CHANGE_PASSWORD\' | translate}}\n' +
     '    </md-button>\n' +
     '\n' +
-    '    <md-input-container flex class="md-block">\n' +
+    '    <md-input-container class="md-block flex">\n' +
     '        <label>{{::\'SETTINGS_BASIC_INFO_WORDS_ABOUT_ME\' | translate }}</label>\n' +
     '        <textarea ng-model="$party.about" columns="1"\n' +
     '                  ng-change="onChangeBasicInfo()"></textarea>\n' +
@@ -331,14 +331,14 @@ module.run(['$templateCache', function($templateCache) {
     '            <p class="m0 lp4 text-body1 color-secondary-text flex">\n' +
     '                {{::\'SETTINGS_ACTIVE_SESSION_ACTIVE\' | translate}}\n' +
     '            </p>\n' +
-    '            <p class="m0 text-body1 color-secondary-text ">\n' +
+    '            <p class="m0 text-body1 color-secondary-text">\n' +
     '                {{::country}}\n' +
     '                <md-icon ng-if="showBlock" md-svg-icon="icons:triangle-up"></md-icon>\n' +
     '                <md-icon ng-if="!showBlock" md-svg-icon="icons:triangle-down"></md-icon>\n' +
     '            </p>\n' +
     '        </div>\n' +
     '        <div class="layout-row bm8 bp8" ng-class="{\'divider-bottom\':!$last}" >\n' +
-    '            <div flex="50">\n' +
+    '            <div class="flex-50">\n' +
     '                <p class="m0 bm4 text-body1 text-overflow color-secondary-text ">\n' +
     '                    {{session.last_req | date : \'medium\'}}\n' +
     '                </p>\n' +
@@ -447,6 +447,11 @@ module.run(['$templateCache', function($templateCache) {
 }]);
 })();
 
+/**
+ * @file Define controller for a settings page
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+
 (function (angular, _) {
     'use strict';
 
@@ -464,6 +469,19 @@ module.run(['$templateCache', function($templateCache) {
         });
     }]);
 
+    /**
+     * @ngdoc controller
+     * @name pipSettings.Page:pipSettingsPageController
+     *
+     * @description
+     * The controller is used for the whole settings pages and provides
+     * navigation menu on the left and load content into right panel.
+     * This component is integrated with `'pipAppBar'` component and adapt the pages header.
+     * The component has predefined states `'settings.base_info'` and `'settings.active_sessions'`. Each of these states
+     * require user's authorization.
+     *
+     * @requires pipAppBar
+     */
     thisModule.controller('pipSettingsPageController',
         ['$scope', '$state', '$rootScope', '$timeout', 'pipAppBar', 'pipSettings', function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings) {
 
@@ -489,13 +507,19 @@ module.run(['$templateCache', function($templateCache) {
                     if (!pipSettings.getDefaultPage() && $scope.pages.length > 0) {
                         initSelect($scope.pages[0].state);
                     }
-                }, 0);
+                });
             }
 
             appHeader();
 
+            /** @see onNavigationSelect */
             $scope.onNavigationSelect = onNavigationSelect;
+            /** @see onDropdownSelect */
             $scope.onDropdownSelect = onDropdownSelect;
+
+            /**
+             * Config header panel
+             */
             function appHeader() {
                 pipAppBar.showMenuNavIcon();
                 pipAppBar.showTitleText('SETTINGS_TITLE');
@@ -504,10 +528,32 @@ module.run(['$templateCache', function($templateCache) {
                 pipAppBar.hideSearch();
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipSettings.Page:pipSettingsPageController
+             * @name pipSettings.Page:pipSettingsPageController:onDropdownSelect
+             *
+             * @description
+             * Method changes selected page in the navigation menu and transfer to selected page(state).
+             * It used on mobile screens.
+             *
+             * @param {Object} state    State configuration object
+             */
             function onDropdownSelect(state) {
                 onNavigationSelect(state.state);
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipSettings.Page:pipSettingsPageController
+             * @name pipSettings.Page:pipSettingsPageController:onNavigationSelect
+             *
+             * @description
+             * Method changes selected page in the navigation menu and transfer to selected page(state).
+             * It uses on screens more than mobile.
+             *
+             * @param {string} state    Name of new state
+             */
             function onNavigationSelect(state) {
                 initSelect(state);
 
@@ -516,6 +562,9 @@ module.run(['$templateCache', function($templateCache) {
                 }
             }
 
+            /**
+             * Establish selected page
+             */
             function initSelect(state) {
                 $scope.selected.page = _.find($scope.pages, function (page) {
                     return page.state === state;
@@ -527,32 +576,144 @@ module.run(['$templateCache', function($templateCache) {
 
 })(window.angular, window._);
 
+/**
+ * @file Service for settings component
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+
 (function (angular, _) {
     'use strict';
 
     var thisModule = angular.module('pipSettings.Service', []);
 
+    /**
+     * @ngdoc service
+     * @name pipSettings.Service:pipSettingsProvider
+     *
+     * @description
+     * Service provides an interface to manage 'Settings' component behaviour.
+     * It is available on config and run phases.
+     */
     thisModule.provider('pipSettings', ['pipAuthStateProvider', function (pipAuthStateProvider) {
 
         var defaultPage,
             pages = [];
 
         return {
+            /**
+             * @ngdoc method
+             * @methodOf pipSettings.Service:pipSettingsProvider
+             * @name pipSettings.Service.pipSettingsProvider:addPage
+             *
+             * @description
+             * Register new page in 'Settings' component. Before adding a page this method validates passed object.
+             *
+             * @param {Object} pageObj  Configuration object for new page.
+             */
             addPage: addPage,
+
+            /**
+             * @ngdoc method
+             * @methodOf pipSettings.Service:pipSettingsProvider
+             * @name pipSettings.Service.pipSettingsProvider:getPages
+             *
+             * @description
+             * Method returns collection of registered pages.
+             *
+             * @returns {Array<Object>} Collection of pages.
+             */
             getPages: getPages,
+
+            /**
+             * @ngdoc method
+             * @methodOf pipSettings.Service:pipSettingsProvider
+             * @name pipSettings.Service.pipSettingsProvider:setDefaultPage
+             *
+             * @description
+             * Establish a page which is available by default (after chose this component in menu).
+             *
+             * @param {string} name     Name of the default state for this component.
+             */
             setDefaultPage: setDefaultPage,
+
+            /**
+             * @ngdoc method
+             * @methodOf pipSettings.Service:pipSettingsProvider
+             * @name pipSettings.Service.pipSettingsProvider:getDefaultPage
+             *
+             * @description
+             * Method returns an config object for pages established as default (it will be opened when app transeferred to
+             * abstract state 'settings').
+             *
+             * @returns {Array<Object>} Collection of pages.
+             */
             getDefaultPage: getDefaultPage,
 
             $get: function () {
+                /**
+                 * @ngdoc service
+                 * @name pipSettings.Service:pipSettings
+                 *
+                 * @description
+                 * Service provides an interface to manage 'Settings' component behaviour.
+                 * It is available on config and run phases.
+                 */
                 return {
+                    /**
+                     * @ngdoc method
+                     * @methodOf pipSettings.Service:pipSettings
+                     * @name pipSettings.Service.pipSettings:getPages
+                     *
+                     * @description
+                     * Method returns collection of registered pages.
+                     *
+                     * @returns {Array<Object>} Collection of pages.
+                     */
                     getPages: getPages,
+
+                    /**
+                     * @ngdoc method
+                     * @methodOf pipSettings.Service:pipSettings
+                     * @name pipSettings.Service.pipSettings:addPage
+                     *
+                     * @description
+                     * Register new page in 'Settings' component. Before adding a page this method validates passed object.
+                     *
+                     * @param {Object} pageObj  Configuration object for new page.
+                     */
                     addPage: addPage,
+
+                    /**
+                     * @ngdoc method
+                     * @methodOf pipSettings.Service:pipSettings
+                     * @name pipSettings.Service.pipSettings:getDefaultPage
+                     *
+                     * @description
+                     * Method returns an config object for pages established as default (it will be opened when app transeferred to
+                     * abstract state 'settings').
+                     *
+                     * @returns {Array<Object>} Collection of pages.
+                     */
                     getDefaultPage: getDefaultPage,
+
+                    /**
+                     * @ngdoc method
+                     * @methodOf pipSettings.Service:pipSettings
+                     * @name pipSettings.Service.pipSettings:setDefaultPage
+                     *
+                     * @description
+                     * Establish a page which is available by default (after chose this component in menu).
+                     *
+                     * @param {string} name     Name of the default state for this component.
+                     */
                     setDefaultPage: setDefaultPage
                 };
             }
         };
 
+        /**
+         * Appends component abstract state prefix to passed state
+         */
         function getFullStateName(state) {
             return 'settings.' + state;
         }
@@ -600,6 +761,7 @@ module.run(['$templateCache', function($templateCache) {
         }
 
         function setDefaultPage(name) {
+            // TODO [apidhirnyi] extract expression inside 'if' into variable. It isn't readable now.
             if (!_.find(pages, function (page) {
                 return page.state === getFullStateName(name);
             })) {
@@ -611,6 +773,10 @@ module.run(['$templateCache', function($templateCache) {
             pipAuthStateProvider.redirect('settings', getFullStateName(name));
         }
 
+        /**
+         * Validates passed page config object
+         * If passed page is not valid it will throw an error
+         */
         function validatePage(pageObj) {
             if (!pageObj || !_.isObject(pageObj)) {
                 throw new Error('Invalid object');
@@ -650,7 +816,6 @@ module.run(['$templateCache', function($templateCache) {
         'pipUserSettings.Sessions',
         'pipUserSettings.BasicInfo',
         'pipSettings.Templates'
-
     ]);
 
 })(window.angular);
@@ -681,6 +846,15 @@ module.run(['$templateCache', function($templateCache) {
         pipSettingsProvider.setDefaultPage('basic_info');
     }]);
 
+    /**
+     * @ngdoc controller
+     * @name pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
+     *
+     * @description
+     * Controller for the predefined 'basic_info' state.
+     * Provides sync changes user's profile with remote profile.
+     * On state exit everything is saved on the server.
+     */
     thisModule.controller('pipUserSettingsBasicInfoController',
         ['$scope', '$rootScope', '$mdDialog', '$state', '$window', '$timeout', '$mdTheming', 'pipTranslate', 'pipTransaction', 'pipTheme', 'pipToasts', 'pipUserSettingsPageData', 'pipFormErrors', function ($scope, $rootScope, $mdDialog, $state, $window, $timeout, $mdTheming,
                   pipTranslate, pipTransaction, pipTheme,
@@ -696,7 +870,6 @@ module.run(['$templateCache', function($templateCache) {
 
             $timeout(function () {
                 $scope.loc_pos = $rootScope.$party.loc_pos;
-                $scope.$apply();
             });
 
             $scope.genders = pipTranslate.translateSet(['male', 'female', 'n/s']);
@@ -709,11 +882,17 @@ module.run(['$templateCache', function($templateCache) {
             $state.get('settings.basic_info').onExit = saveChanges;
 
             $scope.errorsWithHint = pipFormErrors.errorsWithHint;
+            /** @see onChangePassword */
             $scope.onChangePassword = onChangePassword;
+            /** @see onVerifyEmail */
             $scope.onVerifyEmail = onVerifyEmail;
+            /** @see onPictureCreated */
             $scope.onPictureCreated = onPictureCreated;
+            /** @see onPictureChanged */
             $scope.onPictureChanged = onPictureChanged;
+            /** @see updateUser */
             $scope.onChangeUser = _.debounce(updateUser, 2000);
+            /** @see saveChanges */
             $scope.onChangeBasicInfo = _.debounce(saveChanges, 2000);
 
             function onPictureChanged() {
@@ -739,6 +918,16 @@ module.run(['$templateCache', function($templateCache) {
                 );
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
+             * @name pipUserSettings.BasicInfo.pipUserSettingsBasicInfoController:onChangeBasicInfo
+             *
+             * @description
+             * Saves changes onto server.
+             * This method responses on change of the input information.
+             * It is updated user's party profile. Also it updates user's profile in $rootScope.
+             */
             function saveChanges() {
                 if ($scope.form) {
                     $scope.form.$setSubmitted();
@@ -773,6 +962,16 @@ module.run(['$templateCache', function($templateCache) {
 
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
+             * @name pipUserSettings.BasicInfo.pipUserSettingsBasicInfoController:onChangeUser
+             *
+             * @description
+             * Saves changes onto server.
+             * This method responses on change of the user's profile information.
+             * Also it updates user's profile in $rootScope.
+             */
             function updateUser() {
 
                 if ($rootScope.$user.id === $rootScope.$party.id) {
@@ -795,6 +994,16 @@ module.run(['$templateCache', function($templateCache) {
                 }
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
+             * @name pipUserSettings.BasicInfo.pipUserSettingsBasicInfoController:onChangePassword
+             *
+             * @description
+             * It opens a dialog panel to change password.
+             *
+             * @param {Object} event    Triggered event object
+             */
             function onChangePassword(event) {
                 var message;
 
@@ -812,6 +1021,16 @@ module.run(['$templateCache', function($templateCache) {
                     });
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
+             * @name pipUserSettings.BasicInfo.pipUserSettingsBasicInfoController:onVerifyEmail
+             *
+             * @description
+             * It opens a dialog panel to change password.
+             *
+             * @param {Object} event    Triggered event object
+             */
             function onVerifyEmail(event) {
                 var message;
 
@@ -826,7 +1045,6 @@ module.run(['$templateCache', function($templateCache) {
                         if (answer) {
                             message = String() + 'VERIFY_EMAIL_SUCCESS_TEXT';
                             pipToasts.showNotification(pipTranslate.translate(message), null, null, null);
-
                         }
                     }
                 );
@@ -841,13 +1059,18 @@ module.run(['$templateCache', function($templateCache) {
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-/* global angular */
-
 (function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.ChangePassword', []);
 
+    /**
+     * @ngdoc controller
+     * @name pipUserSettings.ChangePassword:pipUserSettingsChangePasswordController
+     *
+     * @description
+     * Controller for dialog panel of password change.
+     */
     thisModule.controller('pipUserSettingsChangePasswordController',
         ['$scope', '$rootScope', '$mdDialog', 'email', 'pipRest', 'pipTransaction', 'pipFormErrors', function ($scope, $rootScope, $mdDialog, email, pipRest, pipTransaction, pipFormErrors) {
 
@@ -867,10 +1090,26 @@ module.run(['$templateCache', function($templateCache) {
             $scope.onCheckRepeatPassword = onCheckRepeatPassword;
             $scope.onApply = onApply;
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.ChangePassword:pipUserSettingsChangePasswordController
+             * @name pipUserSettings.ChangePassword.pipUserSettingsChangePasswordController:onCancel
+             *
+             * @description
+             * Closes opened dialog panel.
+             */
             function onCancel() {
                 $mdDialog.cancel();
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.ChangePassword:pipUserSettingsChangePasswordController
+             * @name pipUserSettings.ChangePassword.pipUserSettingsChangePasswordController:onCheckRepeatPassword
+             *
+             * @description
+             * Validates a password typed into password fields.
+             */
             function onCheckRepeatPassword() {
                 if ($scope.changePasData) {
                     if ($scope.repeat === $scope.changePasData.new_password || $scope.repeat === '' || !$scope.repeat) {
@@ -887,6 +1126,14 @@ module.run(['$templateCache', function($templateCache) {
                 }
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.ChangePassword:pipUserSettingsChangePasswordController
+             * @name pipUserSettings.ChangePassword.pipUserSettingsChangePasswordController:onApply
+             *
+             * @description
+             * Approves password change and sends request to the server on password change.
+             */
             function onApply() {
                 $scope.onCheckRepeatPassword();
 
@@ -902,7 +1149,7 @@ module.run(['$templateCache', function($templateCache) {
 
                 pipRest.changePassword().call(
                     $scope.changePasData,
-                    function (data) {
+                    function () {
                         $scope.transaction.end();
                         $mdDialog.hide(true);
                     },
@@ -928,15 +1175,43 @@ module.run(['$templateCache', function($templateCache) {
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-/* global angular */
-
 (function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Data', ['pipDataModel']);
 
+    /**
+     * @ngdoc service
+     * @name pipUserSettings.Data:pipUserSettingsPageDataProvider
+     *
+     * @description
+     * Service reproduces a data layer for settings component.
+     * The service provides an interface to interact with server.
+     *
+     * @requires pipDataModel
+     */
+    /**
+     * @ngdoc service
+     * @name pipUserSettings.Data:pipUserSettingsPageData
+     *
+     * @description
+     * Service reproduces a data layer for settings component.
+     * The service provides an interface to interact with server.
+     *
+     * @requires pipDataModel
+     */
     thisModule.provider('pipUserSettingsPageData', function () {
 
+        /**
+         * @ngdoc method
+         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readContactsResolver
+         *
+         * @description
+         * Retrieve user's contacts from the server.
+         *
+         * @returns {promise} Request promise.
+         */
         this.readContactsResolver = /* @ngInject */
             ['$stateParams', 'pipRest', function ($stateParams, pipRest) {
                 return pipRest.getOwnContacts().get({
@@ -945,6 +1220,16 @@ module.run(['$templateCache', function($templateCache) {
                 }).$promise;
             }];
 
+        /**
+         * @ngdoc method
+         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readBlocksResolver
+         *
+         * @description
+         * Retrieves blocks resolver from the server.
+         *
+         * @returns {promise} Request promise.
+         */
         this.readBlocksResolver = /* @ngInject */
             ['$stateParams', 'pipRest', function ($stateParams, pipRest) {
                 return pipRest.connectionBlocks().query({
@@ -952,6 +1237,16 @@ module.run(['$templateCache', function($templateCache) {
                 }).$promise;
             }];
 
+        /**
+         * @ngdoc method
+         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readSessionsResolver
+         *
+         * @description
+         * Retrieves user's active sessions from the server.
+         *
+         * @returns {promise} Request promise.
+         */
         this.readSessionsResolver = /* @ngInject */
             ['$stateParams', 'pipRest', function ($stateParams, pipRest) {
                 return pipRest.userSessions().query({
@@ -959,6 +1254,16 @@ module.run(['$templateCache', function($templateCache) {
                 }).$promise;
             }];
 
+        /**
+         * @ngdoc method
+         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readSessionsResolver
+         *
+         * @description
+         * Retrieves user's activities collection.
+         *
+         * @returns {promise} Request promise.
+         */
         this.readActivitiesResolver = /* @ngInject */
             ['$stateParams', 'pipRest', function ($stateParams, pipRest) {
                 return pipRest.partyActivities().page({
@@ -969,6 +1274,16 @@ module.run(['$templateCache', function($templateCache) {
                 }).$promise;
             }];
 
+        /**
+         * @ngdoc method
+         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readSettingsResolver
+         *
+         * @description
+         * Retrieves user's party settings object from the server.
+         *
+         * @returns {promise} Request promise.
+         */
         this.readSettingsResolver = /* @ngInject */
             ['$stateParams', 'pipRest', function ($stateParams, pipRest) {
                 return pipRest.partySettings().get({
@@ -976,6 +1291,16 @@ module.run(['$templateCache', function($templateCache) {
                 }).$promise;
             }];
 
+        /**
+         * @ngdoc method
+         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readSessionIdResolver
+         *
+         * @description
+         * Retrieves current user's active session id.
+         *
+         * @returns {promise} Request promise.
+         */
         this.readSessionIdResolver = /* @ngInject */
             ['$stateParams', 'pipRest', function ($stateParams, pipRest) {
                 return pipRest.sessionId();
@@ -985,8 +1310,29 @@ module.run(['$templateCache', function($templateCache) {
 
         this.$get = ['pipRest', '$stateParams', function (pipRest, $stateParams) {
             return {
+                /**
+                 * @ngdoc property
+                 * @propertyOf pipUserSettings.Data:pipUserSettingsPageData
+                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:partyId
+                 *
+                 * @description
+                 * Contains user's party ID.
+                 */
                 partyId: pipRest.partyId,
 
+                /**
+                 * @ngdoc method
+                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
+                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:updateParty
+                 *
+                 * @description
+                 * Updates user's party configuration.
+                 *
+                 * @param {Object} transaction  Service provides API to change application state
+                 * @param {Object} party        New updating object
+                 * @param {Function} successCallback    Function invokes when data is updated successfully
+                 * @param {Function} errorCallback      Function invokes when data is not updated
+                 */
                 updateParty: function (transaction, party, successCallback, errorCallback) {
                     var tid = transaction.begin('UPDATING');
 
@@ -1015,6 +1361,19 @@ module.run(['$templateCache', function($templateCache) {
                     );
                 },
 
+                /**
+                 * @ngdoc method
+                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
+                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:saveContacts
+                 *
+                 * @description
+                 * Saves user's contacts.
+                 *
+                 * @param {Object} transaction  Service provides API to change application state
+                 * @param {Array<Object>} contacts      New updating contacts collection
+                 * @param {Function} successCallback    Function invokes when data is updated successfully
+                 * @param {Function} errorCallback      Function invokes when data is not updated
+                 */
                 saveContacts: function (transaction, contacts, successCallback, errorCallback) {
                     var tid = transaction.begin('SAVING');
 
@@ -1042,6 +1401,19 @@ module.run(['$templateCache', function($templateCache) {
                     );
                 },
 
+                /**
+                 * @ngdoc method
+                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
+                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:updateContact
+                 *
+                 * @description
+                 * Updates a contact record.
+                 *
+                 * @param {Object} transaction  Service provides API to change application state
+                 * @param {Object} contact      Updating contant object
+                 * @param {Function} successCallback    Function invokes when data is updated successfully
+                 * @param {Function} errorCallback      Function invokes when data is not updated
+                 */
                 updateContact: function (transaction, contact, successCallback, errorCallback) {
                     var tid = transaction.begin('UPDATING');
 
@@ -1069,6 +1441,19 @@ module.run(['$templateCache', function($templateCache) {
                     );
                 },
 
+                /**
+                 * @ngdoc method
+                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
+                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:updateUser
+                 *
+                 * @description
+                 * Updates a user's profile.
+                 *
+                 * @param {Object} transaction  Service provides API to change application state
+                 * @param {Object} user         Updating user's profile
+                 * @param {Function} successCallback    Function invokes when data is updated successfully
+                 * @param {Function} errorCallback      Function invokes when data is not updated
+                 */
                 updateUser: function (transaction, user, successCallback, errorCallback) {
                     var tid = transaction.begin('UPDATING');
 
@@ -1095,6 +1480,19 @@ module.run(['$templateCache', function($templateCache) {
                     );
                 },
 
+                /**
+                 * @ngdoc method
+                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
+                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:removeBlock
+                 *
+                 * @description
+                 * Removes a block.
+                 *
+                 * @param {Object} transaction  Service provides API to change application state
+                 * @param {Object} block        Removing block object
+                 * @param {Function} successCallback    Function invokes when data is updated successfully
+                 * @param {Function} errorCallback      Function invokes when data is not updated
+                 */
                 removeBlock: function (transaction, block, successCallback, errorCallback) {
                     var tid = transaction.begin('REMOVING');
 
@@ -1121,6 +1519,19 @@ module.run(['$templateCache', function($templateCache) {
                     );
                 },
 
+                /**
+                 * @ngdoc method
+                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
+                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:removeBlock
+                 *
+                 * @description
+                 * Remove an session, passed through parameters.
+                 *
+                 * @param {Object} transaction  Service provides API to change application state
+                 * @param {Object} session      Removing block object
+                 * @param {Function} successCallback    Function invokes when data is updated successfully
+                 * @param {Function} errorCallback      Function invokes when data is not updated
+                 */
                 removeSession: function (transaction, session, successCallback, errorCallback) {
                     var tid = transaction.begin('REMOVING');
 
@@ -1150,6 +1561,16 @@ module.run(['$templateCache', function($templateCache) {
                     );
                 },
 
+                /**
+                 * @ngdoc method
+                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
+                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:requestEmailVerification
+                 *
+                 * @description
+                 * Cancels process of email verification.
+                 *
+                 * @param {Object} transaction  Service provides API to change application state
+                 */
                 requestEmailVerification: function (transaction) {
                     var tid = transaction.begin('RequestEmailVerification');
 
@@ -1172,6 +1593,19 @@ module.run(['$templateCache', function($templateCache) {
                     );
                 },
 
+                /**
+                 * @ngdoc method
+                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
+                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:verifyEmail
+                 *
+                 * @description
+                 * Verifies passed email.
+                 *
+                 * @param {Object} transaction  Service provides API to change application state
+                 * @param {Object} verifyData   Verified data
+                 * @param {Function} successCallback    Function invokes when data is updated successfully
+                 * @param {Function} errorCallback      Function invokes when data is not updated
+                 */
                 verifyEmail: function (transaction, verifyData, successCallback, errorCallback) {
                     var tid = transaction.begin('Verifying');
 
@@ -1200,6 +1634,19 @@ module.run(['$templateCache', function($templateCache) {
                     );
                 },
 
+                /**
+                 * @ngdoc method
+                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
+                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:verifyEmail
+                 *
+                 * @description
+                 * Saves user's settings.
+                 *
+                 * @param {Object} transaction  Service provides API to change application state
+                 * @param {Object} settings     Saves user's settings
+                 * @param {Function} successCallback    Function invokes when data is updated successfully
+                 * @param {Function} errorCallback      Function invokes when data is not updated
+                 */
                 saveSettings: function (transaction, settings, successCallback, errorCallback) {
                     var tid = transaction.begin('SAVING');
 
@@ -1228,6 +1675,19 @@ module.run(['$templateCache', function($templateCache) {
                     );
                 },
 
+                /**
+                 * @ngdoc method
+                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
+                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:getPreviousActivities
+                 *
+                 * @description
+                 * Retrieves previous user's activities
+                 *
+                 * @param {Object} transaction  Service provides API to change application state
+                 * @param {number} start        Start position
+                 * @param {Function} successCallback    Function invokes when data is updated successfully
+                 * @param {Function} errorCallback      Function invokes when data is not updated
+                 */
                 getPreviousActivities: function (transaction, start, successCallback, errorCallback) {
                     var tid = transaction.begin('SAVING');
 
@@ -1260,6 +1720,21 @@ module.run(['$templateCache', function($templateCache) {
                     );
                 },
 
+                /**
+                 * @ngdoc method
+                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
+                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:getRefPreviousEventsActivities
+                 *
+                 * @description
+                 * Retrieves events for corresponded to pervious activities
+                 *
+                 * @param {Object} transaction  Service provides API to change application state
+                 * @param {Object} start        Start position
+                 * @param {string} refType      Name of needed entity
+                 * @param {Object} item         Entity object
+                 * @param {Function} successCallback    Function invokes when data is updated successfully
+                 * @param {Function} errorCallback      Function invokes when data is not updated
+                 */
                 getRefPreviousEventsActivities: function (transaction, start, refType, item,
                                                           successCallback, errorCallback) {
                     var tid = transaction.begin('SAVING');
@@ -1329,6 +1804,13 @@ module.run(['$templateCache', function($templateCache) {
         });
     }]);
 
+    /**
+     * @ngdoc controller
+     * @name pipUserSettings.Sessions:pipUserSettingsSessionsController
+     *
+     * @description
+     * Controller provides an interface for managing active sessions.
+     */
     thisModule.controller('pipUserSettingsSessionsController',
         ['$scope', 'pipTransaction', 'pipUserSettingsPageData', 'sessions', 'sessionId', function ($scope, pipTransaction, pipUserSettingsPageData, sessions, sessionId) {
 
@@ -1339,6 +1821,14 @@ module.run(['$templateCache', function($templateCache) {
             $scope.onRemoveAll = onRemoveAll;
             $scope.onRemove = onRemove;
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.Sessions:pipUserSettingsSessionsController
+             * @name pipUserSettings.Sessions.pipUserSettingsSessionsController:onRemoveAll
+             *
+             * @description
+             * Closes all active session.
+             */
             function onRemoveAll() {
                 async.each($scope.sessions, function (session) {
                     if (session.id !== $scope.sessionId) {
@@ -1347,6 +1837,16 @@ module.run(['$templateCache', function($templateCache) {
                 });
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.Sessions:pipUserSettingsSessionsController
+             * @name pipUserSettings.Sessions.pipUserSettingsSessionsController:onRemove
+             *
+             * @description
+             * Closes passed session.
+             *
+             * @param {Object} session  Session configuration object
+             */
             function onRemove(session) {
                 if (session.id === $scope.sessionId) {
                     return;
@@ -1370,6 +1870,8 @@ module.run(['$templateCache', function($templateCache) {
  * @file Settings string resources
  * @copyright Digital Living Software Corp. 2014-2016
  */
+
+/* eslint-disable quote-props */
 
 (function (angular) {
     'use strict';
@@ -1511,13 +2013,18 @@ module.run(['$templateCache', function($templateCache) {
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-/* global angular */
-
 (function (angular) {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.VerifyEmail', []);
 
+    /**
+     * @ngdoc controller
+     * @name pipUserSettings.VerifyEmail:pipUserSettingsVerifyEmailController
+     *
+     * @description
+     * Controller for verify email dialog panel.
+     */
     thisModule.controller('pipUserSettingsVerifyEmailController',
         ['$scope', '$rootScope', '$mdDialog', 'pipTransaction', 'pipFormErrors', 'pipUserSettingsPageData', 'email', function ($scope, $rootScope, $mdDialog, pipTransaction, pipFormErrors, pipUserSettingsPageData, email) {
 
@@ -1528,24 +2035,60 @@ module.run(['$templateCache', function($templateCache) {
             };
             $scope.transaction = pipTransaction('settings.verify_email', $scope);
 
+            /** @see onAbort */
             $scope.onAbort = onAbort;
+            /** @see onRequestVerificationClick*/
             $scope.onRequestVerificationClick = onRequestVerificationClick;
             $scope.errorsWithHint = pipFormErrors.errorsWithHint;
+            /** @see onVerify */
             $scope.onVerify = onVerify;
+            /** @see onCancel */
             $scope.onCancel = onCancel;
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.VerifyEmail:pipUserSettingsVerifyEmailController
+             * @name pipUserSettings.VerifyEmail.pipUserSettingsVerifyEmailController:onAbort
+             *
+             * @description
+             * Aborts a verify request.
+             */
             function onAbort() {
                 $scope.transaction.abort();
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.VerifyEmail:pipUserSettingsVerifyEmailController
+             * @name pipUserSettings.VerifyEmail.pipUserSettingsVerifyEmailController:onCancel
+             *
+             * @description
+             * Closes opened dialog panel.
+             */
             function onCancel() {
                 $mdDialog.cancel();
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.VerifyEmail:pipUserSettingsVerifyEmailController
+             * @name pipUserSettings.VerifyEmail.pipUserSettingsVerifyEmailController:onRequestVerificationClick
+             *
+             * @description
+             * Sends request to verify entered email.
+             */
             function onRequestVerificationClick() {
                 pipUserSettingsPageData.requestEmailVerification($scope.transaction);
             }
 
+            /**
+             * @ngdoc method
+             * @methodOf pipUserSettings.VerifyEmail:pipUserSettingsVerifyEmailController
+             * @name pipUserSettings.VerifyEmail.pipUserSettingsVerifyEmailController:onVerify
+             *
+             * @description
+             * Initiates request on verify email on the server.
+             */
             function onVerify() {
                 $scope.form.$setSubmitted();
 
@@ -1556,7 +2099,7 @@ module.run(['$templateCache', function($templateCache) {
                 pipUserSettingsPageData.verifyEmail(
                     $scope.transaction,
                     $scope.data,
-                    function (verifyData) {
+                    function () {
                         $mdDialog.hide(true);
                     },
                     function (error) {
