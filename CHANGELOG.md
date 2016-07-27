@@ -1,12 +1,16 @@
-<a name="1.0.0"></a>
-### 1.0.0 (2016-04-30)
+# Pip.WebUI.Settings Changelog
+
+## <a name="1.0.0"></a> 1.0.0 (2016-07-30)
+
+Initial release of extensible settings page
 
 #### Features
-* **settings** Extensible application settings 
-* **user settings** User settings pages: basic info and active sessions
+* **settings provider**: settings provider to configure settings page and add tabs
+* **basic info**: tab with general information about signed user (requires **users** REST API)
+* **active sessions**: tab with active sessions opened by the current user (requires **sessions** REST API)
 
 #### Breaking Changes
-* API in most controls was changed since the previous version
+No breaking changes in this version
 
 #### Bug Fixes
 No fixes in this version 
