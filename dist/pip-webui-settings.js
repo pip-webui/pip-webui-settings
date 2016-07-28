@@ -8,7 +8,7 @@
 
     angular.module('pipSettings', [
         'pipSettings.Service',
-        'pipSettings.Page',
+        'pipSettings.Tab',
         'pipUserSettings'
     ]);
 
@@ -21,38 +21,38 @@ try {
   module = angular.module('pipSettings.Templates', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('settings_page/settings_page.html',
+  $templateCache.put('settings_tab/settings_tab.html',
     '<md-toolbar class="pip-appbar-ext"></md-toolbar>\n' +
     '<pip-document width="800" min-height="400"\n' +
     '              class="pip-settings">\n' +
     '\n' +
     '    <div class="pip-menu-container"\n' +
-    '         ng-hide="manager === false || !pages || pages.length < 1">\n' +
+    '         ng-hide="manager === false || !tabs || tabs.length < 1">\n' +
     '        <md-list class="pip-menu pip-simple-list hide-xs"\n' +
-    '                 pip-selected="selected.pageIndex"\n' +
+    '                 pip-selected="selected.tabIndex"\n' +
     '                 pip-selected-watch="selected.navId"\n' +
     '                 pip-select="onNavigationSelect($event.id)">\n' +
     '            <md-list-item class="pip-simple-list-item pip-selectable flex"\n' +
-    '                          ng-repeat="page in pages track by page.state" ng-if="$party.id == $user.id ||\n' +
-    '                          page.state == \'settings.basic_info\'|| page.state ==\'settings.contact_info\'\n' +
-    '                          || page.state ==\'settings.blacklist\'"\n' +
+    '                          ng-repeat="tab in tabs track by tab.state" ng-if="$party.id == $user.id ||\n' +
+    '                          tab.state == \'settings.basic_info\'|| tab.state ==\'settings.contact_info\'\n' +
+    '                          || tab.state ==\'settings.blacklist\'"\n' +
     '                          md-ink-ripple\n' +
-    '                          pip-id="{{:: page.state }}">\n' +
-    '                <p>{{::page.title | translate}}</p>\n' +
+    '                          pip-id="{{:: tab.state }}">\n' +
+    '                <p>{{::tab.title | translate}}</p>\n' +
     '            </md-list-item>\n' +
     '        </md-list>\n' +
     '\n' +
-    '        <div class="pip-content-container" ng-if="selected.page">\n' +
+    '        <div class="pip-content-container" ng-if="selected.tab">\n' +
     '            <pip-dropdown class="hide-gt-xs"\n' +
-    '                          pip-actions="pages"\n' +
+    '                          pip-actions="tabs"\n' +
     '                          pip-dropdown-select="onDropdownSelect"\n' +
-    '                          pip-active-index="selected.pageIndex"></pip-dropdown>\n' +
+    '                          pip-active-index="selected.tabIndex"></pip-dropdown>\n' +
     '\n' +
     '            <div class="pip-body tp24-flex layout-column" ui-view></div>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layout-column layout-align-center-center flex"\n' +
-    '         ng-show="manager === false || !pages || pages.length < 1">\n' +
+    '         ng-show="manager === false || !tabs || tabs.length < 1">\n' +
     '        {{::\'ERROR_400\' | translate}}\n' +
     '    </div>\n' +
     '</pip-document>');
@@ -448,14 +448,236 @@ module.run(['$templateCache', function($templateCache) {
 })();
 
 /**
- * @file Define controller for a settings page
+ * @file Service for settings component
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
 (function (angular, _) {
     'use strict';
 
-    var thisModule = angular.module('pipSettings.Page', [
+    var thisModule = angular.module('pipSettings.Service', []);
+
+    /**
+     * @ngdoc service
+     * @name pipSettings.Service:pipSettingsProvider
+     *
+     * @description
+     * Service provides an interface to manage 'Settings' component behaviour.
+     * It is available on config and run phases.
+     */
+    thisModule.provider('pipSettings', ['pipAuthStateProvider', function (pipAuthStateProvider) {
+
+        var defaultTab,
+            tabs = [];
+
+        return {
+            /**
+             * @ngdoc method
+             * @methodOf pipSettings.Service:pipSettingsProvider
+             * @name pipSettings.Service.pipSettingsProvider:addTab
+             *
+             * @description
+             * Register new tab in 'Settings' component. Before adding a tab this method validates passed object.
+             *
+             * @param {Object} tabObj  Configuration object for new tab.
+             */
+            addTab: addTab,
+
+            /**
+             * @ngdoc method
+             * @methodOf pipSettings.Service:pipSettingsProvider
+             * @name pipSettings.Service.pipSettingsProvider:getTabs
+             *
+             * @description
+             * Method returns collection of registered tabs.
+             *
+             * @returns {Array<Object>} Collection of tabs.
+             */
+            getTabs: getTabs,
+
+            /**
+             * @ngdoc method
+             * @methodOf pipSettings.Service:pipSettingsProvider
+             * @name pipSettings.Service.pipSettingsProvider:setDefaultTab
+             *
+             * @description
+             * Establish a tab which is available by default (after chose this component in menu).
+             *
+             * @param {string} name     Name of the default state for this component.
+             */
+            setDefaultTab: setDefaultTab,
+
+            /**
+             * @ngdoc method
+             * @methodOf pipSettings.Service:pipSettingsProvider
+             * @name pipSettings.Service.pipSettingsProvider:getDefaultTab
+             *
+             * @description
+             * Method returns an config object for tabs established as default (it will be opened when app transeferred to
+             * abstract state 'settings').
+             *
+             * @returns {Array<Object>} Collection of tabs.
+             */
+            getDefaultTab: getDefaultTab,
+
+            $get: function () {
+                /**
+                 * @ngdoc service
+                 * @name pipSettings.Service:pipSettings
+                 *
+                 * @description
+                 * Service provides an interface to manage 'Settings' component behaviour.
+                 * It is available on config and run phases.
+                 */
+                return {
+                    /**
+                     * @ngdoc method
+                     * @methodOf pipSettings.Service:pipSettings
+                     * @name pipSettings.Service.pipSettings:getTabs
+                     *
+                     * @description
+                     * Method returns collection of registered tabs.
+                     *
+                     * @returns {Array<Object>} Collection of tabs.
+                     */
+                    getTabs: getTabs,
+
+                    /**
+                     * @ngdoc method
+                     * @methodOf pipSettings.Service:pipSettings
+                     * @name pipSettings.Service.pipSettings:addTab
+                     *
+                     * @description
+                     * Register new tab in 'Settings' component. Before adding a tab this method validates passed object.
+                     *
+                     * @param {Object} tabObj  Configuration object for new tab.
+                     */
+                    addTab: addTab,
+
+                    /**
+                     * @ngdoc method
+                     * @methodOf pipSettings.Service:pipSettings
+                     * @name pipSettings.Service.pipSettings:getDefaultTab
+                     *
+                     * @description
+                     * Method returns an config object for tabs established as default (it will be opened when app transeferred to
+                     * abstract state 'settings').
+                     *
+                     * @returns {Array<Object>} Collection of tabs.
+                     */
+                    getDefaultTab: getDefaultTab,
+
+                    /**
+                     * @ngdoc method
+                     * @methodOf pipSettings.Service:pipSettings
+                     * @name pipSettings.Service.pipSettings:setDefaultTab
+                     *
+                     * @description
+                     * Establish a tab which is available by default (after chose this component in menu).
+                     *
+                     * @param {string} name     Name of the default state for this component.
+                     */
+                    setDefaultTab: setDefaultTab
+                };
+            }
+        };
+
+        /**
+         * Appends component abstract state prefix to passed state
+         */
+        function getFullStateName(state) {
+            return 'settings.' + state;
+        }
+
+        function getTabs() {
+            return _.clone(tabs, true);
+        }
+
+        function getDefaultTab() {
+            var defaultTab;
+
+            defaultTab = _.find(tabs, function (p) {
+                return p.state === defaultTab;
+            });
+
+            return _.clone(defaultTab, true);
+        }
+
+        function addTab(tabObj) {
+            var existingTab;
+
+            validateTab(tabObj);
+            existingTab = _.find(tabs, function (p) {
+                return p.state === getFullStateName(tabObj.state);
+            });
+            if (existingTab) {
+                throw new Error('Tab with state name "' + tabObj.state + '" is already registered');
+            }
+
+            tabs.push({
+                state: getFullStateName(tabObj.state),
+                title: tabObj.title,
+                index: tabObj.index || 100000,
+                access: tabObj.access,
+                visible: tabObj.visible !== false,
+                stateConfig: _.clone(tabObj.stateConfig, true)
+            });
+
+            pipAuthStateProvider.state(getFullStateName(tabObj.state), tabObj.stateConfig);
+
+            // if we just added first state and no default state is specified
+            if (typeof defaultTab === 'undefined' && tabs.length === 1) {
+                setDefaultTab(tabObj.state);
+            }
+        }
+
+        function setDefaultTab(name) {
+            // TODO [apidhirnyi] extract expression inside 'if' into variable. It isn't readable now.
+            if (!_.find(tabs, function (tab) {
+                return tab.state === getFullStateName(name);
+            })) {
+                throw new Error('Tab with state name "' + name + '" is not registered');
+            }
+
+            defaultTab = getFullStateName(name);
+
+            pipAuthStateProvider.redirect('settings', getFullStateName(name));
+        }
+
+        /**
+         * Validates passed tab config object
+         * If passed tab is not valid it will throw an error
+         */
+        function validateTab(tabObj) {
+            if (!tabObj || !_.isObject(tabObj)) {
+                throw new Error('Invalid object');
+            }
+
+            if (tabObj.state === null || tabObj.state === '') {
+                throw new Error('Tab should have valid Angular UI router state name');
+            }
+
+            if (tabObj.access && !_.isFunction(tabObj.access)) {
+                throw new Error('"access" should be a function');
+            }
+
+            if (!tabObj.stateConfig || !_.isObject(tabObj.stateConfig)) {
+                throw new Error('Invalid state configuration object');
+            }
+        }
+    }]);
+
+})(window.angular, window._);
+
+/**
+ * @file Define controller for a settings tab
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+
+(function (angular, _) {
+    'use strict';
+
+    var thisModule = angular.module('pipSettings.Tab', [
         'pipState', 'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
         'pipSettings.Templates'
     ]);
@@ -464,48 +686,48 @@ module.run(['$templateCache', function($templateCache) {
         pipAuthStateProvider.state('settings', {
             url: '/settings?party_id',
             auth: true,
-            controller: 'pipSettingsPageController',
-            templateUrl: 'settings_page/settings_page.html'
+            controller: 'pipSettingsTabController',
+            templateUrl: 'settings_tab/settings_tab.html'
         });
     }]);
 
     /**
      * @ngdoc controller
-     * @name pipSettings.Page:pipSettingsPageController
+     * @name pipSettings.Tab:pipSettingsTabController
      *
      * @description
-     * The controller is used for the whole settings pages and provides
+     * The controller is used for the whole settings tabs and provides
      * navigation menu on the left and load content into right panel.
-     * This component is integrated with `'pipAppBar'` component and adapt the pages header.
+     * This component is integrated with `'pipAppBar'` component and adapt the tabs header.
      * The component has predefined states `'settings.base_info'` and `'settings.active_sessions'`. Each of these states
      * require user's authorization.
      *
      * @requires pipAppBar
      */
-    thisModule.controller('pipSettingsPageController',
+    thisModule.controller('pipSettingsTabController',
         ['$scope', '$state', '$rootScope', '$timeout', 'pipAppBar', 'pipSettings', function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings) {
 
-            $scope.pages = _.filter(pipSettings.getPages(), function (page) {
-                if (page.visible === true && (page.access ? page.access($rootScope.$user, page) : true)) {
-                    return page;
+            $scope.tabs = _.filter(pipSettings.getTabs(), function (tab) {
+                if (tab.visible === true && (tab.access ? tab.access($rootScope.$user, tab) : true)) {
+                    return tab;
                 }
             });
 
-            $scope.pages = _.sortBy($scope.pages, 'index');
+            $scope.tabs = _.sortBy($scope.tabs, 'index');
 
             $scope.selected = {};
             if ($state.current.name !== 'settings') {
                 initSelect($state.current.name);
             }
-            if ($state.current.name === 'settings' && pipSettings.getDefaultPage()) {
-                initSelect(pipSettings.getDefaultPage().state);
+            if ($state.current.name === 'settings' && pipSettings.getDefaultTab()) {
+                initSelect(pipSettings.getDefaultTab().state);
             } else {
                 $timeout(function () {
-                    if (pipSettings.getDefaultPage()) {
-                        initSelect(pipSettings.getDefaultPage().state);
+                    if (pipSettings.getDefaultTab()) {
+                        initSelect(pipSettings.getDefaultTab().state);
                     }
-                    if (!pipSettings.getDefaultPage() && $scope.pages.length > 0) {
-                        initSelect($scope.pages[0].state);
+                    if (!pipSettings.getDefaultTab() && $scope.tabs.length > 0) {
+                        initSelect($scope.tabs[0].state);
                     }
                 });
             }
@@ -530,11 +752,11 @@ module.run(['$templateCache', function($templateCache) {
 
             /**
              * @ngdoc method
-             * @methodOf pipSettings.Page:pipSettingsPageController
-             * @name pipSettings.Page:pipSettingsPageController:onDropdownSelect
+             * @methodOf pipSettings.Tab:pipSettingsTabController
+             * @name pipSettings.Tab:pipSettingsTabController:onDropdownSelect
              *
              * @description
-             * Method changes selected page in the navigation menu and transfer to selected page(state).
+             * Method changes selected tab in the navigation menu and transfer to selected tab(state).
              * It used on mobile screens.
              *
              * @param {Object} state    State configuration object
@@ -545,11 +767,11 @@ module.run(['$templateCache', function($templateCache) {
 
             /**
              * @ngdoc method
-             * @methodOf pipSettings.Page:pipSettingsPageController
-             * @name pipSettings.Page:pipSettingsPageController:onNavigationSelect
+             * @methodOf pipSettings.Tab:pipSettingsTabController
+             * @name pipSettings.Tab:pipSettingsTabController:onNavigationSelect
              *
              * @description
-             * Method changes selected page in the navigation menu and transfer to selected page(state).
+             * Method changes selected tab in the navigation menu and transfer to selected tab(state).
              * It uses on screens more than mobile.
              *
              * @param {string} state    Name of new state
@@ -557,249 +779,27 @@ module.run(['$templateCache', function($templateCache) {
             function onNavigationSelect(state) {
                 initSelect(state);
 
-                if ($scope.selected.page) {
+                if ($scope.selected.tab) {
                     $state.go(state);
                 }
             }
 
             /**
-             * Establish selected page
+             * Establish selected tab
              */
             function initSelect(state) {
-                $scope.selected.page = _.find($scope.pages, function (page) {
-                    return page.state === state;
+                $scope.selected.tab = _.find($scope.tabs, function (tab) {
+                    return tab.state === state;
                 });
-                $scope.selected.pageIndex = _.indexOf($scope.pages, $scope.selected.page);
-                $scope.selected.pageId = state;
+                $scope.selected.tabIndex = _.indexOf($scope.tabs, $scope.selected.tab);
+                $scope.selected.tabId = state;
             }
         }]);
 
 })(window.angular, window._);
 
 /**
- * @file Service for settings component
- * @copyright Digital Living Software Corp. 2014-2016
- */
-
-(function (angular, _) {
-    'use strict';
-
-    var thisModule = angular.module('pipSettings.Service', []);
-
-    /**
-     * @ngdoc service
-     * @name pipSettings.Service:pipSettingsProvider
-     *
-     * @description
-     * Service provides an interface to manage 'Settings' component behaviour.
-     * It is available on config and run phases.
-     */
-    thisModule.provider('pipSettings', ['pipAuthStateProvider', function (pipAuthStateProvider) {
-
-        var defaultPage,
-            pages = [];
-
-        return {
-            /**
-             * @ngdoc method
-             * @methodOf pipSettings.Service:pipSettingsProvider
-             * @name pipSettings.Service.pipSettingsProvider:addPage
-             *
-             * @description
-             * Register new page in 'Settings' component. Before adding a page this method validates passed object.
-             *
-             * @param {Object} pageObj  Configuration object for new page.
-             */
-            addPage: addPage,
-
-            /**
-             * @ngdoc method
-             * @methodOf pipSettings.Service:pipSettingsProvider
-             * @name pipSettings.Service.pipSettingsProvider:getPages
-             *
-             * @description
-             * Method returns collection of registered pages.
-             *
-             * @returns {Array<Object>} Collection of pages.
-             */
-            getPages: getPages,
-
-            /**
-             * @ngdoc method
-             * @methodOf pipSettings.Service:pipSettingsProvider
-             * @name pipSettings.Service.pipSettingsProvider:setDefaultPage
-             *
-             * @description
-             * Establish a page which is available by default (after chose this component in menu).
-             *
-             * @param {string} name     Name of the default state for this component.
-             */
-            setDefaultPage: setDefaultPage,
-
-            /**
-             * @ngdoc method
-             * @methodOf pipSettings.Service:pipSettingsProvider
-             * @name pipSettings.Service.pipSettingsProvider:getDefaultPage
-             *
-             * @description
-             * Method returns an config object for pages established as default (it will be opened when app transeferred to
-             * abstract state 'settings').
-             *
-             * @returns {Array<Object>} Collection of pages.
-             */
-            getDefaultPage: getDefaultPage,
-
-            $get: function () {
-                /**
-                 * @ngdoc service
-                 * @name pipSettings.Service:pipSettings
-                 *
-                 * @description
-                 * Service provides an interface to manage 'Settings' component behaviour.
-                 * It is available on config and run phases.
-                 */
-                return {
-                    /**
-                     * @ngdoc method
-                     * @methodOf pipSettings.Service:pipSettings
-                     * @name pipSettings.Service.pipSettings:getPages
-                     *
-                     * @description
-                     * Method returns collection of registered pages.
-                     *
-                     * @returns {Array<Object>} Collection of pages.
-                     */
-                    getPages: getPages,
-
-                    /**
-                     * @ngdoc method
-                     * @methodOf pipSettings.Service:pipSettings
-                     * @name pipSettings.Service.pipSettings:addPage
-                     *
-                     * @description
-                     * Register new page in 'Settings' component. Before adding a page this method validates passed object.
-                     *
-                     * @param {Object} pageObj  Configuration object for new page.
-                     */
-                    addPage: addPage,
-
-                    /**
-                     * @ngdoc method
-                     * @methodOf pipSettings.Service:pipSettings
-                     * @name pipSettings.Service.pipSettings:getDefaultPage
-                     *
-                     * @description
-                     * Method returns an config object for pages established as default (it will be opened when app transeferred to
-                     * abstract state 'settings').
-                     *
-                     * @returns {Array<Object>} Collection of pages.
-                     */
-                    getDefaultPage: getDefaultPage,
-
-                    /**
-                     * @ngdoc method
-                     * @methodOf pipSettings.Service:pipSettings
-                     * @name pipSettings.Service.pipSettings:setDefaultPage
-                     *
-                     * @description
-                     * Establish a page which is available by default (after chose this component in menu).
-                     *
-                     * @param {string} name     Name of the default state for this component.
-                     */
-                    setDefaultPage: setDefaultPage
-                };
-            }
-        };
-
-        /**
-         * Appends component abstract state prefix to passed state
-         */
-        function getFullStateName(state) {
-            return 'settings.' + state;
-        }
-
-        function getPages() {
-            return _.clone(pages, true);
-        }
-
-        function getDefaultPage() {
-            var defaultPage;
-
-            defaultPage = _.find(pages, function (p) {
-                return p.state === defaultPage;
-            });
-
-            return _.clone(defaultPage, true);
-        }
-
-        function addPage(pageObj) {
-            var existingPage;
-
-            validatePage(pageObj);
-            existingPage = _.find(pages, function (p) {
-                return p.state === getFullStateName(pageObj.state);
-            });
-            if (existingPage) {
-                throw new Error('Page with state name "' + pageObj.state + '" is already registered');
-            }
-
-            pages.push({
-                state: getFullStateName(pageObj.state),
-                title: pageObj.title,
-                index: pageObj.index || 100000,
-                access: pageObj.access,
-                visible: pageObj.visible !== false,
-                stateConfig: _.clone(pageObj.stateConfig, true)
-            });
-
-            pipAuthStateProvider.state(getFullStateName(pageObj.state), pageObj.stateConfig);
-
-            // if we just added first state and no default state is specified
-            if (typeof defaultPage === 'undefined' && pages.length === 1) {
-                setDefaultPage(pageObj.state);
-            }
-        }
-
-        function setDefaultPage(name) {
-            // TODO [apidhirnyi] extract expression inside 'if' into variable. It isn't readable now.
-            if (!_.find(pages, function (page) {
-                return page.state === getFullStateName(name);
-            })) {
-                throw new Error('Page with state name "' + name + '" is not registered');
-            }
-
-            defaultPage = getFullStateName(name);
-
-            pipAuthStateProvider.redirect('settings', getFullStateName(name));
-        }
-
-        /**
-         * Validates passed page config object
-         * If passed page is not valid it will throw an error
-         */
-        function validatePage(pageObj) {
-            if (!pageObj || !_.isObject(pageObj)) {
-                throw new Error('Invalid object');
-            }
-
-            if (pageObj.state === null || pageObj.state === '') {
-                throw new Error('Page should have valid Angular UI router state name');
-            }
-
-            if (pageObj.access && !_.isFunction(pageObj.access)) {
-                throw new Error('"access" should be a function');
-            }
-
-            if (!pageObj.stateConfig || !_.isObject(pageObj.stateConfig)) {
-                throw new Error('Invalid state configuration object');
-            }
-        }
-    }]);
-
-})(window.angular, window._);
-
-/**
- * @file Settings page logic
+ * @file Settings tab logic
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
@@ -809,7 +809,7 @@ module.run(['$templateCache', function($templateCache) {
     angular.module('pipUserSettings', [
         'ngMaterial', 'pipData',
         'pipSettings.Service',
-        'pipSettings.Page',
+        'pipSettings.Tab',
 
         'pipUserSettings.Data',
         'pipUserSettings.Strings',
@@ -831,7 +831,7 @@ module.run(['$templateCache', function($templateCache) {
         ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail']);
 
     thisModule.config(['pipSettingsProvider', function (pipSettingsProvider) {
-        pipSettingsProvider.addPage({
+        pipSettingsProvider.addTab({
             state: 'basic_info',
             index: 1,
             title: 'SETTINGS_BASIC_INFO_TITLE',
@@ -843,7 +843,7 @@ module.run(['$templateCache', function($templateCache) {
             }
         });
 
-        pipSettingsProvider.setDefaultPage('basic_info');
+        pipSettingsProvider.setDefaultTab('basic_info');
     }]);
 
     /**
@@ -856,9 +856,9 @@ module.run(['$templateCache', function($templateCache) {
      * On state exit everything is saved on the server.
      */
     thisModule.controller('pipUserSettingsBasicInfoController',
-        ['$scope', '$rootScope', '$mdDialog', '$state', '$window', '$timeout', '$mdTheming', 'pipTranslate', 'pipTransaction', 'pipTheme', 'pipToasts', 'pipUserSettingsPageData', 'pipFormErrors', function ($scope, $rootScope, $mdDialog, $state, $window, $timeout, $mdTheming,
+        ['$scope', '$rootScope', '$mdDialog', '$state', '$window', '$timeout', '$mdTheming', 'pipTranslate', 'pipTransaction', 'pipTheme', 'pipToasts', 'pipUserSettingsTabData', 'pipFormErrors', function ($scope, $rootScope, $mdDialog, $state, $window, $timeout, $mdTheming,
                   pipTranslate, pipTransaction, pipTheme,
-                  pipToasts, pipUserSettingsPageData, pipFormErrors) {
+                  pipToasts, pipUserSettingsTabData, pipFormErrors) {
 
             try {
                 $scope.originalParty = angular.toJson($rootScope.$party);
@@ -948,7 +948,7 @@ module.run(['$templateCache', function($templateCache) {
                     }
 
                     if (party !== $scope.originalParty) {
-                        pipUserSettingsPageData.updateParty($scope.transaction, $rootScope.$party,
+                        pipUserSettingsTabData.updateParty($scope.transaction, $rootScope.$party,
                             function (data) {
                                 $scope.originalParty = party;
                                 $scope.nameCopy = data.name;
@@ -975,7 +975,7 @@ module.run(['$templateCache', function($templateCache) {
             function updateUser() {
 
                 if ($rootScope.$user.id === $rootScope.$party.id) {
-                    pipUserSettingsPageData.updateUser($scope.transaction, $rootScope.$user,
+                    pipUserSettingsTabData.updateUser($scope.transaction, $rootScope.$user,
                         function (data) {
                             pipTranslate.use(data.language);
                             $rootScope.$user.language = data.language;
@@ -1182,7 +1182,7 @@ module.run(['$templateCache', function($templateCache) {
 
     /**
      * @ngdoc service
-     * @name pipUserSettings.Data:pipUserSettingsPageDataProvider
+     * @name pipUserSettings.Data:pipUserSettingsTabDataProvider
      *
      * @description
      * Service reproduces a data layer for settings component.
@@ -1192,7 +1192,7 @@ module.run(['$templateCache', function($templateCache) {
      */
     /**
      * @ngdoc service
-     * @name pipUserSettings.Data:pipUserSettingsPageData
+     * @name pipUserSettings.Data:pipUserSettingsTabData
      *
      * @description
      * Service reproduces a data layer for settings component.
@@ -1200,12 +1200,12 @@ module.run(['$templateCache', function($templateCache) {
      *
      * @requires pipDataModel
      */
-    thisModule.provider('pipUserSettingsPageData', function () {
+    thisModule.provider('pipUserSettingsTabData', function () {
 
         /**
          * @ngdoc method
-         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
-         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readContactsResolver
+         * @methodOf pipUserSettings.Data:pipUserSettingsTabDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:readContactsResolver
          *
          * @description
          * Retrieve user's contacts from the server.
@@ -1222,8 +1222,8 @@ module.run(['$templateCache', function($templateCache) {
 
         /**
          * @ngdoc method
-         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
-         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readBlocksResolver
+         * @methodOf pipUserSettings.Data:pipUserSettingsTabDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:readBlocksResolver
          *
          * @description
          * Retrieves blocks resolver from the server.
@@ -1239,8 +1239,8 @@ module.run(['$templateCache', function($templateCache) {
 
         /**
          * @ngdoc method
-         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
-         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readSessionsResolver
+         * @methodOf pipUserSettings.Data:pipUserSettingsTabDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:readSessionsResolver
          *
          * @description
          * Retrieves user's active sessions from the server.
@@ -1256,8 +1256,8 @@ module.run(['$templateCache', function($templateCache) {
 
         /**
          * @ngdoc method
-         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
-         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readSessionsResolver
+         * @methodOf pipUserSettings.Data:pipUserSettingsTabDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:readSessionsResolver
          *
          * @description
          * Retrieves user's activities collection.
@@ -1266,7 +1266,7 @@ module.run(['$templateCache', function($templateCache) {
          */
         this.readActivitiesResolver = /* @ngInject */
             ['$stateParams', 'pipRest', function ($stateParams, pipRest) {
-                return pipRest.partyActivities().page({
+                return pipRest.partyActivities().tab({
                     party_id: pipRest.partyId($stateParams),
                     paging: 1,
                     skip: 0,
@@ -1276,8 +1276,8 @@ module.run(['$templateCache', function($templateCache) {
 
         /**
          * @ngdoc method
-         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
-         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readSettingsResolver
+         * @methodOf pipUserSettings.Data:pipUserSettingsTabDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:readSettingsResolver
          *
          * @description
          * Retrieves user's party settings object from the server.
@@ -1293,8 +1293,8 @@ module.run(['$templateCache', function($templateCache) {
 
         /**
          * @ngdoc method
-         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
-         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readSessionIdResolver
+         * @methodOf pipUserSettings.Data:pipUserSettingsTabDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:readSessionIdResolver
          *
          * @description
          * Retrieves current user's active session id.
@@ -1312,8 +1312,8 @@ module.run(['$templateCache', function($templateCache) {
             return {
                 /**
                  * @ngdoc property
-                 * @propertyOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:partyId
+                 * @propertyOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:partyId
                  *
                  * @description
                  * Contains user's party ID.
@@ -1322,8 +1322,8 @@ module.run(['$templateCache', function($templateCache) {
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:updateParty
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:updateParty
                  *
                  * @description
                  * Updates user's party configuration.
@@ -1363,8 +1363,8 @@ module.run(['$templateCache', function($templateCache) {
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:saveContacts
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:saveContacts
                  *
                  * @description
                  * Saves user's contacts.
@@ -1403,8 +1403,8 @@ module.run(['$templateCache', function($templateCache) {
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:updateContact
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:updateContact
                  *
                  * @description
                  * Updates a contact record.
@@ -1443,8 +1443,8 @@ module.run(['$templateCache', function($templateCache) {
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:updateUser
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:updateUser
                  *
                  * @description
                  * Updates a user's profile.
@@ -1482,8 +1482,8 @@ module.run(['$templateCache', function($templateCache) {
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:removeBlock
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:removeBlock
                  *
                  * @description
                  * Removes a block.
@@ -1521,8 +1521,8 @@ module.run(['$templateCache', function($templateCache) {
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:removeBlock
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:removeBlock
                  *
                  * @description
                  * Remove an session, passed through parameters.
@@ -1563,8 +1563,8 @@ module.run(['$templateCache', function($templateCache) {
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:requestEmailVerification
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:requestEmailVerification
                  *
                  * @description
                  * Cancels process of email verification.
@@ -1595,8 +1595,8 @@ module.run(['$templateCache', function($templateCache) {
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:verifyEmail
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:verifyEmail
                  *
                  * @description
                  * Verifies passed email.
@@ -1636,8 +1636,8 @@ module.run(['$templateCache', function($templateCache) {
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:verifyEmail
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:verifyEmail
                  *
                  * @description
                  * Saves user's settings.
@@ -1677,8 +1677,8 @@ module.run(['$templateCache', function($templateCache) {
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:getPreviousActivities
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:getPreviousActivities
                  *
                  * @description
                  * Retrieves previous user's activities
@@ -1695,20 +1695,20 @@ module.run(['$templateCache', function($templateCache) {
                         return;
                     }
 
-                    pipRest.partyActivities().page(
+                    pipRest.partyActivities().tab(
                         {
                             party_id: pipRest.partyId($stateParams),
                             paging: 1,
                             skip: start,
                             take: 25
                         },
-                        function (pagedActivities) {
+                        function (tabdActivities) {
                             if (transaction.aborted(tid)) {
                                 return;
                             }
                             transaction.end();
                             if (successCallback) {
-                                successCallback(pagedActivities);
+                                successCallback(tabdActivities);
                             }
                         },
                         function (error) {
@@ -1722,8 +1722,8 @@ module.run(['$templateCache', function($templateCache) {
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:getRefPreviousEventsActivities
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:getRefPreviousEventsActivities
                  *
                  * @description
                  * Retrieves events for corresponded to pervious activities
@@ -1743,7 +1743,7 @@ module.run(['$templateCache', function($templateCache) {
                         return;
                     }
 
-                    pipRest.partyActivities().page(
+                    pipRest.partyActivities().tab(
                         {
                             party_id: pipRest.partyId($stateParams),
                             paging: 1,
@@ -1752,14 +1752,14 @@ module.run(['$templateCache', function($templateCache) {
                             ref_id: item.id,
                             take: 25
                         },
-                        function (pagedActivities) {
+                        function (tabActivities) {
                             if (transaction.aborted(tid)) {
                                 return;
                             }
                             transaction.end();
 
                             if (successCallback) {
-                                successCallback(pagedActivities);
+                                successCallback(tabActivities);
                             }
                         },
                         function (error) {
@@ -1786,8 +1786,8 @@ module.run(['$templateCache', function($templateCache) {
 
     var thisModule = angular.module('pipUserSettings.Sessions', []);
 
-    thisModule.config(['pipSettingsProvider', 'pipUserSettingsPageDataProvider', function (pipSettingsProvider, pipUserSettingsPageDataProvider) {
-        pipSettingsProvider.addPage({
+    thisModule.config(['pipSettingsProvider', 'pipUserSettingsTabDataProvider', function (pipSettingsProvider, pipUserSettingsTabDataProvider) {
+        pipSettingsProvider.addTab({
             state: 'sessions',
             index: 3,
             title: 'SETTINGS_ACTIVE_SESSIONS_TITLE',
@@ -1797,8 +1797,8 @@ module.run(['$templateCache', function($templateCache) {
                 templateUrl: 'user_settings/user_settings_sessions.html',
                 auth: true,
                 resolve: {
-                    sessions: pipUserSettingsPageDataProvider.readSessionsResolver,
-                    sessionId: pipUserSettingsPageDataProvider.readSessionIdResolver
+                    sessions: pipUserSettingsTabDataProvider.readSessionsResolver,
+                    sessionId: pipUserSettingsTabDataProvider.readSessionIdResolver
                 }
             }
         });
@@ -1812,7 +1812,7 @@ module.run(['$templateCache', function($templateCache) {
      * Controller provides an interface for managing active sessions.
      */
     thisModule.controller('pipUserSettingsSessionsController',
-        ['$scope', 'pipTransaction', 'pipUserSettingsPageData', 'sessions', 'sessionId', function ($scope, pipTransaction, pipUserSettingsPageData, sessions, sessionId) {
+        ['$scope', 'pipTransaction', 'pipUserSettingsTabData', 'sessions', 'sessionId', function ($scope, pipTransaction, pipUserSettingsTabData, sessions, sessionId) {
 
             $scope.sessionId = sessionId;
             $scope.transaction = pipTransaction('settings.sessions', $scope);
@@ -1852,7 +1852,7 @@ module.run(['$templateCache', function($templateCache) {
                     return;
                 }
 
-                pipUserSettingsPageData.removeSession($scope.transaction, session,
+                pipUserSettingsTabData.removeSession($scope.transaction, session,
                     function () {
                         $scope.sessions = _.without($scope.sessions, session);
                     },
@@ -2026,7 +2026,7 @@ module.run(['$templateCache', function($templateCache) {
      * Controller for verify email dialog panel.
      */
     thisModule.controller('pipUserSettingsVerifyEmailController',
-        ['$scope', '$rootScope', '$mdDialog', 'pipTransaction', 'pipFormErrors', 'pipUserSettingsPageData', 'email', function ($scope, $rootScope, $mdDialog, pipTransaction, pipFormErrors, pipUserSettingsPageData, email) {
+        ['$scope', '$rootScope', '$mdDialog', 'pipTransaction', 'pipFormErrors', 'pipUserSettingsTabData', 'email', function ($scope, $rootScope, $mdDialog, pipTransaction, pipFormErrors, pipUserSettingsTabData, email) {
 
             $scope.emailVerified = false;
             $scope.data = {
@@ -2078,7 +2078,7 @@ module.run(['$templateCache', function($templateCache) {
              * Sends request to verify entered email.
              */
             function onRequestVerificationClick() {
-                pipUserSettingsPageData.requestEmailVerification($scope.transaction);
+                pipUserSettingsTabData.requestEmailVerification($scope.transaction);
             }
 
             /**
@@ -2096,7 +2096,7 @@ module.run(['$templateCache', function($templateCache) {
                     return;
                 }
 
-                pipUserSettingsPageData.verifyEmail(
+                pipUserSettingsTabData.verifyEmail(
                     $scope.transaction,
                     $scope.data,
                     function () {

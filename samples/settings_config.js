@@ -4,13 +4,13 @@
     var thisModule = angular.module('pipSettingsConfig', []);
     
     thisModule.config(function (pipSettingsProvider) {
-        pipSettingsProvider.addPage({
+        pipSettingsProvider.addTab({
             state: 'test1',
-            title: 'Test1 settings page',
+            title: 'Test1 settings tab',
             auth: true,
             stateConfig: {
                 url: '/test1',
-                templateUrl: 'settings_page.html'
+                templateUrl: 'settings_tab.html'
             }
         });
 

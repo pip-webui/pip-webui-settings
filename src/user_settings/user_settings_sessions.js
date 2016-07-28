@@ -8,8 +8,8 @@
 
     var thisModule = angular.module('pipUserSettings.Sessions', []);
 
-    thisModule.config(function (pipSettingsProvider, pipUserSettingsPageDataProvider) {
-        pipSettingsProvider.addPage({
+    thisModule.config(function (pipSettingsProvider, pipUserSettingsTabDataProvider) {
+        pipSettingsProvider.addTab({
             state: 'sessions',
             index: 3,
             title: 'SETTINGS_ACTIVE_SESSIONS_TITLE',
@@ -19,8 +19,8 @@
                 templateUrl: 'user_settings/user_settings_sessions.html',
                 auth: true,
                 resolve: {
-                    sessions: pipUserSettingsPageDataProvider.readSessionsResolver,
-                    sessionId: pipUserSettingsPageDataProvider.readSessionIdResolver
+                    sessions: pipUserSettingsTabDataProvider.readSessionsResolver,
+                    sessionId: pipUserSettingsTabDataProvider.readSessionIdResolver
                 }
             }
         });
@@ -34,7 +34,7 @@
      * Controller provides an interface for managing active sessions.
      */
     thisModule.controller('pipUserSettingsSessionsController',
-        function ($scope, pipTransaction, pipUserSettingsPageData, sessions, sessionId) {
+        function ($scope, pipTransaction, pipUserSettingsTabData, sessions, sessionId) {
 
             $scope.sessionId = sessionId;
             $scope.transaction = pipTransaction('settings.sessions', $scope);
@@ -74,7 +74,7 @@
                     return;
                 }
 
-                pipUserSettingsPageData.removeSession($scope.transaction, session,
+                pipUserSettingsTabData.removeSession($scope.transaction, session,
                     function () {
                         $scope.sessions = _.without($scope.sessions, session);
                     },

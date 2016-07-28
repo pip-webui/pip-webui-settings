@@ -10,7 +10,7 @@
 
     /**
      * @ngdoc service
-     * @name pipUserSettings.Data:pipUserSettingsPageDataProvider
+     * @name pipUserSettings.Data:pipUserSettingsTabDataProvider
      *
      * @description
      * Service reproduces a data layer for settings component.
@@ -20,7 +20,7 @@
      */
     /**
      * @ngdoc service
-     * @name pipUserSettings.Data:pipUserSettingsPageData
+     * @name pipUserSettings.Data:pipUserSettingsTabData
      *
      * @description
      * Service reproduces a data layer for settings component.
@@ -28,12 +28,12 @@
      *
      * @requires pipDataModel
      */
-    thisModule.provider('pipUserSettingsPageData', function () {
+    thisModule.provider('pipUserSettingsTabData', function () {
 
         /**
          * @ngdoc method
-         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
-         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readContactsResolver
+         * @methodOf pipUserSettings.Data:pipUserSettingsTabDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:readContactsResolver
          *
          * @description
          * Retrieve user's contacts from the server.
@@ -50,8 +50,8 @@
 
         /**
          * @ngdoc method
-         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
-         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readBlocksResolver
+         * @methodOf pipUserSettings.Data:pipUserSettingsTabDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:readBlocksResolver
          *
          * @description
          * Retrieves blocks resolver from the server.
@@ -67,8 +67,8 @@
 
         /**
          * @ngdoc method
-         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
-         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readSessionsResolver
+         * @methodOf pipUserSettings.Data:pipUserSettingsTabDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:readSessionsResolver
          *
          * @description
          * Retrieves user's active sessions from the server.
@@ -84,8 +84,8 @@
 
         /**
          * @ngdoc method
-         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
-         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readSessionsResolver
+         * @methodOf pipUserSettings.Data:pipUserSettingsTabDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:readSessionsResolver
          *
          * @description
          * Retrieves user's activities collection.
@@ -94,7 +94,7 @@
          */
         this.readActivitiesResolver = /* @ngInject */
             function ($stateParams, pipRest) {
-                return pipRest.partyActivities().page({
+                return pipRest.partyActivities().tab({
                     party_id: pipRest.partyId($stateParams),
                     paging: 1,
                     skip: 0,
@@ -104,8 +104,8 @@
 
         /**
          * @ngdoc method
-         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
-         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readSettingsResolver
+         * @methodOf pipUserSettings.Data:pipUserSettingsTabDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:readSettingsResolver
          *
          * @description
          * Retrieves user's party settings object from the server.
@@ -121,8 +121,8 @@
 
         /**
          * @ngdoc method
-         * @methodOf pipUserSettings.Data:pipUserSettingsPageDataProvider
-         * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:readSessionIdResolver
+         * @methodOf pipUserSettings.Data:pipUserSettingsTabDataProvider
+         * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:readSessionIdResolver
          *
          * @description
          * Retrieves current user's active session id.
@@ -140,8 +140,8 @@
             return {
                 /**
                  * @ngdoc property
-                 * @propertyOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:partyId
+                 * @propertyOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:partyId
                  *
                  * @description
                  * Contains user's party ID.
@@ -150,8 +150,8 @@
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:updateParty
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:updateParty
                  *
                  * @description
                  * Updates user's party configuration.
@@ -191,8 +191,8 @@
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:saveContacts
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:saveContacts
                  *
                  * @description
                  * Saves user's contacts.
@@ -231,8 +231,8 @@
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:updateContact
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:updateContact
                  *
                  * @description
                  * Updates a contact record.
@@ -271,8 +271,8 @@
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:updateUser
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:updateUser
                  *
                  * @description
                  * Updates a user's profile.
@@ -310,8 +310,8 @@
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:removeBlock
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:removeBlock
                  *
                  * @description
                  * Removes a block.
@@ -349,8 +349,8 @@
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:removeBlock
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:removeBlock
                  *
                  * @description
                  * Remove an session, passed through parameters.
@@ -391,8 +391,8 @@
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:requestEmailVerification
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:requestEmailVerification
                  *
                  * @description
                  * Cancels process of email verification.
@@ -423,8 +423,8 @@
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:verifyEmail
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:verifyEmail
                  *
                  * @description
                  * Verifies passed email.
@@ -464,8 +464,8 @@
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:verifyEmail
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:verifyEmail
                  *
                  * @description
                  * Saves user's settings.
@@ -505,8 +505,8 @@
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:getPreviousActivities
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:getPreviousActivities
                  *
                  * @description
                  * Retrieves previous user's activities
@@ -523,20 +523,20 @@
                         return;
                     }
 
-                    pipRest.partyActivities().page(
+                    pipRest.partyActivities().tab(
                         {
                             party_id: pipRest.partyId($stateParams),
                             paging: 1,
                             skip: start,
                             take: 25
                         },
-                        function (pagedActivities) {
+                        function (tabActivities) {
                             if (transaction.aborted(tid)) {
                                 return;
                             }
                             transaction.end();
                             if (successCallback) {
-                                successCallback(pagedActivities);
+                                successCallback(tabActivities);
                             }
                         },
                         function (error) {
@@ -550,8 +550,8 @@
 
                 /**
                  * @ngdoc method
-                 * @methodOf pipUserSettings.Data:pipUserSettingsPageData
-                 * @name pipUserSettings.Data.pipUserSettingsPageDataProvider:getRefPreviousEventsActivities
+                 * @methodOf pipUserSettings.Data:pipUserSettingsTabData
+                 * @name pipUserSettings.Data.pipUserSettingsTabDataProvider:getRefPreviousEventsActivities
                  *
                  * @description
                  * Retrieves events for corresponded to pervious activities
@@ -571,7 +571,7 @@
                         return;
                     }
 
-                    pipRest.partyActivities().page(
+                    pipRest.partyActivities().tab(
                         {
                             party_id: pipRest.partyId($stateParams),
                             paging: 1,
@@ -580,14 +580,14 @@
                             ref_id: item.id,
                             take: 25
                         },
-                        function (pagedActivities) {
+                        function (tabActivities) {
                             if (transaction.aborted(tid)) {
                                 return;
                             }
                             transaction.end();
 
                             if (successCallback) {
-                                successCallback(pagedActivities);
+                                successCallback(tabActivities);
                             }
                         },
                         function (error) {

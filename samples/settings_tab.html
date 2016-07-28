@@ -1,0 +1,14 @@
+<h2 class="text-title tm0 bm24">This is test 1 tab in settings inserted through provider</h2>
+
+<h3 class="text-subhead2">Code to add this tab</h3>
+<pre class="text-body1 color-window-bg p16">
+     <strong>pipSettingsProvider.addTab</strong>({
+            state: 'test1',
+            title: 'Test1 settings tab',
+            auth: true,
+            stateConfig: {
+                url: '/test1',
+                templateUrl: 'settings_tab.html'
+            }
+        });
+</pre>

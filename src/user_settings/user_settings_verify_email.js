@@ -16,7 +16,7 @@
      * Controller for verify email dialog panel.
      */
     thisModule.controller('pipUserSettingsVerifyEmailController',
-        function ($scope, $rootScope, $mdDialog, pipTransaction, pipFormErrors, pipUserSettingsPageData, email) {
+        function ($scope, $rootScope, $mdDialog, pipTransaction, pipFormErrors, pipUserSettingsTabData, email) {
 
             $scope.emailVerified = false;
             $scope.data = {
@@ -68,7 +68,7 @@
              * Sends request to verify entered email.
              */
             function onRequestVerificationClick() {
-                pipUserSettingsPageData.requestEmailVerification($scope.transaction);
+                pipUserSettingsTabData.requestEmailVerification($scope.transaction);
             }
 
             /**
@@ -86,7 +86,7 @@
                     return;
                 }
 
-                pipUserSettingsPageData.verifyEmail(
+                pipUserSettingsTabData.verifyEmail(
                     $scope.transaction,
                     $scope.data,
                     function () {

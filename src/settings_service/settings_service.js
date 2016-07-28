@@ -18,58 +18,58 @@
      */
     thisModule.provider('pipSettings', function (pipAuthStateProvider) {
 
-        var defaultPage,
-            pages = [];
+        var defaultTab,
+            tabs = [];
 
         return {
             /**
              * @ngdoc method
              * @methodOf pipSettings.Service:pipSettingsProvider
-             * @name pipSettings.Service.pipSettingsProvider:addPage
+             * @name pipSettings.Service.pipSettingsProvider:addTab
              *
              * @description
-             * Register new page in 'Settings' component. Before adding a page this method validates passed object.
+             * Register new tab in 'Settings' component. Before adding a tab this method validates passed object.
              *
-             * @param {Object} pageObj  Configuration object for new page.
+             * @param {Object} tabObj  Configuration object for new tab.
              */
-            addPage: addPage,
+            addTab: addTab,
 
             /**
              * @ngdoc method
              * @methodOf pipSettings.Service:pipSettingsProvider
-             * @name pipSettings.Service.pipSettingsProvider:getPages
+             * @name pipSettings.Service.pipSettingsProvider:getTabs
              *
              * @description
-             * Method returns collection of registered pages.
+             * Method returns collection of registered tabs.
              *
-             * @returns {Array<Object>} Collection of pages.
+             * @returns {Array<Object>} Collection of tabs.
              */
-            getPages: getPages,
+            getTabs: getTabs,
 
             /**
              * @ngdoc method
              * @methodOf pipSettings.Service:pipSettingsProvider
-             * @name pipSettings.Service.pipSettingsProvider:setDefaultPage
+             * @name pipSettings.Service.pipSettingsProvider:setDefaultTab
              *
              * @description
-             * Establish a page which is available by default (after chose this component in menu).
+             * Establish a tab which is available by default (after chose this component in menu).
              *
              * @param {string} name     Name of the default state for this component.
              */
-            setDefaultPage: setDefaultPage,
+            setDefaultTab: setDefaultTab,
 
             /**
              * @ngdoc method
              * @methodOf pipSettings.Service:pipSettingsProvider
-             * @name pipSettings.Service.pipSettingsProvider:getDefaultPage
+             * @name pipSettings.Service.pipSettingsProvider:getDefaultTab
              *
              * @description
-             * Method returns an config object for pages established as default (it will be opened when app transeferred to
+             * Method returns an config object for tabs established as default (it will be opened when app transeferred to
              * abstract state 'settings').
              *
-             * @returns {Array<Object>} Collection of pages.
+             * @returns {Array<Object>} Collection of tabs.
              */
-            getDefaultPage: getDefaultPage,
+            getDefaultTab: getDefaultTab,
 
             $get: function () {
                 /**
@@ -84,51 +84,51 @@
                     /**
                      * @ngdoc method
                      * @methodOf pipSettings.Service:pipSettings
-                     * @name pipSettings.Service.pipSettings:getPages
+                     * @name pipSettings.Service.pipSettings:getTabs
                      *
                      * @description
-                     * Method returns collection of registered pages.
+                     * Method returns collection of registered tabs.
                      *
-                     * @returns {Array<Object>} Collection of pages.
+                     * @returns {Array<Object>} Collection of tabs.
                      */
-                    getPages: getPages,
+                    getTabs: getTabs,
 
                     /**
                      * @ngdoc method
                      * @methodOf pipSettings.Service:pipSettings
-                     * @name pipSettings.Service.pipSettings:addPage
+                     * @name pipSettings.Service.pipSettings:addTab
                      *
                      * @description
-                     * Register new page in 'Settings' component. Before adding a page this method validates passed object.
+                     * Register new tab in 'Settings' component. Before adding a tab this method validates passed object.
                      *
-                     * @param {Object} pageObj  Configuration object for new page.
+                     * @param {Object} tabObj  Configuration object for new tab.
                      */
-                    addPage: addPage,
+                    addTab: addTab,
 
                     /**
                      * @ngdoc method
                      * @methodOf pipSettings.Service:pipSettings
-                     * @name pipSettings.Service.pipSettings:getDefaultPage
+                     * @name pipSettings.Service.pipSettings:getDefaultTab
                      *
                      * @description
-                     * Method returns an config object for pages established as default (it will be opened when app transeferred to
+                     * Method returns an config object for tabs established as default (it will be opened when app transeferred to
                      * abstract state 'settings').
                      *
-                     * @returns {Array<Object>} Collection of pages.
+                     * @returns {Array<Object>} Collection of tabs.
                      */
-                    getDefaultPage: getDefaultPage,
+                    getDefaultTab: getDefaultTab,
 
                     /**
                      * @ngdoc method
                      * @methodOf pipSettings.Service:pipSettings
-                     * @name pipSettings.Service.pipSettings:setDefaultPage
+                     * @name pipSettings.Service.pipSettings:setDefaultTab
                      *
                      * @description
-                     * Establish a page which is available by default (after chose this component in menu).
+                     * Establish a tab which is available by default (after chose this component in menu).
                      *
                      * @param {string} name     Name of the default state for this component.
                      */
-                    setDefaultPage: setDefaultPage
+                    setDefaultTab: setDefaultTab
                 };
             }
         };
@@ -140,79 +140,79 @@
             return 'settings.' + state;
         }
 
-        function getPages() {
-            return _.clone(pages, true);
+        function getTabs() {
+            return _.clone(tabs, true);
         }
 
-        function getDefaultPage() {
-            var defaultPage;
+        function getDefaultTab() {
+            var defaultTab;
 
-            defaultPage = _.find(pages, function (p) {
-                return p.state === defaultPage;
+            defaultTab = _.find(tabs, function (p) {
+                return p.state === defaultTab;
             });
 
-            return _.clone(defaultPage, true);
+            return _.clone(defaultTab, true);
         }
 
-        function addPage(pageObj) {
-            var existingPage;
+        function addTab(tabObj) {
+            var existingTab;
 
-            validatePage(pageObj);
-            existingPage = _.find(pages, function (p) {
-                return p.state === getFullStateName(pageObj.state);
+            validateTab(tabObj);
+            existingTab = _.find(tabs, function (p) {
+                return p.state === getFullStateName(tabObj.state);
             });
-            if (existingPage) {
-                throw new Error('Page with state name "' + pageObj.state + '" is already registered');
+            if (existingTab) {
+                throw new Error('Tab with state name "' + tabObj.state + '" is already registered');
             }
 
-            pages.push({
-                state: getFullStateName(pageObj.state),
-                title: pageObj.title,
-                index: pageObj.index || 100000,
-                access: pageObj.access,
-                visible: pageObj.visible !== false,
-                stateConfig: _.clone(pageObj.stateConfig, true)
+            tabs.push({
+                state: getFullStateName(tabObj.state),
+                title: tabObj.title,
+                index: tabObj.index || 100000,
+                access: tabObj.access,
+                visible: tabObj.visible !== false,
+                stateConfig: _.clone(tabObj.stateConfig, true)
             });
 
-            pipAuthStateProvider.state(getFullStateName(pageObj.state), pageObj.stateConfig);
+            pipAuthStateProvider.state(getFullStateName(tabObj.state), tabObj.stateConfig);
 
             // if we just added first state and no default state is specified
-            if (typeof defaultPage === 'undefined' && pages.length === 1) {
-                setDefaultPage(pageObj.state);
+            if (typeof defaultTab === 'undefined' && tabs.length === 1) {
+                setDefaultTab(tabObj.state);
             }
         }
 
-        function setDefaultPage(name) {
+        function setDefaultTab(name) {
             // TODO [apidhirnyi] extract expression inside 'if' into variable. It isn't readable now.
-            if (!_.find(pages, function (page) {
-                return page.state === getFullStateName(name);
+            if (!_.find(tabs, function (tab) {
+                return tab.state === getFullStateName(name);
             })) {
-                throw new Error('Page with state name "' + name + '" is not registered');
+                throw new Error('Tab with state name "' + name + '" is not registered');
             }
 
-            defaultPage = getFullStateName(name);
+            defaultTab = getFullStateName(name);
 
             pipAuthStateProvider.redirect('settings', getFullStateName(name));
         }
 
         /**
-         * Validates passed page config object
-         * If passed page is not valid it will throw an error
+         * Validates passed tab config object
+         * If passed tab is not valid it will throw an error
          */
-        function validatePage(pageObj) {
-            if (!pageObj || !_.isObject(pageObj)) {
+        function validateTab(tabObj) {
+            if (!tabObj || !_.isObject(tabObj)) {
                 throw new Error('Invalid object');
             }
 
-            if (pageObj.state === null || pageObj.state === '') {
-                throw new Error('Page should have valid Angular UI router state name');
+            if (tabObj.state === null || tabObj.state === '') {
+                throw new Error('Tab should have valid Angular UI router state name');
             }
 
-            if (pageObj.access && !_.isFunction(pageObj.access)) {
+            if (tabObj.access && !_.isFunction(tabObj.access)) {
                 throw new Error('"access" should be a function');
             }
 
-            if (!pageObj.stateConfig || !_.isObject(pageObj.stateConfig)) {
+            if (!tabObj.stateConfig || !_.isObject(tabObj.stateConfig)) {
                 throw new Error('Invalid state configuration object');
             }
         }

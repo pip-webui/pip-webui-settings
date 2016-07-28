@@ -8,7 +8,7 @@
 
     angular.module('pipSettings', [
         'pipSettings.Service',
-        'pipSettings.Page',
+        'pipSettings.Tab',
         'pipUserSettings'
     ]);
 

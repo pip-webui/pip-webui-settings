@@ -1,12 +1,12 @@
 /**
- * @file Define controller for a settings page
+ * @file Define controller for a settings tab
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
 (function (angular, _) {
     'use strict';
 
-    var thisModule = angular.module('pipSettings.Page', [
+    var thisModule = angular.module('pipSettings.Tab', [
         'pipState', 'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
         'pipSettings.Templates'
     ]);
@@ -15,48 +15,48 @@
         pipAuthStateProvider.state('settings', {
             url: '/settings?party_id',
             auth: true,
-            controller: 'pipSettingsPageController',
-            templateUrl: 'settings_page/settings_page.html'
+            controller: 'pipSettingsTabController',
+            templateUrl: 'settings_tab/settings_tab.html'
         });
     });
 
     /**
      * @ngdoc controller
-     * @name pipSettings.Page:pipSettingsPageController
+     * @name pipSettings.Tab:pipSettingsTabController
      *
      * @description
-     * The controller is used for the whole settings pages and provides
+     * The controller is used for the whole settings tabs and provides
      * navigation menu on the left and load content into right panel.
-     * This component is integrated with `'pipAppBar'` component and adapt the pages header.
+     * This component is integrated with `'pipAppBar'` component and adapt the tabs header.
      * The component has predefined states `'settings.base_info'` and `'settings.active_sessions'`. Each of these states
      * require user's authorization.
      *
      * @requires pipAppBar
      */
-    thisModule.controller('pipSettingsPageController',
+    thisModule.controller('pipSettingsTabController',
         function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings) {
 
-            $scope.pages = _.filter(pipSettings.getPages(), function (page) {
-                if (page.visible === true && (page.access ? page.access($rootScope.$user, page) : true)) {
-                    return page;
+            $scope.tabs = _.filter(pipSettings.getTabs(), function (tab) {
+                if (tab.visible === true && (tab.access ? tab.access($rootScope.$user, tab) : true)) {
+                    return tab;
                 }
             });
 
-            $scope.pages = _.sortBy($scope.pages, 'index');
+            $scope.tabs = _.sortBy($scope.tabs, 'index');
 
             $scope.selected = {};
             if ($state.current.name !== 'settings') {
                 initSelect($state.current.name);
             }
-            if ($state.current.name === 'settings' && pipSettings.getDefaultPage()) {
-                initSelect(pipSettings.getDefaultPage().state);
+            if ($state.current.name === 'settings' && pipSettings.getDefaultTab()) {
+                initSelect(pipSettings.getDefaultTab().state);
             } else {
                 $timeout(function () {
-                    if (pipSettings.getDefaultPage()) {
-                        initSelect(pipSettings.getDefaultPage().state);
+                    if (pipSettings.getDefaultTab()) {
+                        initSelect(pipSettings.getDefaultTab().state);
                     }
-                    if (!pipSettings.getDefaultPage() && $scope.pages.length > 0) {
-                        initSelect($scope.pages[0].state);
+                    if (!pipSettings.getDefaultTab() && $scope.tabs.length > 0) {
+                        initSelect($scope.tabs[0].state);
                     }
                 });
             }
@@ -81,11 +81,11 @@
 
             /**
              * @ngdoc method
-             * @methodOf pipSettings.Page:pipSettingsPageController
-             * @name pipSettings.Page:pipSettingsPageController:onDropdownSelect
+             * @methodOf pipSettings.Tab:pipSettingsTabController
+             * @name pipSettings.Tab:pipSettingsTabController:onDropdownSelect
              *
              * @description
-             * Method changes selected page in the navigation menu and transfer to selected page(state).
+             * Method changes selected tab in the navigation menu and transfer to selected tab(state).
              * It used on mobile screens.
              *
              * @param {Object} state    State configuration object
@@ -96,11 +96,11 @@
 
             /**
              * @ngdoc method
-             * @methodOf pipSettings.Page:pipSettingsPageController
-             * @name pipSettings.Page:pipSettingsPageController:onNavigationSelect
+             * @methodOf pipSettings.Tab:pipSettingsTabController
+             * @name pipSettings.Tab:pipSettingsTabController:onNavigationSelect
              *
              * @description
-             * Method changes selected page in the navigation menu and transfer to selected page(state).
+             * Method changes selected tab in the navigation menu and transfer to selected tab(state).
              * It uses on screens more than mobile.
              *
              * @param {string} state    Name of new state
@@ -108,20 +108,20 @@
             function onNavigationSelect(state) {
                 initSelect(state);
 
-                if ($scope.selected.page) {
+                if ($scope.selected.tab) {
                     $state.go(state);
                 }
             }
 
             /**
-             * Establish selected page
+             * Establish selected tab
              */
             function initSelect(state) {
-                $scope.selected.page = _.find($scope.pages, function (page) {
-                    return page.state === state;
+                $scope.selected.tab = _.find($scope.tabs, function (tab) {
+                    return tab.state === state;
                 });
-                $scope.selected.pageIndex = _.indexOf($scope.pages, $scope.selected.page);
-                $scope.selected.pageId = state;
+                $scope.selected.tabIndex = _.indexOf($scope.tabs, $scope.selected.tab);
+                $scope.selected.tabId = state;
             }
         });
 

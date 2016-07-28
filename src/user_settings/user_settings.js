@@ -1,5 +1,5 @@
 /**
- * @file Settings page logic
+ * @file Settings tab logic
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
@@ -9,7 +9,7 @@
     angular.module('pipUserSettings', [
         'ngMaterial', 'pipData',
         'pipSettings.Service',
-        'pipSettings.Page',
+        'pipSettings.Tab',
 
         'pipUserSettings.Data',
         'pipUserSettings.Strings',

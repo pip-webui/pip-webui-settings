@@ -9,7 +9,7 @@
         ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail']);
 
     thisModule.config(function (pipSettingsProvider) {
-        pipSettingsProvider.addPage({
+        pipSettingsProvider.addTab({
             state: 'basic_info',
             index: 1,
             title: 'SETTINGS_BASIC_INFO_TITLE',
@@ -21,7 +21,7 @@
             }
         });
 
-        pipSettingsProvider.setDefaultPage('basic_info');
+        pipSettingsProvider.setDefaultTab('basic_info');
     });
 
     /**
@@ -36,7 +36,7 @@
     thisModule.controller('pipUserSettingsBasicInfoController',
         function ($scope, $rootScope, $mdDialog, $state, $window, $timeout, $mdTheming,
                   pipTranslate, pipTransaction, pipTheme,
-                  pipToasts, pipUserSettingsPageData, pipFormErrors) {
+                  pipToasts, pipUserSettingsTabData, pipFormErrors) {
 
             try {
                 $scope.originalParty = angular.toJson($rootScope.$party);
@@ -126,7 +126,7 @@
                     }
 
                     if (party !== $scope.originalParty) {
-                        pipUserSettingsPageData.updateParty($scope.transaction, $rootScope.$party,
+                        pipUserSettingsTabData.updateParty($scope.transaction, $rootScope.$party,
                             function (data) {
                                 $scope.originalParty = party;
                                 $scope.nameCopy = data.name;
@@ -153,7 +153,7 @@
             function updateUser() {
 
                 if ($rootScope.$user.id === $rootScope.$party.id) {
-                    pipUserSettingsPageData.updateUser($scope.transaction, $rootScope.$user,
+                    pipUserSettingsTabData.updateUser($scope.transaction, $rootScope.$user,
                         function (data) {
                             pipTranslate.use(data.language);
                             $rootScope.$user.language = data.language;
