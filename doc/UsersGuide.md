@@ -56,11 +56,11 @@ pipSettingsProvider.addTab({
     auth: true,
     stateConfig: {
         url: '/custom',
-        templateUrl: 'custom_tab.html'
+        templateUrl: 'custom_tab.html',
+        controller: customController
     }
 });
 ```
-Todo: How tab controller is defined?
 
 ### Methods
 
@@ -119,6 +119,8 @@ The tab requires users REST API to be implemented on the server.
 List specific REST operations required for this tab:
 * **pipRest.parties().update** - function for updating parties collections with the use PUT method
 * **pipRest.users().update** - function for updating users collections with the use PUT method
+* **pipRest.requestEmailVerification().get** - function for email verification
+* **pipRest.verifyEmail().call** - function for email verification
 
 [Go to Pip.WebUI.Rest Users's Guide](https://github.com/pip-webui/pip-webui-rest/blob/master/doc/UsersGuide.md)
 
@@ -141,8 +143,13 @@ See online sample [here...](http://webui.pipdevs.com/pip-webui-settings/index.ht
 except the current one.
 
 The tab requires sessions REST API to be implemented on the server.
-Todo: List specific REST operations required for this tab
-Todo: Add reference to the protocol definition under pip-webui-rest
+List specific REST operations required for this tab:
+* **pipRest.userSessions().remove** - function for remove some session
+* **pipRest.userSessions().query** - function for return sessions collections
+* **pipRest.sessionId()** - function for return id active session
+
+[Go to Pip.WebUI.Rest Users's Guide](https://github.com/pip-webui/pip-webui-rest/blob/master/doc/UsersGuide.md)
+
 
 ### Usage
 
