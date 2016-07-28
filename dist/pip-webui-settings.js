@@ -622,6 +622,7 @@ module.run(['$templateCache', function($templateCache) {
                 visible: tabObj.visible !== false,
                 stateConfig: _.clone(tabObj.stateConfig, true)
             });
+            console.log(tabs);
 
             pipAuthStateProvider.state(getFullStateName(tabObj.state), tabObj.stateConfig);
 
@@ -1702,13 +1703,13 @@ module.run(['$templateCache', function($templateCache) {
                             skip: start,
                             take: 25
                         },
-                        function (tabdActivities) {
+                        function (tabActivities) {
                             if (transaction.aborted(tid)) {
                                 return;
                             }
                             transaction.end();
                             if (successCallback) {
-                                successCallback(tabdActivities);
+                                successCallback(tabActivities);
                             }
                         },
                         function (error) {

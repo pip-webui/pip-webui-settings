@@ -81,8 +81,8 @@ Todo: How tab controller is defined?
 ### Tab Configuration object
 
 * **state: String** - full state name. The name consists of 'settings.' + the short name tab
-* **title: String** - title in list tabs
-* **index: Number** - field for sorting of tabs. By default **index** equal 1000. Not required field.
+* **title: String** - title in tab list
+* **index: Number** - field for sorting tabs. By default **index** equal 1000. Not required field.
 * **access: Function** - function of permission to display this tab. Not required field.
 * **visible: Boolean** - condition of display this tab. By default **visible** equal true. Not required field.
 * **stateConfig: Object** - equal an object passed at creation of tab in the field of **stateConfig**
@@ -96,14 +96,19 @@ Todo: How tab controller is defined?
 **Settings** page is implemented as extensible container that can be dynamically filled with tabs.
 On smaller screens the tabs transform into dropdown menu.
 
-Navitation to the **Settings** page can be done using **settings** state or **/settings** route. 
+Navigation to the **Settings** page can be done using **settings** state or **/settings** route. 
 Child state specifies the tab that shall be activated. If child set is not set, it opens the default tab
 configured in **pipSettings** provider.
 
 ### Usage
 
-Todo: Add her code snippet that shows how to add settings page into navigation switch the route.
-
+```javascript
+pipSideNavProvider.sections([{
+    links: [
+        {title: 'Settings', url: '/settings'}
+    ]
+}]);
+```
 
 ## <a name="basic_info_tab"></a> Basic Info tab
 
@@ -111,8 +116,11 @@ Todo: Add her code snippet that shows how to add settings page into navigation s
 to change his password or verify primary email using verification code sent via email message.
 
 The tab requires users REST API to be implemented on the server.
-Todo: List specific REST operations required for this tab
-Todo: Add reference to the protocol definition under pip-webui-rest
+List specific REST operations required for this tab:
+* **pipRest.parties().update** - function for updating parties collections with the use PUT method
+* **pipRest.users().update** - function for updating users collections with the use PUT method
+
+[Go to Pip.WebUI.Rest Users's Guide](https://github.com/pip-webui/pip-webui-rest/blob/master/doc/UsersGuide.md)
 
 ### Usage
 
