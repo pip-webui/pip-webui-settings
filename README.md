@@ -6,11 +6,21 @@ Settings page allows users to set their preferences and change application setti
 Pip.WebUI.Settings module provides standard extensible settings page that can be filled with tabs by application developers.
 The module also contains few standard settings tabs for basic user info and active sessions.
 
-### pipSettings Provider
+### pipSettings зrovider
 
 pipSettings provider allows to configure Settings page and fill it with standard or custom tabs.
 
-Todo: Add code snippet that shows how to configure Settings page
+```javascript
+pipSettingsProvider.addTab({
+    state: 'custom',
+    title: 'Custom tab',
+    auth: true,
+    stateConfig: {
+        url: '/custom',
+        templateUrl: 'custom_tab.html'
+    }
+});
+```
 
 ### Basic Info tab
 
