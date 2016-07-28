@@ -92,15 +92,21 @@ Navitation to the **Settings** page can be done using **settings** state or **/s
 Child state specifies the tab that shall be activated. If child set is not set, it opens the default tab
 configured in **pipSettings** provider.
 
+### Usage
+
+Todo: Add her code snippet that shows how to add settings page into navigation switch the route.
+
 
 ## <a name="basic_info_tab"></a> Basic Info tab
 
-Basic tab allows to set account settings and change user preferences such as language or theme. It also lets user 
+**Basic Info** tab allows to set account settings and change user preferences such as language or theme. It also lets user 
 to change his password or verify primary email using verification code sent via email message.
 
 The tab requires users REST API to be implemented on the server.
 Todo: List specific REST operations required for this tab
 Todo: Add reference to the protocol definition under pip-webui-rest
+
+### Usage
 
 To add **Basic Info** tab into **Settings** page just register **pipUserSettings.BasicInfo** in angular module dependencies.
 If you add **pipUserSettings** module it will register all user settings tabs.
@@ -108,14 +114,31 @@ If you add **pipUserSettings** module it will register all user settings tabs.
 angular.module('myApp', [..., 'pipUserSettings.BasicInfo'])
 ```
 
-See online sample [here...](http://webui.pipdevs.com/pip-webui-settings/index.html#/settings/basic_info)
-
 <img src="images/img-settings-basic-info.png"/>
+
+See online sample [here...](http://webui.pipdevs.com/pip-webui-settings/index.html#/settings/basic_info)
 
 
 ## <a name="sessions_tab"></a> Active Sessions tab
 
-TBD...
+**Active Sessions** tab show active sessions open by the user. It also allows to close specific session or all of them
+except the current one.
+
+The tab requires sessions REST API to be implemented on the server.
+Todo: List specific REST operations required for this tab
+Todo: Add reference to the protocol definition under pip-webui-rest
+
+### Usage
+
+To add **Active Sessions** tab into **Settings** page just register **pipUserSettings.Sessions** in angular module dependencies.
+If you add **pipUserSettings** module it will register all user settings tabs.
+```javascript
+angular.module('myApp', [..., 'pipUserSettings.Sessions'])
+```
+
+<img src="images/img-settings-active-sessions.png"/>
+
+See online sample [here...](http://webui.pipdevs.com/pip-webui-settings/index.html#/settings/sessions)
 
 
 ## <a name="issues"></a> Questions and bugs
