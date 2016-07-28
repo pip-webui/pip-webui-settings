@@ -2,7 +2,7 @@
     "name": "pip-webui-settings",
     "version": "1.0.0",
     "author": "Digital Living Software Corp. <www.digitallivingsoftware.com>",
-    "description": "Settings components for Pip.WebUI applications",
+    "description": "Extensible settings page for Pip.WebUI",
     "contributors": [
         {
             "name": "Sergey Seroukhov",
@@ -21,13 +21,6 @@
     "noAnalyze": true,
     "license": "MIT",
     "private": false,
-    "scripts": {
-        "build": "gulp build",
-        "clean": "gulp clean",
-        "lint": "gulp lint",
-        "samples": "gulp launch",
-        "test": "karma start"
-    },
     "dependencies": {},
     "devDependencies": {
         "pip-webui-tasks": "git+https://github.com/pip-webui/pip-webui-tasks.git"
