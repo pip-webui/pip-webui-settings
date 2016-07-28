@@ -57,7 +57,7 @@ pipSettingsProvider.addTab({
     stateConfig: {
         url: '/custom',
         templateUrl: 'custom_tab.html',
-        controller: customController
+        controller: 'customController'
     }
 });
 ```
