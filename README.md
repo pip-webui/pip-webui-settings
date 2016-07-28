@@ -1,4 +1,4 @@
-# <img src="https://github.com/pip-webui/pip-webui/blob/master/doc/Logo.png" alt="Pip.WebUI Logo" style="max-width:30%"> <br/> Settings page
+# <img src="https://github.com/pip-webui/pip-webui/blob/master/doc/Logo.png" alt="Pip.WebUI Logo" style="max-width:30%"> <br/> Extensible settings page
 
 ![](https://img.shields.io/badge/license-MIT-blue.svg)
 
@@ -18,16 +18,12 @@ Basic Info tab allows to change user account and set preferences like language, 
 Also here user change change his password or verify his primary email address.
 This tab requires presence of the standard **users** REST API.
 
-Todo: change this image with better, smaller version
-
 <img src="doc/images/img-settings-basic-info.png"/>
 
 ### Active Sessions tab
 
 Active Sessions tab shows currently open user sessions and allows to close them.
 This tab requires presence of the standard **sessions** REST API.
-
-Todo: change this image with better, smaller version
 
 <img src="doc/images/img-settings-active-sessions.png"/>
 
