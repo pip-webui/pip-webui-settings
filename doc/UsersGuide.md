@@ -64,7 +64,7 @@ Todo: How tab controller is defined?
 
 ### Methods
 
-* **addTab(tab: any): void** - adds a new tab into the **Settings** page
+* **addTab(tab: any): void** - adds a new tab into the **Settings** page. The added tab is specified by configuration object that contains tab name, child state and other parameters
   - Params:
     + tab - tab configuration object (see below).
 
@@ -85,12 +85,32 @@ Todo: List tab configuration fields
 
 ## <a name="settings_page"></a> Settings page
 
-TBD...
+**Settings** page is implemented as extensible container that can be dynamically filled with tabs.
+On smaller screens the tabs transform into dropdown menu.
+
+Navitation to the **Settings** page can be done using **settings** state or **/settings** route. 
+Child state specifies the tab that shall be activated. If child set is not set, it opens the default tab
+configured in **pipSettings** provider.
 
 
 ## <a name="basic_info_tab"></a> Basic Info tab
 
-TBD...
+Basic tab allows to set account settings and change user preferences such as language or theme. It also lets user 
+to change his password or verify primary email using verification code sent via email message.
+
+The tab requires users REST API to be implemented on the server.
+Todo: List specific REST operations required for this tab
+Todo: Add reference to the protocol definition under pip-webui-rest
+
+To add **Basic Info** tab into **Settings** page just register **pipUserSettings.BasicInfo** in angular module dependencies.
+If you add **pipUserSettings** module it will register all user settings tabs.
+```javascript
+angular.module('myApp', [..., 'pipUserSettings.BasicInfo'])
+```
+
+See online sample [here...](http://webui.pipdevs.com/pip-webui-settings/index.html#/settings/basic_info)
+
+<img src="images/img-settings-basic-info.png"/>
 
 
 ## <a name="sessions_tab"></a> Active Sessions tab
