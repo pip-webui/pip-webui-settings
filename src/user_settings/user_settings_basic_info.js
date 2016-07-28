@@ -6,7 +6,8 @@
 (function (angular, _) {
     'use strict';
     var thisModule = angular.module('pipUserSettings.BasicInfo',
-        ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail']);
+        ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail', 
+            'pipSettings.Service', 'pipSettings.Tab',]);
 
     thisModule.config(function (pipSettingsProvider) {
         pipSettingsProvider.addTab({

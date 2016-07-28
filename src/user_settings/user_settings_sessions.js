@@ -6,7 +6,8 @@
 (function (angular, _, async) {
     'use strict';
 
-    var thisModule = angular.module('pipUserSettings.Sessions', []);
+    var thisModule = angular.module('pipUserSettings.Sessions', [
+        'pipSettings.Service', 'pipSettings.Tab',]);
 
     thisModule.config(function (pipSettingsProvider, pipUserSettingsTabDataProvider) {
         pipSettingsProvider.addTab({
