@@ -32,14 +32,5 @@ module.exports = {
             // '../pip-webui-support/dist/**/*',
             //'../pip-webui-help/dist/**/*'
         ]
-    },
-    samples: {
-        port: 8030,
-        publish: {
-            bucket: 'webui.pipdevs.com',
-            accessKeyId: 'AKIAIEXTTAEEHYPHS3OQ',
-            secretAccessKey: 'otMg2vQLZjF4Nkb90j1prtugoUCNm3XqLS/KkHyc',
-            region: 'us-west-1'
-        }
     }
 };

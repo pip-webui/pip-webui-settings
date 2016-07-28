@@ -4,3 +4,4 @@
 /lib
 /temp
 npm-debug.log
+build.secret.js
