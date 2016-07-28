@@ -30,8 +30,8 @@ This tab requires presence of the standard **sessions** REST API.
 ## Learn more about the module
 
 - [User's guide](doc/UsersGuide.md)
-- [API reference](http://webui-api.pipdevs.com/pip-webui-settings/index.html)
 - [Online samples](http://webui.pipdevs.com/pip-webui-settings/index.html)
+- [API reference](http://webui-api.pipdevs.com/pip-webui-settings/index.html)
 - [Developer's guide](doc/DevelopersGuide.md)
 - [Changelog](CHANGELOG.md)
 - [Pip.WebUI project website](http://www.pipwebui.org)
