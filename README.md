@@ -56,6 +56,8 @@ This tab requires presence of the standard **sessions** REST API.
 * [pip-webui-core](https://github.com/pip-webui/pip-webui-core): localization and other core services
 * [pip-webui-rest](https://github.com/pip-webui/pip-webui-rest): REST resources for users, files and sessions
 * [pip-webui-controls](https://github.com/pip-webui/pip-webui-controls): date and time controls (??)
+* [pip-webui-layouts](https://github.com/pip-webui/pip-webui-layouts): document layout
+* [pip-webui-nav](https://github.com/pip-webui/pip-webui-nav): navigation dropdown
 * [pip-webui-locations](https://github.com/pip-webui/pip-webui-locations): location control to show current user and signin locations
 * [pip-webui-pictures](https://github.com/pip-webui/pip-webui-pictures): user avatar control
 
