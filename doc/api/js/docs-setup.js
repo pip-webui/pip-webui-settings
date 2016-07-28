@@ -5,21 +5,12 @@ NG_DOCS={
   "pages": [
     {
       "section": "api",
-      "id": "pipSettings.Page:pipSettingsPageController",
-      "shortName": "pipSettingsPageController",
-      "type": "controller",
-      "moduleName": "pipSettings",
-      "shortDescription": "The controller is used for the whole settings pages and provides",
-      "keywords": "active_sessions adapt api authorization base_info changes component configuration content controller header integrated left load menu method mobile navigation object panel pipappbar pipsettings predefined require screens selected settings transfer user"
-    },
-    {
-      "section": "api",
       "id": "pipSettings.Service:pipSettings",
       "shortName": "pipSettings",
       "type": "service",
       "moduleName": "pipSettings",
       "shortDescription": "Service provides an interface to manage &#39;Settings&#39; component behaviour.",
-      "keywords": "abstract adding api app behaviour chose collection component config configuration default establish established interface manage menu method object opened pageobj passed phases pipsettings register registered returns service settings transeferred validates"
+      "keywords": "abstract adding api app behaviour chose collection component config configuration default establish established interface manage menu method object opened passed phases pipsettings register registered returns service settings tab tabobj tabs transeferred validates"
     },
     {
       "section": "api",
@@ -28,7 +19,16 @@ NG_DOCS={
       "type": "service",
       "moduleName": "pipSettings",
       "shortDescription": "Service provides an interface to manage &#39;Settings&#39; component behaviour.",
-      "keywords": "abstract adding api app behaviour chose collection component config configuration default establish established interface manage menu method object opened pageobj passed phases pipsettings pipsettingsprovider register registered returns service settings transeferred validates"
+      "keywords": "abstract adding api app behaviour chose collection component config configuration default establish established interface manage menu method object opened passed phases pipsettings pipsettingsprovider register registered returns service settings tab tabobj tabs transeferred validates"
+    },
+    {
+      "section": "api",
+      "id": "pipSettings.Tab:pipSettingsTabController",
+      "shortName": "pipSettingsTabController",
+      "type": "controller",
+      "moduleName": "pipSettings",
+      "shortDescription": "The controller is used for the whole settings tabs and provides",
+      "keywords": "active_sessions adapt api authorization base_info changes component configuration content controller header integrated left load menu method mobile navigation object panel pipappbar pipsettings predefined require screens selected settings tab tabs transfer user"
     },
     {
       "section": "api",
@@ -50,21 +50,21 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "pipUserSettings.Data:pipUserSettingsPageData",
-      "shortName": "pipUserSettingsPageData",
+      "id": "pipUserSettings.Data:pipUserSettingsTabData",
+      "shortName": "pipUserSettingsTabData",
       "type": "service",
       "moduleName": "pipUserSettings",
       "shortDescription": "Service reproduces a data layer for settings component.",
-      "keywords": "activities api application block cancels change collection component configuration contact contacts contant corresponded data email entity errorcallback events function interact interface invokes item layer method needed object parameters party passed pervious pipdatamodel pipusersettings pipusersettingspagedataprovider position previous process profile property record reftype remove removes removing reproduces retrieves saves server service session settings start successcallback transaction updated updates updating user verification verified verifies verifydata"
+      "keywords": "activities api application block cancels change collection component configuration contact contacts contant corresponded data email entity errorcallback events function interact interface invokes item layer method needed object parameters party passed pervious pipdatamodel pipusersettings pipusersettingstabdataprovider position previous process profile property record reftype remove removes removing reproduces retrieves saves server service session settings start successcallback transaction updated updates updating user verification verified verifies verifydata"
     },
     {
       "section": "api",
-      "id": "pipUserSettings.Data:pipUserSettingsPageDataProvider",
-      "shortName": "pipUserSettingsPageDataProvider",
+      "id": "pipUserSettings.Data:pipUserSettingsTabDataProvider",
+      "shortName": "pipUserSettingsTabDataProvider",
       "type": "service",
       "moduleName": "pipUserSettings",
       "shortDescription": "Service reproduces a data layer for settings component.",
-      "keywords": "active activities api blocks collection component contacts current data interact interface layer method object party pipdatamodel pipusersettings pipusersettingspagedataprovider promise reproduces request resolver retrieve retrieves server service session sessions settings user"
+      "keywords": "active activities api blocks collection component contacts current data interact interface layer method object party pipdatamodel pipusersettings pipusersettingstabdataprovider promise reproduces request resolver retrieve retrieves server service session sessions settings user"
     },
     {
       "section": "api",

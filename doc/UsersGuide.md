@@ -80,8 +80,16 @@ Todo: How tab controller is defined?
 
 ### Tab Configuration object
 
-Todo: List tab configuration fields
-
+* **state: String** - full state name. The name consists of 'settings.' + the short name tab
+* **title: String** - title in list tabs
+* **index: Number** - field for sorting of tabs. By default **index** equal 1000. Not required field.
+* **access: Function** - function of permission to display this tab. Not required field.
+* **visible: Boolean** - condition of display this tab. By default **visible** equal true. Not required field.
+* **stateConfig: Object** - equal an object passed at creation of tab in the field of **stateConfig**
+    - Often contains fields:
+        + controller - name of the controller
+        + url - name of url
+        + templateUrl - url to the html template
 
 ## <a name="settings_page"></a> Settings page
 
