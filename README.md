@@ -3,8 +3,8 @@
 ![](https://img.shields.io/badge/license-MIT-blue.svg)
 
 Settings page allows users to set their preferences and change application settings.
-Pip.WebUI.Settings module provides standard extensible settings page that can be filled with tabs by application developers.
-The module also contains few standard settings tabs for basic user info and active sessions.
+Pip.WebUI.Settings module implements extensible settings page that can be filled with tabs by application developers.
+The module also contains few standard tabs for basic user info and active sessions.
 
 ### pipSettings provider
 
