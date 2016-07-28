@@ -7,7 +7,7 @@
     'use strict';
     var thisModule = angular.module('pipUserSettings.BasicInfo',
         ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail', 
-            'pipSettings.Service', 'pipSettings.Tab',]);
+            'pipSettings.Service', 'pipSettings.Page',]);
 
     thisModule.config(function (pipSettingsProvider) {
         pipSettingsProvider.addTab({

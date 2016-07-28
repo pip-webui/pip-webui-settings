@@ -7,7 +7,7 @@
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Sessions', [
-        'pipSettings.Service', 'pipSettings.Tab',]);
+        'pipSettings.Service', 'pipSettings.Page',]);
 
     thisModule.config(function (pipSettingsProvider, pipUserSettingsTabDataProvider) {
         pipSettingsProvider.addTab({

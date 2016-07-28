@@ -9,7 +9,7 @@
     angular.module('pipUserSettings', [
         'ngMaterial', 'pipData',
         'pipSettings.Service',
-        'pipSettings.Tab',
+        'pipSettings.Page',
 
         'pipUserSettings.Data',
         'pipUserSettings.Strings',

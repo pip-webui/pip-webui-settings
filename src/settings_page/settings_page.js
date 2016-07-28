@@ -6,7 +6,7 @@
 (function (angular, _) {
     'use strict';
 
-    var thisModule = angular.module('pipSettings.Tab', [
+    var thisModule = angular.module('pipSettings.Page', [
         'pipState', 'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
         'pipSettings.Templates'
     ]);
@@ -15,14 +15,14 @@
         pipAuthStateProvider.state('settings', {
             url: '/settings?party_id',
             auth: true,
-            controller: 'pipSettingsTabController',
-            templateUrl: 'settings_tab/settings_tab.html'
+            controller: 'pipSettingsPageController',
+            templateUrl: 'settings_page/settings_page.html'
         });
     });
 
     /**
      * @ngdoc controller
-     * @name pipSettings.Tab:pipSettingsTabController
+     * @name pipSettings.Page:pipSettingsPageController
      *
      * @description
      * The controller is used for the whole settings tabs and provides
@@ -33,7 +33,7 @@
      *
      * @requires pipAppBar
      */
-    thisModule.controller('pipSettingsTabController',
+    thisModule.controller('pipSettingsPageController',
         function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings) {
 
             $scope.tabs = _.filter(pipSettings.getTabs(), function (tab) {
@@ -81,8 +81,8 @@
 
             /**
              * @ngdoc method
-             * @methodOf pipSettings.Tab:pipSettingsTabController
-             * @name pipSettings.Tab:pipSettingsTabController:onDropdownSelect
+             * @methodOf pipSettings.Page:pipSettingsPageController
+             * @name pipSettings.Page:pipSettingsPageController:onDropdownSelect
              *
              * @description
              * Method changes selected tab in the navigation menu and transfer to selected tab(state).
@@ -96,8 +96,8 @@
 
             /**
              * @ngdoc method
-             * @methodOf pipSettings.Tab:pipSettingsTabController
-             * @name pipSettings.Tab:pipSettingsTabController:onNavigationSelect
+             * @methodOf pipSettings.Page:pipSettingsPageController
+             * @name pipSettings.Page:pipSettingsPageController:onNavigationSelect
              *
              * @description
              * Method changes selected tab in the navigation menu and transfer to selected tab(state).
