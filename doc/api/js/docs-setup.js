@@ -5,6 +5,15 @@ NG_DOCS={
   "pages": [
     {
       "section": "api",
+      "id": "pipSettings.Page:pipSettingsPageController",
+      "shortName": "pipSettingsPageController",
+      "type": "controller",
+      "moduleName": "pipSettings",
+      "shortDescription": "The controller is used for the whole settings tabs and provides",
+      "keywords": "active_sessions adapt api authorization base_info changes component configuration content controller header integrated left load menu method mobile navigation object panel pipappbar pipsettings predefined require screens selected settings tab tabs transfer user"
+    },
+    {
+      "section": "api",
       "id": "pipSettings.Service:pipSettings",
       "shortName": "pipSettings",
       "type": "service",
@@ -20,15 +29,6 @@ NG_DOCS={
       "moduleName": "pipSettings",
       "shortDescription": "Service provides an interface to manage &#39;Settings&#39; component behaviour.",
       "keywords": "abstract adding api app behaviour chose collection component config configuration default establish established interface manage menu method object opened passed phases pipsettings pipsettingsprovider register registered returns service settings tab tabobj tabs transeferred validates"
-    },
-    {
-      "section": "api",
-      "id": "pipSettings.Tab:pipSettingsTabController",
-      "shortName": "pipSettingsTabController",
-      "type": "controller",
-      "moduleName": "pipSettings",
-      "shortDescription": "The controller is used for the whole settings tabs and provides",
-      "keywords": "active_sessions adapt api authorization base_info changes component configuration content controller header integrated left load menu method mobile navigation object panel pipappbar pipsettings predefined require screens selected settings tab tabs transfer user"
     },
     {
       "section": "api",

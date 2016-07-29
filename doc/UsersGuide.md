@@ -80,12 +80,12 @@ pipSettingsProvider.addTab({
 
 ### Tab Configuration object
 
-* **state: String** - full state name. The name consists of 'settings.' + the short name tab
-* **title: String** - title in tab list
-* **index: Number** - field for sorting tabs. By default **index** equal 1000. Not required field.
-* **access: Function** - function of permission to display this tab. Not required field.
-* **visible: Boolean** - condition of display this tab. By default **visible** equal true. Not required field.
-* **stateConfig: Object** - equal an object passed at creation of tab in the field of **stateConfig**
+* **state: String** - Name of tab state which is available via UI router. The name consists of 'settings.' + the short name tab
+* **title: String** - Tab title in the navigation menu.
+* **index: Number** - Field for sorting tabs. By default **index** equal 1000. Not required field.
+* **access: Function** - Function of permission to display this tab. Not required field. If it is true it will be available only for logged in users
+* **visible: Boolean** - Condition of display this tab. If it is true the tab will be visible. By default **visible** equal true. Not required field.
+* **stateConfig: Object** - Configuration object in format like UI Router state
     - Often contains fields:
         + controller - name of the controller
         + url - name of url
