@@ -1,4 +1,4 @@
-# <img src="https://github.com/pip-webui/pip-webui/blob/master/doc/Logo.png" alt="Pip.WebUI Logo" style="max-width:30%"> <br/> Extensible settings page
+# <img src="https://github.com/pip-webui/pip-webui/raw/master/doc/Logo.png" alt="Pip.WebUI Logo" style="max-width:30%"> <br/> Extensible settings page
 
 ![](https://img.shields.io/badge/license-MIT-blue.svg)
 
