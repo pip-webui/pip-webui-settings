@@ -28,22 +28,22 @@ Basic Info tab allows to change user account and set preferences like language, 
 Also here user change change his password or verify his primary email address.
 This tab requires presence of the standard **users** REST API.
 
-<img src="doc/images/img-settings-basic-info.png"/>
+<img src="https://github.com/pip-webui/pip-webui-settings/raw/master/doc/images/img-settings-basic-info.png"/>
 
 ### Active Sessions tab
 
 Active Sessions tab shows currently open user sessions and allows to close them.
 This tab requires presence of the standard **sessions** REST API.
 
-<img src="doc/images/img-settings-active-sessions.png"/>
+<img src="https://github.com/pip-webui/pip-webui-settings/raw/master/doc/images/img-settings-active-sessions.png"/>
 
 ## Learn more about the module
 
-- [User's guide](doc/UsersGuide.md)
+- [User's guide](https://github.com/pip-webui/pip-webui-settings/blob/master/doc/UsersGuide.md)
 - [Online samples](http://webui.pipdevs.com/pip-webui-settings/index.html)
 - [API reference](http://webui-api.pipdevs.com/pip-webui-settings/index.html)
-- [Developer's guide](doc/DevelopersGuide.md)
-- [Changelog](CHANGELOG.md)
+- [Developer's guide](https://github.com/pip-webui/pip-webui-settings/blob/master/doc/DevelopersGuide.md)
+- [Changelog](https://github.com/pip-webui/pip-webui-settings/blob/master/CHANGELOG.md)
 - [Pip.WebUI project website](http://www.pipwebui.org)
 - [Pip.WebUI project wiki](https://github.com/pip-webui/pip-webui/wiki)
 - [Pip.WebUI discussion forum](https://groups.google.com/forum/#!forum/pip-webui)
