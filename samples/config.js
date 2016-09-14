@@ -6,12 +6,12 @@
 (function (angular) {
     'use strict';
 
-    var thisModule = angular.module('pipSampleConfig', ['pipRest.State', 'pipRest', 'pipEntry', 'pipSideNav',
-        'pipAppBar', 'pipUserSettings', 'pipSettingsData', 'pipSettingsConfig']);
+    var thisModule = angular.module('pipSampleConfig', ['pipRest.State', 'pipRest', 'pipData', 'pipEntry', 'pipSideNav',
+        'pipAppBar', 'pipUserSettings', 'pipDataSettings', 'pipSettingsConfig']);
 
     // Configure application services before start
     thisModule.config(
-        function ($mdThemingProvider, $urlRouterProvider, pipAuthStateProvider, pipRestProvider, pipSideNavProvider,
+        function ($mdThemingProvider, $urlRouterProvider, pipAuthStateProvider, pipDataConfigProvider, pipSideNavProvider,
                   pipAppBarProvider, $mdIconProvider, pipSettingsProvider) {
 
             $mdIconProvider.iconSet('icons', 'images/icons.svg', 512);
@@ -23,7 +23,7 @@
             ]);
 
             // Configure REST API
-            pipRestProvider.serverUrl('http://alpha.pipservices.net');
+            pipDataConfigProvider.serverUrl('http://alpha.pipservices.net');
 
             // Configure default states
             pipAuthStateProvider.unauthorizedState('signin');
