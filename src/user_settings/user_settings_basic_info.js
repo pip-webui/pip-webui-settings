@@ -163,7 +163,10 @@
                 var tid = $scope.transaction.begin('RequestEmailVerification');
 
                 if ($rootScope.$user.id === $rootScope.$party.id) {
-                    pipDataUser.updateUser($scope.transaction, $rootScope.$user,
+                    pipDataUser.updateUser(
+                        {
+                            item: $rootScope.$user
+                        },
                         function (data) {
                             if ($scope.transaction.aborted(tid)) {
                                 return;
