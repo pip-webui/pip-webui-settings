@@ -37,7 +37,7 @@
     thisModule.controller('pipUserSettingsBasicInfoController',
         function ($scope, $rootScope, $mdDialog, $state, $window, $timeout, $mdTheming,
                   pipTranslate, pipTransaction, pipTheme,
-                  pipToasts, pipUserSettingsTabData, pipFormErrors) {
+                  pipToasts, pipDataUser, pipDataParty, pipFormErrors) {
 
             try {
                 $scope.originalParty = angular.toJson($rootScope.$party);
@@ -127,11 +127,19 @@
                     }
 
                     if (party !== $scope.originalParty) {
-                        pipUserSettingsTabData.updateParty($scope.transaction, $rootScope.$party,
+                        var tid = $scope.transaction.begin('UPDATING');
+
+                        pipDataParty.updateParty($rootScope.$party,
                             function (data) {
+                                if ($scope.transaction.aborted(tid)) {
+                                    return;
+                                }
+                                $scope.transaction.end();
+
                                 $scope.originalParty = party;
                                 $scope.nameCopy = data.name;
                             }, function (error) {
+                                $scope.transaction.end(error);
                                 $scope.message = String() + 'ERROR_' + error.status || error.data.status_code;
                                 $rootScope.$party = angular.fromJson($scope.originalParty);
                             }
@@ -152,10 +160,16 @@
              * Also it updates user's profile in $rootScope.
              */
             function updateUser() {
+                var tid = $scope.transaction.begin('RequestEmailVerification');
 
                 if ($rootScope.$user.id === $rootScope.$party.id) {
-                    pipUserSettingsTabData.updateUser($scope.transaction, $rootScope.$user,
+                    pipDataUser.updateUser($scope.transaction, $rootScope.$user,
                         function (data) {
+                            if ($scope.transaction.aborted(tid)) {
+                                return;
+                            }
+                            $scope.transaction.end();
+
                             pipTranslate.use(data.language);
                             $rootScope.$user.language = data.language;
                             $rootScope.$user.theme = data.theme;
@@ -165,7 +179,8 @@
 
                         }, function (error) {
                             var message;
-
+                            
+                            $scope.transaction.end(error);
                             message = String() + 'ERROR_' + error.status || error.data.status_code;
                             pipToasts.showNotification(pipTranslate.translate(message), null, null, null);
                         }

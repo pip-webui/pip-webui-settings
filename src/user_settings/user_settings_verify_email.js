@@ -16,7 +16,7 @@
      * Controller for verify email dialog panel.
      */
     thisModule.controller('pipUserSettingsVerifyEmailController',
-        function ($scope, $rootScope, $mdDialog, pipTransaction, pipFormErrors, pipUserSettingsTabData, email) {
+        function ($scope, $rootScope, $mdDialog, pipTransaction, pipFormErrors, pipDataUser, email) {
 
             $scope.emailVerified = false;
             $scope.data = {
@@ -68,7 +68,20 @@
              * Sends request to verify entered email.
              */
             function onRequestVerificationClick() {
-                pipUserSettingsTabData.requestEmailVerification($scope.transaction);
+                    var tid = $scope.transaction.begin('RequestEmailVerification');
+
+                pipDataUser.requestEmailVerification(
+                    {},                         
+                    function (result) {
+                            if ($scope.transaction.aborted(tid)) {
+                                return;
+                            }
+                            $scope.transaction.end();
+                        }, 
+                        function (error) {
+                            $scope.transaction.end(error);
+                        }
+                    );
             }
 
             /**
@@ -85,14 +98,24 @@
                 if ($scope.form.$invalid) {
                     return;
                 }
+                var tid = $scope.transaction.begin('Verifying');
 
-                pipUserSettingsTabData.verifyEmail(
-                    $scope.transaction,
-                    $scope.data,
-                    function () {
+                pipDataUser.verifyEmail(
+                    {
+                        email: $scope.data.email,
+                        code: $scope.data.code
+                    }, 
+                    function (verifyData) {
+                            if ($scope.transaction.aborted(tid)) {
+                                return;
+                            }
+                            $scope.transaction.end();
+
                         $mdDialog.hide(true);
                     },
                     function (error) {
+                        $scope.transaction.end(error);
+
                         pipFormErrors.setFormError(
                             $scope.form, error,
                             {

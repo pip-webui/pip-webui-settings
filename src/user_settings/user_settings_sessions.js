@@ -9,7 +9,7 @@
     var thisModule = angular.module('pipUserSettings.Sessions', [
         'pipSettings.Service', 'pipSettings.Page',]);
 
-    thisModule.config(function (pipSettingsProvider, pipUserSettingsTabDataProvider) {
+    thisModule.config(function (pipSettingsProvider, pipDataSessionProvider) {
         pipSettingsProvider.addTab({
             state: 'sessions',
             index: 3,
@@ -20,8 +20,8 @@
                 templateUrl: 'user_settings/user_settings_sessions.html',
                 auth: true,
                 resolve: {
-                    sessions: pipUserSettingsTabDataProvider.readSessionsResolver,
-                    sessionId: pipUserSettingsTabDataProvider.readSessionIdResolver
+                    sessions: pipDataSessionProvider.readSessionsResolver,
+                    sessionId: pipDataSessionProvider.readSessionIdResolver
                 }
             }
         });
@@ -35,7 +35,7 @@
      * Controller provides an interface for managing active sessions.
      */
     thisModule.controller('pipUserSettingsSessionsController',
-        function ($scope, pipTransaction, pipUserSettingsTabData, sessions, sessionId) {
+        function ($scope, pipTransaction, pipDataSession, sessions, sessionId) {
 
             $scope.sessionId = sessionId;
             $scope.transaction = pipTransaction('settings.sessions', $scope);
@@ -74,12 +74,21 @@
                 if (session.id === $scope.sessionId) {
                     return;
                 }
-
-                pipUserSettingsTabData.removeSession($scope.transaction, session,
+                var tid = $scope.transaction.begin('REMOVING');
+                pipDataSession.removeSession(
+                    {
+                        session: session
+                    },
                     function () {
+                            if ($scope.transaction.aborted(tid)) {
+                                return;
+                            }
+                            $scope.transaction.end();
+
                         $scope.sessions = _.without($scope.sessions, session);
                     },
                     function (error) {
+                        $scope.transaction.end(error);
                         $scope.message = 'ERROR_' + error.status || error.data.status_code;
                     }
                 );

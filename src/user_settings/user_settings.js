@@ -11,7 +11,6 @@
         'pipSettings.Service',
         'pipSettings.Page',
 
-        'pipUserSettings.Data',
         'pipUserSettings.Strings',
         'pipUserSettings.Sessions',
         'pipUserSettings.BasicInfo',

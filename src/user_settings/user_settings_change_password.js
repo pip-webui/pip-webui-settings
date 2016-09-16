@@ -16,7 +16,7 @@
      * Controller for dialog panel of password change.
      */
     thisModule.controller('pipUserSettingsChangePasswordController',
-        function ($scope, $rootScope, $mdDialog, email, pipRest, pipTransaction, pipFormErrors) {
+        function ($scope, $rootScope, $mdDialog, email, pipDataUser, pipTransaction, pipFormErrors) {
 
             $scope.transaction = pipTransaction('settings.change_password', $scope);
             $scope.errorsRepeatWithHint = function (form, formPart) {
@@ -91,7 +91,7 @@
 
                 $scope.changePasData.email = email;
 
-                pipRest.changePassword().call(
+                pipDataUser.changePassword(
                     $scope.changePasData,
                     function () {
                         $scope.transaction.end();
