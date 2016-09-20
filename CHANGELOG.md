@@ -1,5 +1,10 @@
 # Pip.WebUI.Settings Changelog
 
+Добавлены настроки appBar для  settingsPage.
+            showTitleText(string) - задает текст, убирает лого. По умолчанию отображается текст "Settings".
+            showTitleLogo(string) - задает путь  к картинке логотипа, текст убирается.
+            showNavIcon(boolean) - прячет кнопку меню в appBar, по умолчанию кнопка отображается.
+
 ## <a name="1.0.0"></a> 1.0.0 (2016-07-30)
 
 Initial release of extensible settings page
