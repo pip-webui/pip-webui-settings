@@ -72,8 +72,18 @@
              * Config header panel
              */
             function appHeader() {
-                pipAppBar.showMenuNavIcon();
-                pipAppBar.showTitleText('SETTINGS_TITLE');
+                var titleText = pipSettings.showTitleText();
+
+                if (pipSettings.showNavIcon()) {
+                    pipAppBar.showMenuNavIcon();
+                }
+
+                if (!!titleText) {
+                    pipAppBar.showTitleText(titleText);
+                } else {
+                    pipAppBar.showTitleLogo(pipSettings.showTitleLogo());
+                }
+
                 pipAppBar.showLocalActions(null, []);
                 pipAppBar.showShadowSm();
                 pipAppBar.hideSearch();

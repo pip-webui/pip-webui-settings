@@ -520,8 +520,18 @@ module.run(['$templateCache', function($templateCache) {
              * Config header panel
              */
             function appHeader() {
-                pipAppBar.showMenuNavIcon();
-                pipAppBar.showTitleText('SETTINGS_TITLE');
+                var titleText = pipSettings.showTitleText();
+
+                if (pipSettings.showNavIcon()) {
+                    pipAppBar.showMenuNavIcon();
+                }
+
+                if (!!titleText) {
+                    pipAppBar.showTitleText(titleText);
+                } else {
+                    pipAppBar.showTitleLogo(pipSettings.showTitleLogo());
+                }
+
                 pipAppBar.showLocalActions(null, []);
                 pipAppBar.showShadowSm();
                 pipAppBar.hideSearch();
@@ -596,7 +606,15 @@ module.run(['$templateCache', function($templateCache) {
     thisModule.provider('pipSettings', ['pipAuthStateProvider', function (pipAuthStateProvider) {
 
         var defaultTab,
-            tabs = [];
+            tabs = [],
+            titleText = 'SETTINGS_TITLE',
+            titleLogo = null,
+            isNavIcon = true;
+
+        // Configure global parameters
+        this.showTitleText = showTitleText;
+        this.showTitleLogo = showTitleLogo;
+        this.showNavIcon = showNavIcon;
 
         return {
             /**
@@ -647,6 +665,10 @@ module.run(['$templateCache', function($templateCache) {
              * @returns {Array<Object>} Collection of tabs.
              */
             getDefaultTab: getDefaultTab,
+                    
+            showTitleText: showTitleText,
+            showTitleLogo: showTitleLogo,
+            showNavIcon: showNavIcon,
 
             $get: function () {
                 /**
@@ -705,7 +727,11 @@ module.run(['$templateCache', function($templateCache) {
                      *
                      * @param {string} name     Name of the default state for this component.
                      */
-                    setDefaultTab: setDefaultTab
+                    setDefaultTab: setDefaultTab,
+
+                    showTitleText: showTitleText,
+                    showTitleLogo: showTitleLogo,
+                    showNavIcon: showNavIcon
                 };
             }
         };
@@ -793,6 +819,33 @@ module.run(['$templateCache', function($templateCache) {
                 throw new Error('Invalid state configuration object');
             }
         }
+
+        function showTitleText (newTitleText) {
+            if (newTitleText) {
+                titleText = newTitleText;
+                titleLogo = null;
+            }
+
+            return titleText;
+        }
+
+        function showTitleLogo(newTitleLogo) {
+            if (newTitleLogo) {
+                titleLogo = newTitleLogo;
+                titleText = null;
+            }
+
+            return titleLogo;
+        }
+
+        function showNavIcon(value) {
+            if (value !== null && value !== undefined) {
+                isNavIcon = !!value;
+            }
+
+            return isNavIcon;
+        }
+
     }]);
 
 })(window.angular, window._);

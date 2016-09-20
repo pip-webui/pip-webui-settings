@@ -19,7 +19,15 @@
     thisModule.provider('pipSettings', function (pipAuthStateProvider) {
 
         var defaultTab,
-            tabs = [];
+            tabs = [],
+            titleText = 'SETTINGS_TITLE',
+            titleLogo = null,
+            isNavIcon = true;
+
+        // Configure global parameters
+        this.showTitleText = showTitleText;
+        this.showTitleLogo = showTitleLogo;
+        this.showNavIcon = showNavIcon;
 
         return {
             /**
@@ -70,6 +78,10 @@
              * @returns {Array<Object>} Collection of tabs.
              */
             getDefaultTab: getDefaultTab,
+                    
+            showTitleText: showTitleText,
+            showTitleLogo: showTitleLogo,
+            showNavIcon: showNavIcon,
 
             $get: function () {
                 /**
@@ -128,7 +140,11 @@
                      *
                      * @param {string} name     Name of the default state for this component.
                      */
-                    setDefaultTab: setDefaultTab
+                    setDefaultTab: setDefaultTab,
+
+                    showTitleText: showTitleText,
+                    showTitleLogo: showTitleLogo,
+                    showNavIcon: showNavIcon
                 };
             }
         };
@@ -216,6 +232,33 @@
                 throw new Error('Invalid state configuration object');
             }
         }
+
+        function showTitleText (newTitleText) {
+            if (newTitleText) {
+                titleText = newTitleText;
+                titleLogo = null;
+            }
+
+            return titleText;
+        }
+
+        function showTitleLogo(newTitleLogo) {
+            if (newTitleLogo) {
+                titleLogo = newTitleLogo;
+                titleText = null;
+            }
+
+            return titleLogo;
+        }
+
+        function showNavIcon(value) {
+            if (value !== null && value !== undefined) {
+                isNavIcon = !!value;
+            }
+
+            return isNavIcon;
+        }
+
     });
 
 })(window.angular, window._);
