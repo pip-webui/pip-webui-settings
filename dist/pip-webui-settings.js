@@ -760,8 +760,7 @@ module.run(['$templateCache', function($templateCache) {
             $scope.selected = {};
             if ($state.current.name !== 'settings') {
                 initSelect($state.current.name);
-            }
-            if ($state.current.name === 'settings' && pipSettings.getDefaultTab()) {
+            } else if ($state.current.name === 'settings' && pipSettings.getDefaultTab()) {
                 initSelect(pipSettings.getDefaultTab().state);
             } else {
                 $timeout(function () {
