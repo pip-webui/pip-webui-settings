@@ -53,11 +53,37 @@
              * Closes all active session.
              */
             function onRemoveAll() {
-                async.each($scope.sessions, function (session) {
-                    if (session.id !== $scope.sessionId) {
-                        $scope.onRemove(session);
-                    }
-                });
+                var tid = $scope.transaction.begin('REMOVING');
+
+                async.eachSeries(
+                    $scope.sessions,
+                    function (session, callback) {
+                        if (session.id == $scope.sessionId) {
+                            callback();
+                        } else {
+                            pipDataSession.removeSession(
+                                {
+                                    session: session
+                                },
+                                function () {
+                                    $scope.sessions = _.without($scope.sessions, session);
+                                    callback();
+                                },
+                                function (error) {
+                                    callback;
+                                }
+                            );
+                        }
+                    },
+                    function (err) {
+                        if (err) {
+                            $scope.transaction.end(error);
+                        }
+                        if ($scope.transaction.aborted(tid)) {
+                            return;
+                        }
+                        $scope.transaction.end();
+                    });                
             }
 
             /**
@@ -70,7 +96,7 @@
              *
              * @param {Object} session  Session configuration object
              */
-            function onRemove(session) {
+            function onRemove(session, callback) {
                 if (session.id === $scope.sessionId) {
                     return;
                 }
@@ -80,12 +106,15 @@
                         session: session
                     },
                     function () {
-                            if ($scope.transaction.aborted(tid)) {
-                                return;
-                            }
-                            $scope.transaction.end();
+                        if ($scope.transaction.aborted(tid)) {
+                            return;
+                        }
+                        $scope.transaction.end();
 
                         $scope.sessions = _.without($scope.sessions, session);
+                        if (callback) {
+                            callback();
+                        }
                     },
                     function (error) {
                         $scope.transaction.end(error);
