@@ -13,6 +13,16 @@
                 templateUrl: 'settings_tab.html'
             }
         });
+        pipSettingsProvider.addTab({
+            state: 'test2',
+            title: 'Test2 settings tab',
+            auth: true,
+            stateConfig: {
+                url: '/test2',
+                template: 'test2'
+            }
+        });
+        
 
     });
 

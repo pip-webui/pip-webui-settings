@@ -6,39 +6,47 @@
 (function (angular) {
     'use strict';
 
-    var thisModule = angular.module('pipSampleConfig', ['pipRest.State', 'pipRest', 'pipData', 'pipEntry', 'pipSideNav',
-        'pipAppBar', 'pipUserSettings', 'pipDataSettings', 'pipSettingsConfig']);
+    var thisModule = angular.module('pipSampleConfig', [ 'pipSideNav',
+        'pipAppBar', 'pipSettings', 'pipSettingsConfig']);
+    // 'pipRest.State', 'pipRest', 'pipData', 'pipDataSettings', 'pipEntry',
 
     // Configure application services before start
     thisModule.config(
-        function ($mdThemingProvider, $urlRouterProvider, pipAuthStateProvider, pipDataConfigProvider, pipSideNavProvider,
+        function ($mdThemingProvider, $urlRouterProvider,
+                  //pipAuthStateProvider,
+                  // pipSideNavProvider, pipDataConfigProvider,
                   pipAppBarProvider, $mdIconProvider, pipSettingsProvider) {
 
             $mdIconProvider.iconSet('icons', 'images/icons.svg', 512);
 
             // Set global constants
-            pipAppBarProvider.appTitleText('Sample Application');
+            //pipAppBarProvider.appTitleText('Sample Application');
 
             pipSettingsProvider.showNavIcon(false);
             pipSettingsProvider.showTitleLogo('images/piplife_logo.svg');
 
+            /*
             pipAppBarProvider.globalSecondaryActions([
                 {name: 'global.signout', title: 'SIGNOUT', state: 'signout'}
-            ]);
+            ]);*/
 
             // Configure REST API
-            pipDataConfigProvider.serverUrl('http://alpha.pipservices.net');
+            //pipDataConfigProvider.serverUrl('http://alpha.pipservices.net');
 
             // Configure default states
-            pipAuthStateProvider.unauthorizedState('signin');
-            pipAuthStateProvider.authorizedState('settings');
+
+            $urlRouterProvider.otherwise('settings');
+            //pipAuthStateProvider.unauthorizedState('signin');
+            //pipAuthStateProvider.authorizedState('settings');
 
             $urlRouterProvider.otherwise(function ($injector, $location) {
                 return $location.$$path === '' ? '/signin' : '/settings';
             });
 
+            pipSettingsProvider.setDefaultTab('test1');
+
             // Configure navigation menu
-            pipSideNavProvider.sections([
+            /*pipSideNavProvider.sections([
                 {
                     links: [
                         {title: 'Settings', url: '/settings'}
@@ -48,7 +56,7 @@
                         {title: 'Signout', url: '/signout'}
                     ]
                 }
-            ]);
+            ]);*/
         }
     );
 

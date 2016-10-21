@@ -1,3 +1,18 @@
+/**
+ * @file Registration of settings components
+ * @copyright Digital Living Software Corp. 2014-2016
+ */
+
+(function (angular) {
+    'use strict';
+
+    angular.module('pipSettings', [
+        'pipSettings.Service',
+        'pipSettings.Page'
+    ]);
+
+})(window.angular);
+
 (function(module) {
 try {
   module = angular.module('pipSettings.Templates');
@@ -432,21 +447,6 @@ module.run(['$templateCache', function($templateCache) {
 })();
 
 /**
- * @file Registration of settings components
- * @copyright Digital Living Software Corp. 2014-2016
- */
-
-(function (angular) {
-    'use strict';
-
-    angular.module('pipSettings', [
-        'pipSettings.Service',
-        'pipSettings.Page'
-    ]);
-
-})(window.angular);
-
-/**
  * @file Define controller for a settings tab
  * @copyright Digital Living Software Corp. 2014-2016
  */
@@ -455,12 +455,12 @@ module.run(['$templateCache', function($templateCache) {
     'use strict';
 
     var thisModule = angular.module('pipSettings.Page', [
-        'pipState', 'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
+        'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
         'pipSettings.Templates'
     ]);
 
-    thisModule.config(['pipAuthStateProvider', function (pipAuthStateProvider) {
-        pipAuthStateProvider.state('settings', {
+    thisModule.config(['$stateProvider', function ($stateProvider) {
+        $stateProvider.state('settings', {
             url: '/settings?party_id',
             auth: true,
             controller: 'pipSettingsPageController',
@@ -508,7 +508,7 @@ module.run(['$templateCache', function($templateCache) {
                 });
             }
 
-            appHeader();
+            //appHeader();
 
             /** @see onNavigationSelect */
             $scope.onNavigationSelect = onNavigationSelect;
@@ -602,7 +602,7 @@ module.run(['$templateCache', function($templateCache) {
      * Service provides an interface to manage 'Settings' component behaviour.
      * It is available on config and run phases.
      */
-    thisModule.provider('pipSettings', ['pipAuthStateProvider', function (pipAuthStateProvider) {
+    thisModule.provider('pipSettings', ['$stateProvider', function ($stateProvider) { // pipAuthStateProvider
 
         var defaultTab,
             tabs = [],
@@ -776,7 +776,7 @@ module.run(['$templateCache', function($templateCache) {
                 stateConfig: _.clone(tabObj.stateConfig, true)
             });
 
-            pipAuthStateProvider.state(getFullStateName(tabObj.state), tabObj.stateConfig);
+            $stateProvider.state(getFullStateName(tabObj.state), tabObj.stateConfig);
 
             // if we just added first state and no default state is specified
             if (typeof defaultTab === 'undefined' && tabs.length === 1) {
@@ -793,8 +793,9 @@ module.run(['$templateCache', function($templateCache) {
             }
 
             defaultTab = getFullStateName(name);
-
-            pipAuthStateProvider.redirect('settings', getFullStateName(name));
+            
+            //$stateProvider.go(defaultTab);
+            //pipAuthStateProvider.redirect('settings', getFullStateName(name));
         }
 
         /**

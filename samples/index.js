@@ -11,11 +11,11 @@
         'ui.router', 'ui.utils', 'ngResource', 'ngAria', 'ngCookies', 'ngSanitize', 'ngMessages',
         'ngMaterial', 'wu.masonry', 'LocalStorageModule', 'angularFileUpload', 'ngAnimate',
         // Application Configuration must go first
-        'pipSampleConfig', 'pipSettings',
+        'pipSampleConfig', 'pipSettings', 'pipTranslate',
         // Modules from WebUI Framework
-        'pipCore', 'pipRest', 'pipData', 'pipBasicControls', 'pipLayout', 'pipNav',
+        'pipControls', 'pipLayout', 'pipNav', 'pipLists', // 'pipCore', 'pipRest', 'pipData',
         // Sample Application Modules
-        'pipEntry', 'pipRest.State', 'pipUserSettings'
+        'pipSettings'//'pipUserSettings', 'pipRest.State', 'pipEntry',
     ]);
 
     thisModule.controller('pipSampleController',

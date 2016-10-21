@@ -16,7 +16,7 @@
      * Service provides an interface to manage 'Settings' component behaviour.
      * It is available on config and run phases.
      */
-    thisModule.provider('pipSettings', function (pipAuthStateProvider) {
+    thisModule.provider('pipSettings', function ($stateProvider) { // pipAuthStateProvider
 
         var defaultTab,
             tabs = [],
@@ -190,7 +190,7 @@
                 stateConfig: _.clone(tabObj.stateConfig, true)
             });
 
-            pipAuthStateProvider.state(getFullStateName(tabObj.state), tabObj.stateConfig);
+            $stateProvider.state(getFullStateName(tabObj.state), tabObj.stateConfig);
 
             // if we just added first state and no default state is specified
             if (typeof defaultTab === 'undefined' && tabs.length === 1) {
@@ -207,8 +207,9 @@
             }
 
             defaultTab = getFullStateName(name);
-
-            pipAuthStateProvider.redirect('settings', getFullStateName(name));
+            
+            //$stateProvider.go(defaultTab);
+            //pipAuthStateProvider.redirect('settings', getFullStateName(name));
         }
 
         /**

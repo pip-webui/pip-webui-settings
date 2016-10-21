@@ -7,12 +7,12 @@
     'use strict';
 
     var thisModule = angular.module('pipSettings.Page', [
-        'pipState', 'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
+        'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
         'pipSettings.Templates'
     ]);
 
-    thisModule.config(function (pipAuthStateProvider) {
-        pipAuthStateProvider.state('settings', {
+    thisModule.config(function ($stateProvider) {
+        $stateProvider.state('settings', {
             url: '/settings?party_id',
             auth: true,
             controller: 'pipSettingsPageController',
@@ -60,7 +60,7 @@
                 });
             }
 
-            appHeader();
+            //appHeader();
 
             /** @see onNavigationSelect */
             $scope.onNavigationSelect = onNavigationSelect;
