@@ -25,7 +25,11 @@
 
 <body ng-app="pipSample" ng-controller="pipSampleController" >
     <pip-main ng-if="!$reset">
-        <pip-appbar title="Sample Application" show-menu="true">
+        <pip-appbar>
+            <pip-nav-icon pip-appbar-part="icon"></pip-nav-icon>
+            <pip-breadcrumb pip-appbar-part="title:breadcrumb"></pip-breadcrumb>
+            <pip-primary-actions pip-appbar-part="actions:primary"></pip-primary-actions> <!---->
+            <pip-secondary-actions pip-appbar-part="menu"></pip-secondary-actions> <!--pip-appbar-part="menu"-->
         </pip-appbar>
 
         <pip-sidenav></pip-sidenav>

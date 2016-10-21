@@ -8,7 +8,7 @@
 
     var thisModule = angular.module('pipSettings.Page', [
         'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
-        'pipSettings.Templates'
+        'pipSettings.Templates', 'pipNavIcon', 'pipActions.Service'
     ]);
 
     thisModule.config(function ($stateProvider) {
@@ -34,7 +34,8 @@
      * @requires pipAppBar
      */
     thisModule.controller('pipSettingsPageController',
-        function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings) {
+        function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings, pipActions,
+                  pipBreadcrumb, pipNavIcon) {
 
             $scope.tabs = _.filter(pipSettings.getTabs(), function (tab) {
                 if (tab.visible === true && (tab.access ? tab.access($rootScope.$user, tab) : true)) {
@@ -60,7 +61,7 @@
                 });
             }
 
-            //appHeader();
+            appHeader();
 
             /** @see onNavigationSelect */
             $scope.onNavigationSelect = onNavigationSelect;
@@ -71,21 +72,14 @@
              * Config header panel
              */
             function appHeader() {
-                var titleText = pipSettings.showTitleText();
-
-                if (pipSettings.showNavIcon()) {
-                    pipAppBar.showMenuNavIcon();
-                }
-
-                if (!!titleText) {
-                    pipAppBar.showTitleText(titleText);
-                } else {
-                    pipAppBar.showTitleLogo(pipSettings.showTitleLogo());
-                }
-
-                pipAppBar.showLocalActions(null, []);
-                pipAppBar.showShadowSm();
-                pipAppBar.hideSearch();
+                pipActions.hide();
+                pipAppBar.part('menu', true);
+                pipAppBar.part('actions', 'primary');
+                pipAppBar.part('icon', true);
+                pipAppBar.part('title', 'breadcrumb');
+                pipAppBar.hideShadow();
+                pipBreadcrumb.text('Settings');
+                pipNavIcon.menu();
             }
 
             /**
