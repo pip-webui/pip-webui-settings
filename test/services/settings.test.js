@@ -7,7 +7,7 @@ describe('Settings', function () {
     beforeEach(module('pipRest'));
 
     beforeEach(function () {
-        module('pipState', function (pipAuthStateProvider) {
+        module('pipRouting', function (pipAuthStateProvider) {
             stateProvider = pipAuthStateProvider;
             stateSpy = sinon.spy(stateProvider, 'state');
         });
