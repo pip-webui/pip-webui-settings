@@ -456,7 +456,7 @@ module.run(['$templateCache', function($templateCache) {
 
     var thisModule = angular.module('pipSettings.Page', [
         'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
-        'pipSettings.Templates'
+        'pipSettings.Templates', 'pipNavIcon', 'pipActions.Service'
     ]);
 
     thisModule.config(['$stateProvider', function ($stateProvider) {
@@ -482,7 +482,8 @@ module.run(['$templateCache', function($templateCache) {
      * @requires pipAppBar
      */
     thisModule.controller('pipSettingsPageController',
-        ['$scope', '$state', '$rootScope', '$timeout', 'pipAppBar', 'pipSettings', function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings) {
+        ['$scope', '$state', '$rootScope', '$timeout', 'pipAppBar', 'pipSettings', 'pipActions', 'pipBreadcrumb', 'pipNavIcon', function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings, pipActions,
+                  pipBreadcrumb, pipNavIcon) {
 
             $scope.tabs = _.filter(pipSettings.getTabs(), function (tab) {
                 if (tab.visible === true && (tab.access ? tab.access($rootScope.$user, tab) : true)) {
@@ -508,7 +509,7 @@ module.run(['$templateCache', function($templateCache) {
                 });
             }
 
-            //appHeader();
+            appHeader();
 
             /** @see onNavigationSelect */
             $scope.onNavigationSelect = onNavigationSelect;
@@ -519,21 +520,14 @@ module.run(['$templateCache', function($templateCache) {
              * Config header panel
              */
             function appHeader() {
-                var titleText = pipSettings.showTitleText();
-
-                if (pipSettings.showNavIcon()) {
-                    pipAppBar.showMenuNavIcon();
-                }
-
-                if (!!titleText) {
-                    pipAppBar.showTitleText(titleText);
-                } else {
-                    pipAppBar.showTitleLogo(pipSettings.showTitleLogo());
-                }
-
-                pipAppBar.showLocalActions(null, []);
-                pipAppBar.showShadowSm();
-                pipAppBar.hideSearch();
+                pipActions.hide();
+                pipAppBar.part('menu', true);
+                pipAppBar.part('actions', 'primary');
+                pipAppBar.part('icon', true);
+                pipAppBar.part('title', 'breadcrumb');
+                pipAppBar.hideShadow();
+                pipBreadcrumb.text('Settings');
+                pipNavIcon.menu();
             }
 
             /**
