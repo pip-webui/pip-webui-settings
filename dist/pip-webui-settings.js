@@ -441,6 +441,76 @@ module.run(['$templateCache', function($templateCache) {
 
 (function () {
     'use strict';
+    var thisModule = angular.module('pipSettings.Page', [
+        'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
+        'pipSettings.Templates', 'pipNavIcon', 'pipActions.Service'
+    ]);
+    thisModule.config(['$stateProvider', function ($stateProvider) {
+        $stateProvider.state('settings', {
+            url: '/settings?party_id',
+            auth: true,
+            controller: 'pipSettingsPageController',
+            templateUrl: 'settings_page/settings_page.html'
+        });
+    }]);
+    thisModule.controller('pipSettingsPageController', ['$scope', '$state', '$rootScope', '$timeout', 'pipAppBar', 'pipSettings', 'pipActions', 'pipBreadcrumb', 'pipNavIcon', function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings, pipActions, pipBreadcrumb, pipNavIcon) {
+        $scope.tabs = _.filter(pipSettings.getTabs(), function (tab) {
+            if (tab.visible === true && (tab.access ? tab.access($rootScope.$user, tab) : true)) {
+                return tab;
+            }
+        });
+        $scope.tabs = _.sortBy($scope.tabs, 'index');
+        $scope.selected = {};
+        if ($state.current.name !== 'settings') {
+            initSelect($state.current.name);
+        }
+        else if ($state.current.name === 'settings' && pipSettings.getDefaultTab()) {
+            initSelect(pipSettings.getDefaultTab().state);
+        }
+        else {
+            $timeout(function () {
+                if (pipSettings.getDefaultTab()) {
+                    initSelect(pipSettings.getDefaultTab().state);
+                }
+                if (!pipSettings.getDefaultTab() && $scope.tabs.length > 0) {
+                    initSelect($scope.tabs[0].state);
+                }
+            });
+        }
+        appHeader();
+        $scope.onNavigationSelect = onNavigationSelect;
+        $scope.onDropdownSelect = onDropdownSelect;
+        function appHeader() {
+            pipActions.hide();
+            pipAppBar.part('menu', true);
+            pipAppBar.part('actions', 'primary');
+            pipAppBar.part('icon', true);
+            pipAppBar.part('title', 'breadcrumb');
+            pipAppBar.hideShadow();
+            pipBreadcrumb.text = 'Settings';
+            pipNavIcon.menu();
+        }
+        function onDropdownSelect(state) {
+            onNavigationSelect(state.state);
+        }
+        function onNavigationSelect(state) {
+            initSelect(state);
+            if ($scope.selected.tab) {
+                $state.go(state);
+            }
+        }
+        function initSelect(state) {
+            $scope.selected.tab = _.find($scope.tabs, function (tab) {
+                return tab.state === state;
+            });
+            $scope.selected.tabIndex = _.indexOf($scope.tabs, $scope.selected.tab);
+            $scope.selected.tabId = state;
+        }
+    }]);
+})();
+
+(function () {
+    'use strict';
     var thisModule = angular.module('pipSettings.Service', []);
     thisModule.provider('pipSettings', ['$stateProvider', function ($stateProvider) {
         var defaultTab, tabs = [], titleText = 'SETTINGS_TITLE', titleLogo = null, isNavIcon = true;
@@ -543,76 +613,6 @@ module.run(['$templateCache', function($templateCache) {
                 isNavIcon = !!value;
             }
             return isNavIcon;
-        }
-    }]);
-})();
-
-(function () {
-    'use strict';
-    var thisModule = angular.module('pipSettings.Page', [
-        'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
-        'pipSettings.Templates', 'pipNavIcon', 'pipActions.Service'
-    ]);
-    thisModule.config(['$stateProvider', function ($stateProvider) {
-        $stateProvider.state('settings', {
-            url: '/settings?party_id',
-            auth: true,
-            controller: 'pipSettingsPageController',
-            templateUrl: 'settings_page/settings_page.html'
-        });
-    }]);
-    thisModule.controller('pipSettingsPageController', ['$scope', '$state', '$rootScope', '$timeout', 'pipAppBar', 'pipSettings', 'pipActions', 'pipBreadcrumb', 'pipNavIcon', function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings, pipActions, pipBreadcrumb, pipNavIcon) {
-        $scope.tabs = _.filter(pipSettings.getTabs(), function (tab) {
-            if (tab.visible === true && (tab.access ? tab.access($rootScope.$user, tab) : true)) {
-                return tab;
-            }
-        });
-        $scope.tabs = _.sortBy($scope.tabs, 'index');
-        $scope.selected = {};
-        if ($state.current.name !== 'settings') {
-            initSelect($state.current.name);
-        }
-        else if ($state.current.name === 'settings' && pipSettings.getDefaultTab()) {
-            initSelect(pipSettings.getDefaultTab().state);
-        }
-        else {
-            $timeout(function () {
-                if (pipSettings.getDefaultTab()) {
-                    initSelect(pipSettings.getDefaultTab().state);
-                }
-                if (!pipSettings.getDefaultTab() && $scope.tabs.length > 0) {
-                    initSelect($scope.tabs[0].state);
-                }
-            });
-        }
-        appHeader();
-        $scope.onNavigationSelect = onNavigationSelect;
-        $scope.onDropdownSelect = onDropdownSelect;
-        function appHeader() {
-            pipActions.hide();
-            pipAppBar.part('menu', true);
-            pipAppBar.part('actions', 'primary');
-            pipAppBar.part('icon', true);
-            pipAppBar.part('title', 'breadcrumb');
-            pipAppBar.hideShadow();
-            pipBreadcrumb.text = 'Settings';
-            pipNavIcon.menu();
-        }
-        function onDropdownSelect(state) {
-            onNavigationSelect(state.state);
-        }
-        function onNavigationSelect(state) {
-            initSelect(state);
-            if ($scope.selected.tab) {
-                $state.go(state);
-            }
-        }
-        function initSelect(state) {
-            $scope.selected.tab = _.find($scope.tabs, function (tab) {
-                return tab.state === state;
-            });
-            $scope.selected.tabIndex = _.indexOf($scope.tabs, $scope.selected.tab);
-            $scope.selected.tabId = state;
         }
     }]);
 })();
