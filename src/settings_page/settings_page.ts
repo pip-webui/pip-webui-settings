@@ -78,7 +78,7 @@
                 pipAppBar.part('icon', true);
                 pipAppBar.part('title', 'breadcrumb');
                 pipAppBar.hideShadow();
-                pipBreadcrumb.text('Settings');
+                pipBreadcrumb.text = 'Settings';
                 pipNavIcon.menu();
             }
 
