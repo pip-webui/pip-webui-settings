@@ -3,7 +3,7 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-(function (angular) {
+(function () {
     'use strict';
 
     angular.module('pipUserSettings', [
@@ -17,4 +17,4 @@
         'pipSettings.Templates'
     ]);
 
-})(window.angular);
+})();

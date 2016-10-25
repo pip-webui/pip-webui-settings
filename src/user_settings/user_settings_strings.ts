@@ -5,7 +5,7 @@
 
 /* eslint-disable quote-props */
 
-(function (angular) {
+(function () {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Strings', ['pipTranslate']);
@@ -138,4 +138,4 @@
         });
     });
 
-})(window.angular);
+})();

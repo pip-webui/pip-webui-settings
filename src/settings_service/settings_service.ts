@@ -3,7 +3,7 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-(function (angular, _) {
+(function () {
     'use strict';
 
     var thisModule = angular.module('pipSettings.Service', []);
@@ -157,7 +157,7 @@
         }
 
         function getTabs() {
-            return _.clone(tabs, true);
+            return _.cloneDeep(tabs);
         }
 
         function getDefaultTab() {
@@ -167,7 +167,7 @@
                 return p.state === defaultTab;
             });
 
-            return _.clone(defaultTab, true);
+            return _.cloneDeep(defaultTab);
         }
 
         function addTab(tabObj) {
@@ -187,7 +187,7 @@
                 index: tabObj.index || 100000,
                 access: tabObj.access,
                 visible: tabObj.visible !== false,
-                stateConfig: _.clone(tabObj.stateConfig, true)
+                stateConfig: _.cloneDeep(tabObj.stateConfig)
             });
 
             $stateProvider.state(getFullStateName(tabObj.state), tabObj.stateConfig);
@@ -262,4 +262,4 @@
 
     });
 
-})(window.angular, window._);
+})();

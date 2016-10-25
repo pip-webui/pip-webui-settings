@@ -3,7 +3,7 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-(function (angular, _, async) {
+(function () {
     'use strict';
 
     var thisModule = angular.module('pipUserSettings.Sessions', [
@@ -57,7 +57,7 @@
 
                 async.eachSeries(
                     $scope.sessions,
-                    function (session, callback) {
+                    function (session: any, callback) {
                         if (session.id == $scope.sessionId) {
                             callback();
                         } else {
@@ -77,7 +77,7 @@
                     },
                     function (err) {
                         if (err) {
-                            $scope.transaction.end(error);
+                            $scope.transaction.end(err);
                         }
                         if ($scope.transaction.aborted(tid)) {
                             return;
@@ -125,4 +125,4 @@
         }
     );
 
-})(window.angular, window._, window.async);
+})();

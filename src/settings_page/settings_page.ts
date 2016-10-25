@@ -3,7 +3,7 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-(function (angular, _) {
+(function () {
     'use strict';
 
     var thisModule = angular.module('pipSettings.Page', [
@@ -37,7 +37,7 @@
         function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings, pipActions,
                   pipBreadcrumb, pipNavIcon) {
 
-            $scope.tabs = _.filter(pipSettings.getTabs(), function (tab) {
+            $scope.tabs = _.filter(pipSettings.getTabs(), function (tab: any) {
                 if (tab.visible === true && (tab.access ? tab.access($rootScope.$user, tab) : true)) {
                     return tab;
                 }
@@ -120,7 +120,7 @@
              * Establish selected tab
              */
             function initSelect(state) {
-                $scope.selected.tab = _.find($scope.tabs, function (tab) {
+                $scope.selected.tab = _.find($scope.tabs, function (tab: any) {
                     return tab.state === state;
                 });
                 $scope.selected.tabIndex = _.indexOf($scope.tabs, $scope.selected.tab);
@@ -128,4 +128,4 @@
             }
         });
 
-})(window.angular, window._);
+})();

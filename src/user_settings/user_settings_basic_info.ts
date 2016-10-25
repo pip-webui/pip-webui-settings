@@ -3,8 +3,9 @@
  * @copyright Digital Living Software Corp. 2014-2016
  */
 
-(function (angular, _) {
+(function () {
     'use strict';
+
     var thisModule = angular.module('pipUserSettings.BasicInfo',
         ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail', 
             'pipSettings.Service', 'pipSettings.Page',]);
@@ -249,4 +250,4 @@
         }
     );
 
-})(window.angular, window._);
+})();
