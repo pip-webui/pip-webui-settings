@@ -431,10 +431,6 @@ module.run(['$templateCache', function($templateCache) {
 }]);
 })();
 
-/**
- * @file Registration of settings components
- * @copyright Digital Living Software Corp. 2014-2016
- */
 (function () {
     'use strict';
     angular.module('pipSettings', [
@@ -443,130 +439,97 @@ module.run(['$templateCache', function($templateCache) {
     ]);
 })();
 
-/**
- * @file Service for settings component
- * @copyright Digital Living Software Corp. 2014-2016
- */
+(function () {
+    'use strict';
+    var thisModule = angular.module('pipSettings.Page', [
+        'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
+        'pipSettings.Templates', 'pipNavIcon', 'pipActions.Service'
+    ]);
+    thisModule.config(['$stateProvider', function ($stateProvider) {
+        $stateProvider.state('settings', {
+            url: '/settings?party_id',
+            auth: true,
+            controller: 'pipSettingsPageController',
+            templateUrl: 'settings_page/settings_page.html'
+        });
+    }]);
+    thisModule.controller('pipSettingsPageController', ['$scope', '$state', '$rootScope', '$timeout', 'pipAppBar', 'pipSettings', 'pipActions', 'pipBreadcrumb', 'pipNavIcon', function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings, pipActions, pipBreadcrumb, pipNavIcon) {
+        $scope.tabs = _.filter(pipSettings.getTabs(), function (tab) {
+            if (tab.visible === true && (tab.access ? tab.access($rootScope.$user, tab) : true)) {
+                return tab;
+            }
+        });
+        $scope.tabs = _.sortBy($scope.tabs, 'index');
+        $scope.selected = {};
+        if ($state.current.name !== 'settings') {
+            initSelect($state.current.name);
+        }
+        else if ($state.current.name === 'settings' && pipSettings.getDefaultTab()) {
+            initSelect(pipSettings.getDefaultTab().state);
+        }
+        else {
+            $timeout(function () {
+                if (pipSettings.getDefaultTab()) {
+                    initSelect(pipSettings.getDefaultTab().state);
+                }
+                if (!pipSettings.getDefaultTab() && $scope.tabs.length > 0) {
+                    initSelect($scope.tabs[0].state);
+                }
+            });
+        }
+        appHeader();
+        $scope.onNavigationSelect = onNavigationSelect;
+        $scope.onDropdownSelect = onDropdownSelect;
+        function appHeader() {
+            pipActions.hide();
+            pipAppBar.part('menu', true);
+            pipAppBar.part('actions', 'primary');
+            pipAppBar.part('icon', true);
+            pipAppBar.part('title', 'breadcrumb');
+            pipAppBar.hideShadow();
+            pipBreadcrumb.text = 'Settings';
+            pipNavIcon.menu();
+        }
+        function onDropdownSelect(state) {
+            onNavigationSelect(state.state);
+        }
+        function onNavigationSelect(state) {
+            initSelect(state);
+            if ($scope.selected.tab) {
+                $state.go(state);
+            }
+        }
+        function initSelect(state) {
+            $scope.selected.tab = _.find($scope.tabs, function (tab) {
+                return tab.state === state;
+            });
+            $scope.selected.tabIndex = _.indexOf($scope.tabs, $scope.selected.tab);
+            $scope.selected.tabId = state;
+        }
+    }]);
+})();
+
 (function () {
     'use strict';
     var thisModule = angular.module('pipSettings.Service', []);
-    /**
-     * @ngdoc service
-     * @name pipSettings.Service:pipSettingsProvider
-     *
-     * @description
-     * Service provides an interface to manage 'Settings' component behaviour.
-     * It is available on config and run phases.
-     */
     thisModule.provider('pipSettings', ['$stateProvider', function ($stateProvider) {
         var defaultTab, tabs = [], titleText = 'SETTINGS_TITLE', titleLogo = null, isNavIcon = true;
-        // Configure global parameters
         this.showTitleText = showTitleText;
         this.showTitleLogo = showTitleLogo;
         this.showNavIcon = showNavIcon;
         return {
-            /**
-             * @ngdoc method
-             * @methodOf pipSettings.Service:pipSettingsProvider
-             * @name pipSettings.Service.pipSettingsProvider:addTab
-             *
-             * @description
-             * Register new tab in 'Settings' component. Before adding a tab this method validates passed object.
-             *
-             * @param {Object} tabObj  Configuration object for new tab.
-             */
             addTab: addTab,
-            /**
-             * @ngdoc method
-             * @methodOf pipSettings.Service:pipSettingsProvider
-             * @name pipSettings.Service.pipSettingsProvider:getTabs
-             *
-             * @description
-             * Method returns collection of registered tabs.
-             *
-             * @returns {Array<Object>} Collection of tabs.
-             */
             getTabs: getTabs,
-            /**
-             * @ngdoc method
-             * @methodOf pipSettings.Service:pipSettingsProvider
-             * @name pipSettings.Service.pipSettingsProvider:setDefaultTab
-             *
-             * @description
-             * Establish a tab which is available by default (after chose this component in menu).
-             *
-             * @param {string} name     Name of the default state for this component.
-             */
             setDefaultTab: setDefaultTab,
-            /**
-             * @ngdoc method
-             * @methodOf pipSettings.Service:pipSettingsProvider
-             * @name pipSettings.Service.pipSettingsProvider:getDefaultTab
-             *
-             * @description
-             * Method returns an config object for tabs established as default (it will be opened when app transeferred to
-             * abstract state 'settings').
-             *
-             * @returns {Array<Object>} Collection of tabs.
-             */
             getDefaultTab: getDefaultTab,
             showTitleText: showTitleText,
             showTitleLogo: showTitleLogo,
             showNavIcon: showNavIcon,
             $get: function () {
-                /**
-                 * @ngdoc service
-                 * @name pipSettings.Service:pipSettings
-                 *
-                 * @description
-                 * Service provides an interface to manage 'Settings' component behaviour.
-                 * It is available on config and run phases.
-                 */
                 return {
-                    /**
-                     * @ngdoc method
-                     * @methodOf pipSettings.Service:pipSettings
-                     * @name pipSettings.Service.pipSettings:getTabs
-                     *
-                     * @description
-                     * Method returns collection of registered tabs.
-                     *
-                     * @returns {Array<Object>} Collection of tabs.
-                     */
                     getTabs: getTabs,
-                    /**
-                     * @ngdoc method
-                     * @methodOf pipSettings.Service:pipSettings
-                     * @name pipSettings.Service.pipSettings:addTab
-                     *
-                     * @description
-                     * Register new tab in 'Settings' component. Before adding a tab this method validates passed object.
-                     *
-                     * @param {Object} tabObj  Configuration object for new tab.
-                     */
                     addTab: addTab,
-                    /**
-                     * @ngdoc method
-                     * @methodOf pipSettings.Service:pipSettings
-                     * @name pipSettings.Service.pipSettings:getDefaultTab
-                     *
-                     * @description
-                     * Method returns an config object for tabs established as default (it will be opened when app transeferred to
-                     * abstract state 'settings').
-                     *
-                     * @returns {Array<Object>} Collection of tabs.
-                     */
                     getDefaultTab: getDefaultTab,
-                    /**
-                     * @ngdoc method
-                     * @methodOf pipSettings.Service:pipSettings
-                     * @name pipSettings.Service.pipSettings:setDefaultTab
-                     *
-                     * @description
-                     * Establish a tab which is available by default (after chose this component in menu).
-                     *
-                     * @param {string} name     Name of the default state for this component.
-                     */
                     setDefaultTab: setDefaultTab,
                     showTitleText: showTitleText,
                     showTitleLogo: showTitleLogo,
@@ -574,9 +537,6 @@ module.run(['$templateCache', function($templateCache) {
                 };
             }
         };
-        /**
-         * Appends component abstract state prefix to passed state
-         */
         function getFullStateName(state) {
             return 'settings.' + state;
         }
@@ -608,26 +568,18 @@ module.run(['$templateCache', function($templateCache) {
                 stateConfig: _.cloneDeep(tabObj.stateConfig)
             });
             $stateProvider.state(getFullStateName(tabObj.state), tabObj.stateConfig);
-            // if we just added first state and no default state is specified
             if (typeof defaultTab === 'undefined' && tabs.length === 1) {
                 setDefaultTab(tabObj.state);
             }
         }
         function setDefaultTab(name) {
-            // TODO [apidhirnyi] extract expression inside 'if' into variable. It isn't readable now.
             if (!_.find(tabs, function (tab) {
                 return tab.state === getFullStateName(name);
             })) {
                 throw new Error('Tab with state name "' + name + '" is not registered');
             }
             defaultTab = getFullStateName(name);
-            //$stateProvider.go(defaultTab);
-            //pipAuthStateProvider.redirect('settings', getFullStateName(name));
         }
-        /**
-         * Validates passed tab config object
-         * If passed tab is not valid it will throw an error
-         */
         function validateTab(tabObj) {
             if (!tabObj || !_.isObject(tabObj)) {
                 throw new Error('Invalid object');
@@ -665,127 +617,6 @@ module.run(['$templateCache', function($templateCache) {
     }]);
 })();
 
-/**
- * @file Define controller for a settings tab
- * @copyright Digital Living Software Corp. 2014-2016
- */
-(function () {
-    'use strict';
-    var thisModule = angular.module('pipSettings.Page', [
-        'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
-        'pipSettings.Templates', 'pipNavIcon', 'pipActions.Service'
-    ]);
-    thisModule.config(['$stateProvider', function ($stateProvider) {
-        $stateProvider.state('settings', {
-            url: '/settings?party_id',
-            auth: true,
-            controller: 'pipSettingsPageController',
-            templateUrl: 'settings_page/settings_page.html'
-        });
-    }]);
-    /**
-     * @ngdoc controller
-     * @name pipSettings.Page:pipSettingsPageController
-     *
-     * @description
-     * The controller is used for the whole settings tabs and provides
-     * navigation menu on the left and load content into right panel.
-     * This component is integrated with `'pipAppBar'` component and adapt the tabs header.
-     * The component has predefined states `'settings.base_info'` and `'settings.active_sessions'`. Each of these states
-     * require user's authorization.
-     *
-     * @requires pipAppBar
-     */
-    thisModule.controller('pipSettingsPageController', ['$scope', '$state', '$rootScope', '$timeout', 'pipAppBar', 'pipSettings', 'pipActions', 'pipBreadcrumb', 'pipNavIcon', function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings, pipActions, pipBreadcrumb, pipNavIcon) {
-        $scope.tabs = _.filter(pipSettings.getTabs(), function (tab) {
-            if (tab.visible === true && (tab.access ? tab.access($rootScope.$user, tab) : true)) {
-                return tab;
-            }
-        });
-        $scope.tabs = _.sortBy($scope.tabs, 'index');
-        $scope.selected = {};
-        if ($state.current.name !== 'settings') {
-            initSelect($state.current.name);
-        }
-        else if ($state.current.name === 'settings' && pipSettings.getDefaultTab()) {
-            initSelect(pipSettings.getDefaultTab().state);
-        }
-        else {
-            $timeout(function () {
-                if (pipSettings.getDefaultTab()) {
-                    initSelect(pipSettings.getDefaultTab().state);
-                }
-                if (!pipSettings.getDefaultTab() && $scope.tabs.length > 0) {
-                    initSelect($scope.tabs[0].state);
-                }
-            });
-        }
-        appHeader();
-        /** @see onNavigationSelect */
-        $scope.onNavigationSelect = onNavigationSelect;
-        /** @see onDropdownSelect */
-        $scope.onDropdownSelect = onDropdownSelect;
-        /**
-         * Config header panel
-         */
-        function appHeader() {
-            pipActions.hide();
-            pipAppBar.part('menu', true);
-            pipAppBar.part('actions', 'primary');
-            pipAppBar.part('icon', true);
-            pipAppBar.part('title', 'breadcrumb');
-            pipAppBar.hideShadow();
-            pipBreadcrumb.text = 'Settings';
-            pipNavIcon.menu();
-        }
-        /**
-         * @ngdoc method
-         * @methodOf pipSettings.Page:pipSettingsPageController
-         * @name pipSettings.Page:pipSettingsPageController:onDropdownSelect
-         *
-         * @description
-         * Method changes selected tab in the navigation menu and transfer to selected tab(state).
-         * It used on mobile screens.
-         *
-         * @param {Object} state    State configuration object
-         */
-        function onDropdownSelect(state) {
-            onNavigationSelect(state.state);
-        }
-        /**
-         * @ngdoc method
-         * @methodOf pipSettings.Page:pipSettingsPageController
-         * @name pipSettings.Page:pipSettingsPageController:onNavigationSelect
-         *
-         * @description
-         * Method changes selected tab in the navigation menu and transfer to selected tab(state).
-         * It uses on screens more than mobile.
-         *
-         * @param {string} state    Name of new state
-         */
-        function onNavigationSelect(state) {
-            initSelect(state);
-            if ($scope.selected.tab) {
-                $state.go(state);
-            }
-        }
-        /**
-         * Establish selected tab
-         */
-        function initSelect(state) {
-            $scope.selected.tab = _.find($scope.tabs, function (tab) {
-                return tab.state === state;
-            });
-            $scope.selected.tabIndex = _.indexOf($scope.tabs, $scope.selected.tab);
-            $scope.selected.tabId = state;
-        }
-    }]);
-})();
-
-/**
- * @file Settings tab logic
- * @copyright Digital Living Software Corp. 2014-2016
- */
 (function () {
     'use strict';
     angular.module('pipUserSettings', [
@@ -799,10 +630,6 @@ module.run(['$templateCache', function($templateCache) {
     ]);
 })();
 
-/**
- * @file Settings basic info controller
- * @copyright Digital Living Software Corp. 2014-2016
- */
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.BasicInfo', ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail',
@@ -821,15 +648,6 @@ module.run(['$templateCache', function($templateCache) {
         });
         pipSettingsProvider.setDefaultTab('basic_info');
     }]);
-    /**
-     * @ngdoc controller
-     * @name pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
-     *
-     * @description
-     * Controller for the predefined 'basic_info' state.
-     * Provides sync changes user's profile with remote profile.
-     * On state exit everything is saved on the server.
-     */
     thisModule.controller('pipUserSettingsBasicInfoController', ['$scope', '$rootScope', '$mdDialog', '$state', '$window', '$timeout', '$mdTheming', 'pipTranslate', 'pipTransaction', 'pipTheme', 'pipToasts', 'pipDataUser', 'pipDataParty', 'pipFormErrors', function ($scope, $rootScope, $mdDialog, $state, $window, $timeout, $mdTheming, pipTranslate, pipTransaction, pipTheme, pipToasts, pipDataUser, pipDataParty, pipFormErrors) {
         try {
             $scope.originalParty = angular.toJson($rootScope.$party);
@@ -847,17 +665,11 @@ module.run(['$templateCache', function($templateCache) {
         $scope.themes = _.keys(_.omit($mdTheming.THEMES, 'default'));
         $state.get('settings.basic_info').onExit = saveChanges;
         $scope.errorsWithHint = pipFormErrors.errorsWithHint;
-        /** @see onChangePassword */
         $scope.onChangePassword = onChangePassword;
-        /** @see onVerifyEmail */
         $scope.onVerifyEmail = onVerifyEmail;
-        /** @see onPictureCreated */
         $scope.onPictureCreated = onPictureCreated;
-        /** @see onPictureChanged */
         $scope.onPictureChanged = onPictureChanged;
-        /** @see updateUser */
         $scope.onChangeUser = _.debounce(updateUser, 2000);
-        /** @see saveChanges */
         $scope.onChangeBasicInfo = _.debounce(saveChanges, 2000);
         function onPictureChanged() {
             $scope.picture.save(function () {
@@ -874,16 +686,6 @@ module.run(['$templateCache', function($templateCache) {
                 return new Error(error);
             });
         }
-        /**
-         * @ngdoc method
-         * @methodOf pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
-         * @name pipUserSettings.BasicInfo.pipUserSettingsBasicInfoController:onChangeBasicInfo
-         *
-         * @description
-         * Saves changes onto server.
-         * This method responses on change of the input information.
-         * It is updated user's party profile. Also it updates user's profile in $rootScope.
-         */
         function saveChanges() {
             if ($scope.form) {
                 $scope.form.$setSubmitted();
@@ -892,7 +694,6 @@ module.run(['$templateCache', function($templateCache) {
                 if ($rootScope.$party.type === 'person' && $scope.form.$invalid) {
                     return;
                 }
-                // Check to avoid unnecessary savings
                 $rootScope.$party.loc_pos = $scope.loc_pos;
                 try {
                     var party = angular.toJson($rootScope.$party);
@@ -917,16 +718,6 @@ module.run(['$templateCache', function($templateCache) {
                 }
             }
         }
-        /**
-         * @ngdoc method
-         * @methodOf pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
-         * @name pipUserSettings.BasicInfo.pipUserSettingsBasicInfoController:onChangeUser
-         *
-         * @description
-         * Saves changes onto server.
-         * This method responses on change of the user's profile information.
-         * Also it updates user's profile in $rootScope.
-         */
         function updateUser() {
             var tid = $scope.transaction.begin('RequestEmailVerification');
             if ($rootScope.$user.id === $rootScope.$party.id) {
@@ -951,16 +742,6 @@ module.run(['$templateCache', function($templateCache) {
                 });
             }
         }
-        /**
-         * @ngdoc method
-         * @methodOf pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
-         * @name pipUserSettings.BasicInfo.pipUserSettingsBasicInfoController:onChangePassword
-         *
-         * @description
-         * It opens a dialog panel to change password.
-         *
-         * @param {Object} event    Triggered event object
-         */
         function onChangePassword(event) {
             var message;
             $mdDialog.show({
@@ -975,16 +756,6 @@ module.run(['$templateCache', function($templateCache) {
                 }
             });
         }
-        /**
-         * @ngdoc method
-         * @methodOf pipUserSettings.BasicInfo:pipUserSettingsBasicInfoController
-         * @name pipUserSettings.BasicInfo.pipUserSettingsBasicInfoController:onVerifyEmail
-         *
-         * @description
-         * It opens a dialog panel to change password.
-         *
-         * @param {Object} event    Triggered event object
-         */
         function onVerifyEmail(event) {
             var message;
             $mdDialog.show({
@@ -1003,20 +774,9 @@ module.run(['$templateCache', function($templateCache) {
     }]);
 })();
 
-/**
- * @file Settings change password controller
- * @copyright Digital Living Software Corp. 2014-2016
- */
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.ChangePassword', []);
-    /**
-     * @ngdoc controller
-     * @name pipUserSettings.ChangePassword:pipUserSettingsChangePasswordController
-     *
-     * @description
-     * Controller for dialog panel of password change.
-     */
     thisModule.controller('pipUserSettingsChangePasswordController', ['$scope', '$rootScope', '$mdDialog', 'email', 'pipDataUser', 'pipTransaction', 'pipFormErrors', function ($scope, $rootScope, $mdDialog, email, pipDataUser, pipTransaction, pipFormErrors) {
         $scope.transaction = pipTransaction('settings.change_password', $scope);
         $scope.errorsRepeatWithHint = function (form, formPart) {
@@ -1031,25 +791,9 @@ module.run(['$templateCache', function($templateCache) {
         $scope.onCancel = onCancel;
         $scope.onCheckRepeatPassword = onCheckRepeatPassword;
         $scope.onApply = onApply;
-        /**
-         * @ngdoc method
-         * @methodOf pipUserSettings.ChangePassword:pipUserSettingsChangePasswordController
-         * @name pipUserSettings.ChangePassword.pipUserSettingsChangePasswordController:onCancel
-         *
-         * @description
-         * Closes opened dialog panel.
-         */
         function onCancel() {
             $mdDialog.cancel();
         }
-        /**
-         * @ngdoc method
-         * @methodOf pipUserSettings.ChangePassword:pipUserSettingsChangePasswordController
-         * @name pipUserSettings.ChangePassword.pipUserSettingsChangePasswordController:onCheckRepeatPassword
-         *
-         * @description
-         * Validates a password typed into password fields.
-         */
         function onCheckRepeatPassword() {
             if ($scope.changePasData) {
                 if ($scope.repeat === $scope.changePasData.new_password || $scope.repeat === '' || !$scope.repeat) {
@@ -1067,14 +811,6 @@ module.run(['$templateCache', function($templateCache) {
                 }
             }
         }
-        /**
-         * @ngdoc method
-         * @methodOf pipUserSettings.ChangePassword:pipUserSettingsChangePasswordController
-         * @name pipUserSettings.ChangePassword.pipUserSettingsChangePasswordController:onApply
-         *
-         * @description
-         * Approves password change and sends request to the server on password change.
-         */
         function onApply() {
             $scope.onCheckRepeatPassword();
             if ($scope.form.$invalid) {
@@ -1098,10 +834,6 @@ module.run(['$templateCache', function($templateCache) {
     }]);
 })();
 
-/**
- * @file Settings sessions controller
- * @copyright Digital Living Software Corp. 2014-2016
- */
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.Sessions', [
@@ -1123,27 +855,12 @@ module.run(['$templateCache', function($templateCache) {
             }
         });
     }]);
-    /**
-     * @ngdoc controller
-     * @name pipUserSettings.Sessions:pipUserSettingsSessionsController
-     *
-     * @description
-     * Controller provides an interface for managing active sessions.
-     */
     thisModule.controller('pipUserSettingsSessionsController', ['$scope', 'pipTransaction', 'pipDataSession', 'sessions', 'sessionId', function ($scope, pipTransaction, pipDataSession, sessions, sessionId) {
         $scope.sessionId = sessionId;
         $scope.transaction = pipTransaction('settings.sessions', $scope);
         $scope.sessions = sessions;
         $scope.onRemoveAll = onRemoveAll;
         $scope.onRemove = onRemove;
-        /**
-         * @ngdoc method
-         * @methodOf pipUserSettings.Sessions:pipUserSettingsSessionsController
-         * @name pipUserSettings.Sessions.pipUserSettingsSessionsController:onRemoveAll
-         *
-         * @description
-         * Closes all active session.
-         */
         function onRemoveAll() {
             var tid = $scope.transaction.begin('REMOVING');
             async.eachSeries($scope.sessions, function (session, callback) {
@@ -1170,16 +887,6 @@ module.run(['$templateCache', function($templateCache) {
                 $scope.transaction.end();
             });
         }
-        /**
-         * @ngdoc method
-         * @methodOf pipUserSettings.Sessions:pipUserSettingsSessionsController
-         * @name pipUserSettings.Sessions.pipUserSettingsSessionsController:onRemove
-         *
-         * @description
-         * Closes passed session.
-         *
-         * @param {Object} session  Session configuration object
-         */
         function onRemove(session, callback) {
             if (session.id === $scope.sessionId) {
                 return;
@@ -1204,16 +911,10 @@ module.run(['$templateCache', function($templateCache) {
     }]);
 })();
 
-/**
- * @file Settings string resources
- * @copyright Digital Living Software Corp. 2014-2016
- */
-/* eslint-disable quote-props */
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.Strings', ['pipTranslate']);
     thisModule.config(['pipTranslateProvider', function (pipTranslateProvider) {
-        // Set translation strings for the module
         pipTranslateProvider.translations('en', {
             'SETTINGS_TITLE': 'Settings',
             'SETTINGS_BASIC_INFO_TITLE': 'Basic info',
@@ -1321,20 +1022,9 @@ module.run(['$templateCache', function($templateCache) {
     }]);
 })();
 
-/**
- * @file Settings verify email controller
- * @copyright Digital Living Software Corp. 2014-2016
- */
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.VerifyEmail', []);
-    /**
-     * @ngdoc controller
-     * @name pipUserSettings.VerifyEmail:pipUserSettingsVerifyEmailController
-     *
-     * @description
-     * Controller for verify email dialog panel.
-     */
     thisModule.controller('pipUserSettingsVerifyEmailController', ['$scope', '$rootScope', '$mdDialog', 'pipTransaction', 'pipFormErrors', 'pipDataUser', 'email', function ($scope, $rootScope, $mdDialog, pipTransaction, pipFormErrors, pipDataUser, email) {
         $scope.emailVerified = false;
         $scope.data = {
@@ -1342,45 +1032,17 @@ module.run(['$templateCache', function($templateCache) {
             code: ''
         };
         $scope.transaction = pipTransaction('settings.verify_email', $scope);
-        /** @see onAbort */
         $scope.onAbort = onAbort;
-        /** @see onRequestVerificationClick*/
         $scope.onRequestVerificationClick = onRequestVerificationClick;
         $scope.errorsWithHint = pipFormErrors.errorsWithHint;
-        /** @see onVerify */
         $scope.onVerify = onVerify;
-        /** @see onCancel */
         $scope.onCancel = onCancel;
-        /**
-         * @ngdoc method
-         * @methodOf pipUserSettings.VerifyEmail:pipUserSettingsVerifyEmailController
-         * @name pipUserSettings.VerifyEmail.pipUserSettingsVerifyEmailController:onAbort
-         *
-         * @description
-         * Aborts a verify request.
-         */
         function onAbort() {
             $scope.transaction.abort();
         }
-        /**
-         * @ngdoc method
-         * @methodOf pipUserSettings.VerifyEmail:pipUserSettingsVerifyEmailController
-         * @name pipUserSettings.VerifyEmail.pipUserSettingsVerifyEmailController:onCancel
-         *
-         * @description
-         * Closes opened dialog panel.
-         */
         function onCancel() {
             $mdDialog.cancel();
         }
-        /**
-         * @ngdoc method
-         * @methodOf pipUserSettings.VerifyEmail:pipUserSettingsVerifyEmailController
-         * @name pipUserSettings.VerifyEmail.pipUserSettingsVerifyEmailController:onRequestVerificationClick
-         *
-         * @description
-         * Sends request to verify entered email.
-         */
         function onRequestVerificationClick() {
             var tid = $scope.transaction.begin('RequestEmailVerification');
             pipDataUser.requestEmailVerification({}, function (result) {
@@ -1392,14 +1054,6 @@ module.run(['$templateCache', function($templateCache) {
                 $scope.transaction.end(error);
             });
         }
-        /**
-         * @ngdoc method
-         * @methodOf pipUserSettings.VerifyEmail:pipUserSettingsVerifyEmailController
-         * @name pipUserSettings.VerifyEmail.pipUserSettingsVerifyEmailController:onVerify
-         *
-         * @description
-         * Initiates request on verify email on the server.
-         */
         function onVerify() {
             $scope.form.$setSubmitted();
             if ($scope.form.$invalid) {
