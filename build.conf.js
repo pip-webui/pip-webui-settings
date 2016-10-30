@@ -2,7 +2,8 @@ module.exports = {
     module: {
         name: 'pipSettings',
         styles: 'settings',
-        export: 'pip'
+        export: 'pip',
+        standalone: 'pip.settings'
     },
     build: {
         js: false,
