@@ -2,6 +2,7 @@
 /node_modules
 /build
 /lib
+/obj
 /temp
 npm-debug.log
 build.secret.js
