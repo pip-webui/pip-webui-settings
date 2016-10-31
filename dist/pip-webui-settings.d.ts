@@ -1,4 +1,4 @@
-declare module pip {
+declare module pip.settings {
 
 
 
