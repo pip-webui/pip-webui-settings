@@ -10,13 +10,8 @@
 (function () {
     'use strict';
     var thisModule = angular.module('pipSettings.Page', [
-<<<<<<< HEAD
-        'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
-        'pipSettings.Templates', 'pipNavIcon', 'pipActions'
-=======
         'pipSettings.Service', 'pipNav', 'pipSelected', 'pipTranslate',
         'pipSettings.Templates'
->>>>>>> d391a1a82ef499ddb69e5f86441b75477cee2ed3
     ]);
     thisModule.config(['$stateProvider', function ($stateProvider) {
         $stateProvider.state('settings', {
