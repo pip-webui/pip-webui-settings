@@ -8,7 +8,7 @@
 
     var thisModule = angular.module('pipSettings.Page', [
         'pipSettings.Service', 'pipAppBar', 'pipSelected', 'pipTranslate',
-        'pipSettings.Templates', 'pipNavIcon', 'pipActions.Service'
+        'pipSettings.Templates', 'pipNavIcon', 'pipActions'
     ]);
 
     thisModule.config(function ($stateProvider) {
@@ -77,9 +77,9 @@
                 pipAppBar.part('actions', 'primary');
                 pipAppBar.part('icon', true);
                 pipAppBar.part('title', 'breadcrumb');
-                pipAppBar.hideShadow();
+                pipAppBar.removeShadow();
                 pipBreadcrumb.text = 'Settings';
-                pipNavIcon.menu();
+                pipNavIcon.showMenu();
             }
 
             /**
