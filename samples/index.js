@@ -13,9 +13,7 @@
         // Application Configuration must go first
         'pipSampleConfig', 'pipSettings', 'pipTranslate',
         // Modules from WebUI Framework
-        'pipControls', 'pipLayout', 'pipNav', 'pipLists', 'pipAppBar', 'pipBreadcrumb', 'pipNavIcon',
-        'pipActions.Service',
-        'pipPrimaryActions', 'pipSecondaryActions', 'pipAppBar.Part',
+        'pipControls', 'pipLayout', 'pipNav', 'pipLists',
         // 'pipCore', 'pipRest', 'pipData',
         // Sample Application Modules
         'pipSettings'//'pipUserSettings', 'pipRest.State', 'pipEntry',
