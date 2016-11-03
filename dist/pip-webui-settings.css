@@ -67,6 +67,15 @@
     width: calc(100% - 300px);
   }
 }
+@media (max-width: 768px) {
+  .pip-settings .pip-content-container {
+    width: 100%;
+    left: 0 !important;
+  }
+  .pip-settings .pip-body {
+    min-height: calc(100% - 64px);
+  }
+}
 .pip-settings.pip-card .pip-header ~ .pip-body,
 .pip-settings.pip-document .pip-header ~ .pip-body {
   padding-top: 24px !important;

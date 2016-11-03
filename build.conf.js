@@ -34,7 +34,7 @@ module.exports = {
             '../pip-webui-errors/dist/**/*',
             '../pip-webui-entry/dist/**/*',
             '../pip-webui-settings/dist/**/*',
-            //'../pip-webui-guidance/dist/**/*',
+            '../pip-webui-behaviors/dist/**/*',
             // '../pip-webui-support/dist/**/*',
             //'../pip-webui-help/dist/**/*'
         ]

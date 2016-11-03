@@ -9,11 +9,11 @@
     var thisModule = angular.module('pipSample', [
         // 3rd Party Modules
         'ui.router', 'ui.utils', 'ngResource', 'ngAria', 'ngCookies', 'ngSanitize', 'ngMessages',
-        'ngMaterial', 'wu.masonry', 'LocalStorageModule', 'angularFileUpload', 'ngAnimate',
+        'ngMaterial', 'wu.masonry', 'LocalStorageModule', 'ngAnimate',
         // Application Configuration must go first
         'pipSampleConfig', 'pipSettings', 'pipTranslate',
         // Modules from WebUI Framework
-        'pipControls', 'pipLayout', 'pipNav', 'pipLists',
+        'pipControls', 'pipLayout', 'pipNav', 'pipLists', 'pipBehaviors',
         // 'pipCore', 'pipRest', 'pipData',
         // Sample Application Modules
         'pipSettings'//'pipUserSettings', 'pipRest.State', 'pipEntry',
