@@ -81,6 +81,7 @@
                 pipAppBar.removeShadow();
                 pipBreadcrumb.text = 'Settings';
                 pipNavIcon.showMenu();
+                pipAppBar.removeShadow();
             }
 
             /**

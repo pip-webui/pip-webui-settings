@@ -57,6 +57,7 @@
             pipAppBar.removeShadow();
             pipBreadcrumb.text = 'Settings';
             pipNavIcon.showMenu();
+            pipAppBar.removeShadow();
         }
         function onDropdownSelect(state) {
             onNavigationSelect(state.state);
