@@ -40,7 +40,7 @@
             //pipAuthStateProvider.authorizedState('settings');
 
             $urlRouterProvider.otherwise(function ($injector, $location) {
-                return $location.$$path === '' ? '/signin' : '/settings';
+                return $location.$$path === '' ? '/signin' : '/settings/test1';
             });
 
             pipSettingsProvider.setDefaultTab('test1');
