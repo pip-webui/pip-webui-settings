@@ -50,9 +50,6 @@
   min-height: 100%;
 }
 @media (min-width: 1200px) {
-  .pip-settings {
-    width: 100%;
-  }
   .pip-settings md-list.pip-menu {
     width: 300px;
     min-width: 300px;
