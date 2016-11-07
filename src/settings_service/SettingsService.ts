@@ -1,5 +1,14 @@
 'use strict';
 
+export class SettingsTab {
+    public state: string;
+    public title: string;
+    public index: string;
+    public access: boolean;
+    public visible: boolean;
+    public stateConfig: any;
+}
+
 export interface ISettingsService {
     getDefaultTab();
     showTitleText (newTitleText);
@@ -16,7 +25,7 @@ export interface ISettingsProvider extends ng.IServiceProvider {
 export class SettingsConfig {
 
     public defaultTab: string;
-    public tabs = [];
+    public tabs: SettingsTab[] = [];
     public titleText: string = 'SETTINGS_TITLE';
     public titleLogo: boolean = null;
     public isNavIcon: boolean = true;
@@ -42,7 +51,7 @@ class SettingsService implements ISettingsService {
         return _.cloneDeep(defaultTab);
     }
 
-    public showTitleText (newTitleText) {
+    public showTitleText (newTitleText: string) {
         if (newTitleText) {
             this._config.titleText = newTitleText;
             this._config.titleLogo = null;
@@ -60,7 +69,7 @@ class SettingsService implements ISettingsService {
         return this._config.titleLogo;
     }
 
-    public showNavIcon(value) {
+    public showNavIcon(value: boolean) {
         if (value !== null && value !== undefined) {
             this._config.isNavIcon = !!value;
         }
@@ -97,11 +106,10 @@ class SettingsProvider implements ISettingsProvider {
     }
 
     public addTab(tabObj) {
-        var existingTab;
+        var existingTab: SettingsTab;
 
         this.validateTab(tabObj);
         existingTab = _.find(this._config.tabs, function (p) {
-        
             return p.state === 'settings.' + tabObj.state;
         });
         if (existingTab) {
@@ -124,7 +132,7 @@ class SettingsProvider implements ISettingsProvider {
         }
     }
 
-    public setDefaultTab(name) {
+    public setDefaultTab(name: string) {
         // TODO [apidhirnyi] extract expression inside 'if' into variable. It isn't readable now.
         if (!_.find(this._config.tabs, function (tab) {
             return tab.state === 'settings.' + name;
@@ -142,7 +150,7 @@ class SettingsProvider implements ISettingsProvider {
          * If passed tab is not valid it will throw an error
          */
 
-    private validateTab(tabObj) {
+    private validateTab(tabObj: SettingsTab) {
         if (!tabObj || !_.isObject(tabObj)) {
             throw new Error('Invalid object');
         }
@@ -160,7 +168,7 @@ class SettingsProvider implements ISettingsProvider {
         }
     }
 
-    public showTitleText (newTitleText) {
+    public showTitleText (newTitleText: string): string {
         if (newTitleText) {
             this._config.titleText = newTitleText;
             this._config.titleLogo = null;

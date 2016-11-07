@@ -31,9 +31,9 @@ class SettingsPageController {
         this.tabs = _.sortBy(this.tabs, 'index');
 
         this.selected = {};
-        if ($state.current.name !== 'settings') {
-            this.initSelect($state.current.name);
-        } else if ($state.current.name === 'settings' && pipSettings.getDefaultTab()) {
+        if (this._state.current.name !== 'settings') {
+            this.initSelect(this._state.current.name);
+        } else if (this._state.current.name === 'settings' && pipSettings.getDefaultTab()) {
             this.initSelect(pipSettings.getDefaultTab().state);
         } else {
             $timeout(function () {
