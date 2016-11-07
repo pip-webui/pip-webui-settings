@@ -46,7 +46,7 @@ angular.module('pipSettings', [
                 });
             }
             pipNavService.icon.showMenu();
-            pipNavService.breadcrumb.text = "Adapters Management";
+            pipNavService.breadcrumb.text = "Settings";
             pipNavService.actions.hide();
             pipNavService.appbar.removeShadow();
         }
