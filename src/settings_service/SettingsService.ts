@@ -95,7 +95,7 @@ class SettingsProvider implements ISettingsProvider {
         return 'settings.' + state;
     }
 
-    public getDefaultTab() {
+    public getDefaultTab(): SettingsTab {
         var defaultTab;
 
         defaultTab = _.find(this._config.tabs, function (p) {

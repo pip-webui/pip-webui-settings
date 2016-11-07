@@ -102,6 +102,12 @@ require('./SettingsPageRoutes');
 
 },{}],7:[function(require,module,exports){
 'use strict';
+var SettingsTab = (function () {
+    function SettingsTab() {
+    }
+    return SettingsTab;
+}());
+exports.SettingsTab = SettingsTab;
 var SettingsConfig = (function () {
     function SettingsConfig() {
         this.tabs = [];
@@ -247,8 +253,6 @@ angular
 angular.module('pipSettings.Service', []);
 require('./SettingsService');
 },{"./SettingsService":7}],9:[function(require,module,exports){
-
-},{}],10:[function(require,module,exports){
 (function () {
     'use strict';
     angular.module('pipUserSettings', [
@@ -261,7 +265,7 @@ require('./SettingsService');
         'pipSettings.Templates'
     ]);
 })();
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.BasicInfo', ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail',
@@ -405,7 +409,7 @@ require('./SettingsService');
         }
     }]);
 })();
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.ChangePassword', []);
@@ -465,7 +469,7 @@ require('./SettingsService');
         }
     }]);
 })();
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.Sessions', [
@@ -542,7 +546,7 @@ require('./SettingsService');
         }
     }]);
 })();
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.Strings', ['pipTranslate']);
@@ -653,7 +657,7 @@ require('./SettingsService');
         });
     }]);
 })();
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.VerifyEmail', []);
@@ -711,7 +715,7 @@ require('./SettingsService');
         }
     }]);
 })();
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function(module) {
 try {
   module = angular.module('pipSettings.Templates');
@@ -774,7 +778,7 @@ module.run(['$templateCache', function($templateCache) {
 
 
 
-},{}]},{},[5,6,3,4,8,9,7,2,1,11,12,13,14,15,10,16])(16)
+},{}]},{},[5,6,3,4,8,7,2,1,10,11,12,13,14,9,15])(15)
 });
 
 
