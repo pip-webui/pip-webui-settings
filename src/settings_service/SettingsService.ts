@@ -145,10 +145,10 @@ class SettingsProvider implements ISettingsProvider {
             //pipAuthStateProvider.redirect('settings', getFullStateName(name));
     }
 
-        /**
-         * Validates passed tab config object
-         * If passed tab is not valid it will throw an error
-         */
+    /**
+     * Validates passed tab config object
+     * If passed tab is not valid it will throw an error
+     */
 
     private validateTab(tabObj: SettingsTab) {
         if (!tabObj || !_.isObject(tabObj)) {
