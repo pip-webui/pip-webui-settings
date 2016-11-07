@@ -31,20 +31,25 @@ class SettingsPageController {
         this.tabs = _.sortBy(this.tabs, 'index');
 
         this.selected = {};
-            if ($state.current.name !== 'settings') {
-                this.initSelect($state.current.name);
-            } else if ($state.current.name === 'settings' && pipSettings.getDefaultTab()) {
-                this.initSelect(pipSettings.getDefaultTab().state);
-            } else {
-                $timeout(function () {
-                    if (pipSettings.getDefaultTab()) {
-                        this.initSelect(pipSettings.getDefaultTab().state);
-                    }
-                    if (!pipSettings.getDefaultTab() && this.tabs.length > 0) {
-                        this.initSelect(this.tabs[0].state);
-                    }
-                });
-            }
+        if ($state.current.name !== 'settings') {
+            this.initSelect($state.current.name);
+        } else if ($state.current.name === 'settings' && pipSettings.getDefaultTab()) {
+            this.initSelect(pipSettings.getDefaultTab().state);
+        } else {
+            $timeout(function () {
+                if (pipSettings.getDefaultTab()) {
+                    this.initSelect(pipSettings.getDefaultTab().state);
+                }
+                if (!pipSettings.getDefaultTab() && this.tabs.length > 0) {
+                     this.initSelect(this.tabs[0].state);
+                }
+            });
+        }
+
+        pipNavService.icon.showMenu();
+        pipNavService.breadcrumb.text = "Settings";
+        pipNavService.actions.hide();
+        pipNavService.appbar.removeShadow();
 
     }
 

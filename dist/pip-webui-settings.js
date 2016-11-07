@@ -45,6 +45,10 @@ angular.module('pipSettings', [
                     }
                 });
             }
+            pipNavService.icon.showMenu();
+            pipNavService.breadcrumb.text = "Adapters Management";
+            pipNavService.actions.hide();
+            pipNavService.appbar.removeShadow();
         }
         SettingsPageController.prototype.initSelect = function (state) {
             this.selected.tab = _.find(this.tabs, function (tab) {

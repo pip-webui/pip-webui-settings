@@ -19,6 +19,7 @@
 
             $mdIconProvider.iconSet('icons', 'images/icons.svg', 512);
 
+            pipAppBarProvider.parts = {icon: true, title: 'breadcrumb', actions: 'primary', menu: true };
             // Set global constants
             //pipAppBarProvider.appTitleText('Sample Application');
 
