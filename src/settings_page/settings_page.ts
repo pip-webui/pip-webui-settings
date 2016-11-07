@@ -2,7 +2,7 @@
  * @file Define controller for a settings tab
  * @copyright Digital Living Software Corp. 2014-2016
  */
-
+/*
 (function () {
     'use strict';
 
@@ -33,7 +33,7 @@
      * require user's authorization.
      *
      * @requires pipAppBar
-     */
+     *
     thisModule.controller('pipSettingsPageController',
         function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings, pipActions,
                   pipBreadcrumb, pipNavIcon) {
@@ -64,14 +64,14 @@
 
             appHeader();
 
-            /** @see onNavigationSelect */
+            ** @see onNavigationSelect *
             $scope.onNavigationSelect = onNavigationSelect;
-            /** @see onDropdownSelect */
+            ** @see onDropdownSelect *
             $scope.onDropdownSelect = onDropdownSelect;
 
-            /**
+            **
              * Config header panel
-             */
+             *
             function appHeader() {
                 pipActions.hide();
                 pipAppBar.part('menu', true);
@@ -84,7 +84,7 @@
                 pipAppBar.removeShadow();
             }
 
-            /**
+            **
              * @ngdoc method
              * @methodOf pipSettings.Page:pipSettingsPageController
              * @name pipSettings.Page:pipSettingsPageController:onDropdownSelect
@@ -94,12 +94,12 @@
              * It used on mobile screens.
              *
              * @param {Object} state    State configuration object
-             */
+             *
             function onDropdownSelect(state) {
                 onNavigationSelect(state.state);
             }
 
-            /**
+            **
              * @ngdoc method
              * @methodOf pipSettings.Page:pipSettingsPageController
              * @name pipSettings.Page:pipSettingsPageController:onNavigationSelect
@@ -109,7 +109,7 @@
              * It uses on screens more than mobile.
              *
              * @param {string} state    Name of new state
-             */
+             *
             function onNavigationSelect(state) {
                 initSelect(state);
 
@@ -118,9 +118,9 @@
                 }
             }
 
-            /**
+            **
              * Establish selected tab
-             */
+             *
             function initSelect(state) {
                 $scope.selected.tab = _.find($scope.tabs, function (tab: any) {
                     return tab.state === state;
@@ -131,3 +131,5 @@
         });
 
 })();
+
+*/
