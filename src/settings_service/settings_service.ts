@@ -2,7 +2,7 @@
  * @file Service for settings component
  * @copyright Digital Living Software Corp. 2014-2016
  */
-
+/*
 (function () {
     'use strict';
 
@@ -15,7 +15,7 @@
      * @description
      * Service provides an interface to manage 'Settings' component behaviour.
      * It is available on config and run phases.
-     */
+     
     thisModule.provider('pipSettings', function ($stateProvider) { // pipAuthStateProvider
 
         var defaultTab,
@@ -39,7 +39,7 @@
              * Register new tab in 'Settings' component. Before adding a tab this method validates passed object.
              *
              * @param {Object} tabObj  Configuration object for new tab.
-             */
+             
             addTab: addTab,
 
             /**
@@ -51,7 +51,7 @@
              * Method returns collection of registered tabs.
              *
              * @returns {Array<Object>} Collection of tabs.
-             */
+             
             getTabs: getTabs,
 
             /**
@@ -63,7 +63,7 @@
              * Establish a tab which is available by default (after chose this component in menu).
              *
              * @param {string} name     Name of the default state for this component.
-             */
+             
             setDefaultTab: setDefaultTab,
 
             /**
@@ -76,7 +76,7 @@
              * abstract state 'settings').
              *
              * @returns {Array<Object>} Collection of tabs.
-             */
+             
             getDefaultTab: getDefaultTab,
                     
             showTitleText: showTitleText,
@@ -91,7 +91,7 @@
                  * @description
                  * Service provides an interface to manage 'Settings' component behaviour.
                  * It is available on config and run phases.
-                 */
+                 *
                 return {
                     /**
                      * @ngdoc method
@@ -102,7 +102,7 @@
                      * Method returns collection of registered tabs.
                      *
                      * @returns {Array<Object>} Collection of tabs.
-                     */
+                     
                     getTabs: getTabs,
 
                     /**
@@ -114,7 +114,7 @@
                      * Register new tab in 'Settings' component. Before adding a tab this method validates passed object.
                      *
                      * @param {Object} tabObj  Configuration object for new tab.
-                     */
+                     *
                     addTab: addTab,
 
                     /**
@@ -127,7 +127,7 @@
                      * abstract state 'settings').
                      *
                      * @returns {Array<Object>} Collection of tabs.
-                     */
+                     *
                     getDefaultTab: getDefaultTab,
 
                     /**
@@ -139,7 +139,7 @@
                      * Establish a tab which is available by default (after chose this component in menu).
                      *
                      * @param {string} name     Name of the default state for this component.
-                     */
+                     *
                     setDefaultTab: setDefaultTab,
 
                     showTitleText: showTitleText,
@@ -151,7 +151,7 @@
 
         /**
          * Appends component abstract state prefix to passed state
-         */
+         *
         function getFullStateName(state) {
             return 'settings.' + state;
         }
@@ -215,7 +215,7 @@
         /**
          * Validates passed tab config object
          * If passed tab is not valid it will throw an error
-         */
+         *
         function validateTab(tabObj) {
             if (!tabObj || !_.isObject(tabObj)) {
                 throw new Error('Invalid object');
@@ -263,3 +263,4 @@
     });
 
 })();
+*/

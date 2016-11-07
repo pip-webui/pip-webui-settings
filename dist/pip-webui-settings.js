@@ -1,4 +1,12 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}(g.pip || (g.pip = {})).settings = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+require('./settings_service/index');
+require('./settings_page/index');
+angular.module('pipSettings', [
+    'pipSettings.Service',
+    'pipSettings.Page'
+]);
+},{"./settings_page/index":5,"./settings_service/index":8}],2:[function(require,module,exports){
 (function () {
     'use strict';
     angular.module('pipSettings', [
@@ -6,186 +14,237 @@
         'pipSettings.Page'
     ]);
 })();
-},{}],2:[function(require,module,exports){
-(function () {
-    'use strict';
-    var thisModule = angular.module('pipSettings.Page', [
-        'pipSettings.Service', 'pipNav', 'pipSelected', 'pipTranslate',
-        'pipSettings.Templates'
-    ]);
-    thisModule.config(['$stateProvider', function ($stateProvider) {
-        $stateProvider.state('settings', {
-            url: '/settings?party_id',
-            auth: true,
-            controller: 'pipSettingsPageController',
-            templateUrl: 'settings_page/settings_page.html'
-        });
-    }]);
-    thisModule.controller('pipSettingsPageController', ['$scope', '$state', '$rootScope', '$timeout', 'pipAppBar', 'pipSettings', 'pipActions', 'pipBreadcrumb', 'pipNavIcon', function ($scope, $state, $rootScope, $timeout, pipAppBar, pipSettings, pipActions, pipBreadcrumb, pipNavIcon) {
-        $scope.tabs = _.filter(pipSettings.getTabs(), function (tab) {
-            if (tab.visible === true && (tab.access ? tab.access($rootScope.$user, tab) : true)) {
-                return tab;
-            }
-        });
-        $scope.tabs = _.sortBy($scope.tabs, 'index');
-        $scope.selected = {};
-        if ($state.current.name !== 'settings') {
-            initSelect($state.current.name);
-        }
-        else if ($state.current.name === 'settings' && pipSettings.getDefaultTab()) {
-            initSelect(pipSettings.getDefaultTab().state);
-        }
-        else {
-            $timeout(function () {
-                if (pipSettings.getDefaultTab()) {
-                    initSelect(pipSettings.getDefaultTab().state);
-                }
-                if (!pipSettings.getDefaultTab() && $scope.tabs.length > 0) {
-                    initSelect($scope.tabs[0].state);
-                }
-            });
-        }
-        appHeader();
-        $scope.onNavigationSelect = onNavigationSelect;
-        $scope.onDropdownSelect = onDropdownSelect;
-        function appHeader() {
-            pipActions.hide();
-            pipAppBar.part('menu', true);
-            pipAppBar.part('actions', 'primary');
-            pipAppBar.part('icon', true);
-            pipAppBar.part('title', 'breadcrumb');
-            pipAppBar.removeShadow();
-            pipBreadcrumb.text = 'Settings';
-            pipNavIcon.showMenu();
-            pipAppBar.removeShadow();
-        }
-        function onDropdownSelect(state) {
-            onNavigationSelect(state.state);
-        }
-        function onNavigationSelect(state) {
-            initSelect(state);
-            if ($scope.selected.tab) {
-                $state.go(state);
-            }
-        }
-        function initSelect(state) {
-            $scope.selected.tab = _.find($scope.tabs, function (tab) {
-                return tab.state === state;
-            });
-            $scope.selected.tabIndex = _.indexOf($scope.tabs, $scope.selected.tab);
-            $scope.selected.tabId = state;
-        }
-    }]);
-})();
 },{}],3:[function(require,module,exports){
 (function () {
-    'use strict';
-    var thisModule = angular.module('pipSettings.Service', []);
-    thisModule.provider('pipSettings', ['$stateProvider', function ($stateProvider) {
-        var defaultTab, tabs = [], titleText = 'SETTINGS_TITLE', titleLogo = null, isNavIcon = true;
-        this.showTitleText = showTitleText;
-        this.showTitleLogo = showTitleLogo;
-        this.showNavIcon = showNavIcon;
-        return {
-            addTab: addTab,
-            getTabs: getTabs,
-            setDefaultTab: setDefaultTab,
-            getDefaultTab: getDefaultTab,
-            showTitleText: showTitleText,
-            showTitleLogo: showTitleLogo,
-            showNavIcon: showNavIcon,
-            $get: function () {
-                return {
-                    getTabs: getTabs,
-                    addTab: addTab,
-                    getDefaultTab: getDefaultTab,
-                    setDefaultTab: setDefaultTab,
-                    showTitleText: showTitleText,
-                    showTitleLogo: showTitleLogo,
-                    showNavIcon: showNavIcon
-                };
+    var SettingsPageController = (function () {
+        SettingsPageController.$inject = ['$log', '$q', '$state', 'pipNavService', 'pipSettings', '$rootScope', '$timeout'];
+        function SettingsPageController($log, $q, $state, pipNavService, pipSettings, $rootScope, $timeout) {
+            this._log = $log;
+            this._q = $q;
+            this._state = $state;
+            this.tabs = _.filter(pipSettings.getTabs(), function (tab) {
+                if (tab.visible === true && (tab.access ? tab.access($rootScope.$user, tab) : true)) {
+                    return tab;
+                }
+            });
+            this.tabs = _.sortBy(this.tabs, 'index');
+            this.selected = {};
+            if ($state.current.name !== 'settings') {
+                this.initSelect($state.current.name);
+            }
+            else if ($state.current.name === 'settings' && pipSettings.getDefaultTab()) {
+                this.initSelect(pipSettings.getDefaultTab().state);
+            }
+            else {
+                $timeout(function () {
+                    if (pipSettings.getDefaultTab()) {
+                        this.initSelect(pipSettings.getDefaultTab().state);
+                    }
+                    if (!pipSettings.getDefaultTab() && this.tabs.length > 0) {
+                        this.initSelect(this.tabs[0].state);
+                    }
+                });
+            }
+        }
+        SettingsPageController.prototype.initSelect = function (state) {
+            this.selected.tab = _.find(this.tabs, function (tab) {
+                return tab.state === state;
+            });
+            this.selected.tabIndex = _.indexOf(this.tabs, this.selected.tab);
+            this.selected.tabId = state;
+        };
+        SettingsPageController.prototype.onDropdownSelect = function (state) {
+            this.onNavigationSelect(state.state);
+        };
+        SettingsPageController.prototype.onNavigationSelect = function (state) {
+            this.initSelect(state);
+            if (this.selected.tab) {
+                this._state.go(state);
             }
         };
-        function getFullStateName(state) {
-            return 'settings.' + state;
-        }
-        function getTabs() {
-            return _.cloneDeep(tabs);
-        }
-        function getDefaultTab() {
-            var defaultTab;
-            defaultTab = _.find(tabs, function (p) {
-                return p.state === defaultTab;
-            });
-            return _.cloneDeep(defaultTab);
-        }
-        function addTab(tabObj) {
-            var existingTab;
-            validateTab(tabObj);
-            existingTab = _.find(tabs, function (p) {
-                return p.state === getFullStateName(tabObj.state);
-            });
-            if (existingTab) {
-                throw new Error('Tab with state name "' + tabObj.state + '" is already registered');
-            }
-            tabs.push({
-                state: getFullStateName(tabObj.state),
-                title: tabObj.title,
-                index: tabObj.index || 100000,
-                access: tabObj.access,
-                visible: tabObj.visible !== false,
-                stateConfig: _.cloneDeep(tabObj.stateConfig)
-            });
-            $stateProvider.state(getFullStateName(tabObj.state), tabObj.stateConfig);
-            if (typeof defaultTab === 'undefined' && tabs.length === 1) {
-                setDefaultTab(tabObj.state);
-            }
-        }
-        function setDefaultTab(name) {
-            if (!_.find(tabs, function (tab) {
-                return tab.state === getFullStateName(name);
-            })) {
-                throw new Error('Tab with state name "' + name + '" is not registered');
-            }
-            defaultTab = getFullStateName(name);
-        }
-        function validateTab(tabObj) {
-            if (!tabObj || !_.isObject(tabObj)) {
-                throw new Error('Invalid object');
-            }
-            if (tabObj.state === null || tabObj.state === '') {
-                throw new Error('Tab should have valid Angular UI router state name');
-            }
-            if (tabObj.access && !_.isFunction(tabObj.access)) {
-                throw new Error('"access" should be a function');
-            }
-            if (!tabObj.stateConfig || !_.isObject(tabObj.stateConfig)) {
-                throw new Error('Invalid state configuration object');
-            }
-        }
-        function showTitleText(newTitleText) {
-            if (newTitleText) {
-                titleText = newTitleText;
-                titleLogo = null;
-            }
-            return titleText;
-        }
-        function showTitleLogo(newTitleLogo) {
-            if (newTitleLogo) {
-                titleLogo = newTitleLogo;
-                titleText = null;
-            }
-            return titleLogo;
-        }
-        function showNavIcon(value) {
-            if (value !== null && value !== undefined) {
-                isNavIcon = !!value;
-            }
-            return isNavIcon;
-        }
-    }]);
+        return SettingsPageController;
+    }());
+    angular.module('pipSettings.Page')
+        .controller('pipSettingsPageController', SettingsPageController);
 })();
 },{}],4:[function(require,module,exports){
+'use strict';
+configureSettingsPageRoutes.$inject = ['$stateProvider'];
+function configureSettingsPageRoutes($stateProvider) {
+    $stateProvider
+        .state('settings', {
+        url: '/settings?party_id',
+        auth: true,
+        controllerAs: 'vm',
+        controller: 'pipSettingsPageController',
+        templateUrl: 'settings_page/SettingsPage.html'
+    });
+}
+angular.module('pipSettings.Page')
+    .config(configureSettingsPageRoutes);
+},{}],5:[function(require,module,exports){
+'use strict';
+angular.module('pipSettings.Page', [
+    'ui.router',
+    'pipSettings.Service',
+    'pipNav',
+    'pipSelected',
+    'pipTranslate',
+    'pipSettings.Templates'
+]);
+require('./SettingsPageController');
+require('./SettingsPageRoutes');
+},{"./SettingsPageController":3,"./SettingsPageRoutes":4}],6:[function(require,module,exports){
+
+},{}],7:[function(require,module,exports){
+'use strict';
+var SettingsConfig = (function () {
+    function SettingsConfig() {
+        this.tabs = [];
+        this.titleText = 'SETTINGS_TITLE';
+        this.titleLogo = null;
+        this.isNavIcon = true;
+    }
+    return SettingsConfig;
+}());
+exports.SettingsConfig = SettingsConfig;
+var SettingsService = (function () {
+    SettingsService.$inject = ['$rootScope', 'config'];
+    function SettingsService($rootScope, config) {
+        "ngInject";
+        this._rootScope = $rootScope;
+        this._config = config;
+    }
+    SettingsService.prototype.getDefaultTab = function () {
+        var defaultTab;
+        defaultTab = _.find(this._config.tabs, function (p) {
+            return p.state === defaultTab;
+        });
+        return _.cloneDeep(defaultTab);
+    };
+    SettingsService.prototype.showTitleText = function (newTitleText) {
+        if (newTitleText) {
+            this._config.titleText = newTitleText;
+            this._config.titleLogo = null;
+        }
+        return this._config.titleText;
+    };
+    SettingsService.prototype.showTitleLogo = function (newTitleLogo) {
+        if (newTitleLogo) {
+            this._config.titleLogo = newTitleLogo;
+            this._config.titleText = null;
+        }
+        return this._config.titleLogo;
+    };
+    SettingsService.prototype.showNavIcon = function (value) {
+        if (value !== null && value !== undefined) {
+            this._config.isNavIcon = !!value;
+        }
+        return this._config.isNavIcon;
+    };
+    SettingsService.prototype.getTabs = function () {
+        return _.cloneDeep(this._config.tabs);
+    };
+    return SettingsService;
+}());
+var SettingsProvider = (function () {
+    SettingsProvider.$inject = ['$stateProvider'];
+    function SettingsProvider($stateProvider) {
+        this._config = new SettingsConfig();
+        this._stateProvider = $stateProvider;
+    }
+    SettingsProvider.prototype.getFullStateName = function (state) {
+        return 'settings.' + state;
+    };
+    SettingsProvider.prototype.getDefaultTab = function () {
+        var defaultTab;
+        defaultTab = _.find(this._config.tabs, function (p) {
+            return p.state === defaultTab;
+        });
+        return _.cloneDeep(defaultTab);
+    };
+    SettingsProvider.prototype.addTab = function (tabObj) {
+        var existingTab;
+        this.validateTab(tabObj);
+        existingTab = _.find(this._config.tabs, function (p) {
+            return p.state === 'settings.' + tabObj.state;
+        });
+        if (existingTab) {
+            throw new Error('Tab with state name "' + tabObj.state + '" is already registered');
+        }
+        this._config.tabs.push({
+            state: this.getFullStateName(tabObj.state),
+            title: tabObj.title,
+            index: tabObj.index || 100000,
+            access: tabObj.access,
+            visible: tabObj.visible !== false,
+            stateConfig: _.cloneDeep(tabObj.stateConfig)
+        });
+        this._stateProvider.state(this.getFullStateName(tabObj.state), tabObj.stateConfig);
+        if (typeof this._config.defaultTab === 'undefined' && this._config.tabs.length === 1) {
+            this.setDefaultTab(tabObj.state);
+        }
+    };
+    SettingsProvider.prototype.setDefaultTab = function (name) {
+        if (!_.find(this._config.tabs, function (tab) {
+            return tab.state === 'settings.' + name;
+        })) {
+            throw new Error('Tab with state name "' + name + '" is not registered');
+        }
+        this._config.defaultTab = this.getFullStateName(name);
+    };
+    SettingsProvider.prototype.validateTab = function (tabObj) {
+        if (!tabObj || !_.isObject(tabObj)) {
+            throw new Error('Invalid object');
+        }
+        if (tabObj.state === null || tabObj.state === '') {
+            throw new Error('Tab should have valid Angular UI router state name');
+        }
+        if (tabObj.access && !_.isFunction(tabObj.access)) {
+            throw new Error('"access" should be a function');
+        }
+        if (!tabObj.stateConfig || !_.isObject(tabObj.stateConfig)) {
+            throw new Error('Invalid state configuration object');
+        }
+    };
+    SettingsProvider.prototype.showTitleText = function (newTitleText) {
+        if (newTitleText) {
+            this._config.titleText = newTitleText;
+            this._config.titleLogo = null;
+        }
+        return this._config.titleText;
+    };
+    SettingsProvider.prototype.showTitleLogo = function (newTitleLogo) {
+        if (newTitleLogo) {
+            this._config.titleLogo = newTitleLogo;
+            this._config.titleText = null;
+        }
+        return this._config.titleLogo;
+    };
+    SettingsProvider.prototype.showNavIcon = function (value) {
+        if (value !== null && value !== undefined) {
+            this._config.isNavIcon = !!value;
+        }
+        return this._config.isNavIcon;
+    };
+    SettingsProvider.prototype.$get = ['$rootScope', '$state', function ($rootScope, $state) {
+        "ngInject";
+        if (this._service == null)
+            this._service = new SettingsService($rootScope, this._config);
+        return this._service;
+    }];
+    return SettingsProvider;
+}());
+angular
+    .module('pipSettings.Service')
+    .provider('pipSettings', SettingsProvider);
+},{}],8:[function(require,module,exports){
+'use strict';
+angular.module('pipSettings.Service', []);
+require('./SettingsService');
+},{"./SettingsService":7}],9:[function(require,module,exports){
+
+},{}],10:[function(require,module,exports){
 (function () {
     'use strict';
     angular.module('pipUserSettings', [
@@ -198,7 +257,7 @@
         'pipSettings.Templates'
     ]);
 })();
-},{}],5:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.BasicInfo', ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail',
@@ -342,7 +401,7 @@
         }
     }]);
 })();
-},{}],6:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.ChangePassword', []);
@@ -402,7 +461,7 @@
         }
     }]);
 })();
-},{}],7:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.Sessions', [
@@ -479,7 +538,7 @@
         }
     }]);
 })();
-},{}],8:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.Strings', ['pipTranslate']);
@@ -590,7 +649,7 @@
         });
     }]);
 })();
-},{}],9:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.VerifyEmail', []);
@@ -648,7 +707,7 @@
         }
     }]);
 })();
-},{}],10:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 (function(module) {
 try {
   module = angular.module('pipSettings.Templates');
@@ -656,8 +715,8 @@ try {
   module = angular.module('pipSettings.Templates', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('settings_page/settings_page.html',
-    '<md-toolbar class="pip-appbar-ext"></md-toolbar><pip-document width="800" min-height="400" class="pip-settings"><div class="pip-menu-container" ng-hide="manager === false || !tabs || tabs.length < 1"><md-list class="pip-menu pip-simple-list hide-xs" pip-selected="selected.tabIndex" pip-selected-watch="selected.navId" pip-select="onNavigationSelect($event.id)"><md-list-item class="pip-simple-list-item pip-selectable flex" ng-repeat="tab in tabs track by tab.state" ng-if="$party.id == $user.id || tab.state == \'settings.basic_info\'|| tab.state ==\'settings.contact_info\' || tab.state ==\'settings.blacklist\'" md-ink-ripple="" pip-id="{{:: tab.state }}"><p>{{::tab.title | translate}}</p></md-list-item></md-list><div class="pip-content-container"><pip-dropdown class="hide-gt-xs" pip-actions="tabs" pip-dropdown-select="onDropdownSelect" pip-active-index="selected.tabIndex"></pip-dropdown><div class="pip-body tp24-flex layout-column" ui-view=""></div></div></div><div class="layout-column layout-align-center-center flex" ng-show="manager === false || !tabs || tabs.length < 1">{{::\'ERROR_400\' | translate}}</div></pip-document>');
+  $templateCache.put('settings_page/SettingsPage.html',
+    '<md-toolbar class="pip-appbar-ext"></md-toolbar><pip-document width="800" min-height="400" class="pip-settings"><div class="pip-menu-container" ng-hide="vm.manager === false || !vm.tabs || vm.tabs.length < 1"><md-list class="pip-menu pip-simple-list hide-xs" pip-selected="vm.selected.tabIndex" pip-selected-watch="vm.selected.navId" pip-select="vm.onNavigationSelect($event.id)"><md-list-item class="pip-simple-list-item pip-selectable flex" ng-repeat="tab in vm.tabs track by tab.state" ng-if="vm.$party.id == vm.$user.id || tab.state == \'settings.basic_info\'|| tab.state ==\'settings.contact_info\' || tab.state ==\'settings.blacklist\'" md-ink-ripple="" pip-id="{{:: tab.state }}"><p>{{::tab.title | translate}}</p></md-list-item></md-list><div class="pip-content-container"><pip-dropdown class="hide-gt-xs" pip-actions="vm.tabs" pip-dropdown-select="onDropdownSelect" pip-active-index="selected.tabIndex"></pip-dropdown><div class="pip-body tp24-flex layout-column" ui-view=""></div></div></div><div class="layout-column layout-align-center-center flex" ng-show="vm.manager === false || !vm.tabs || vm.tabs.length < 1">{{::\'ERROR_400\' | translate}}</div></pip-document>');
 }]);
 })();
 
@@ -711,7 +770,7 @@ module.run(['$templateCache', function($templateCache) {
 
 
 
-},{}]},{},[2,3,1,5,6,7,8,9,4,10])(10)
+},{}]},{},[5,6,3,4,8,9,7,2,1,11,12,13,14,15,10,16])(16)
 });
 
 

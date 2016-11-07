@@ -7,7 +7,7 @@ function configureSettingsPageRoutes($stateProvider) {
             auth: true,
             controllerAs: 'vm',
             controller: 'pipSettingsPageController',
-            templateUrl: 'settings_page/settings_page.html'
+            templateUrl: 'settings_page/SettingsPage.html'
         });
        
 }

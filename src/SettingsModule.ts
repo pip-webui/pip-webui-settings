@@ -1,6 +1,6 @@
 'use strict';
 
-import './settings_service/settings_service';
+import './settings_service/index';
 import './settings_page/index';
 
 angular.module('pipSettings', [
@@ -8,4 +8,5 @@ angular.module('pipSettings', [
     'pipSettings.Page'
 ]);
 
+export * from './settings_service';
 export * from './settings_page';
