@@ -3,7 +3,8 @@ declare module pip.settings {
 
 
 
-function configureSettingsPageRoutes($stateProvider: any): void;
+
+
 
 
 
@@ -36,8 +37,7 @@ export class SettingsConfig {
 
 
 
-
-
+function configureSettingsPageRoutes($stateProvider: any): void;
 
 
 }
