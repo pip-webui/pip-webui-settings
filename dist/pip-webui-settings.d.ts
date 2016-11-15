@@ -31,13 +31,13 @@ export class SettingsConfig {
 
 
 
+
+
+
+
+
+
 function configureSettingsPageRoutes($stateProvider: any): void;
-
-
-
-
-
-
 
 
 }
