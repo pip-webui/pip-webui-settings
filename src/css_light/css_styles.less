@@ -1,0 +1,36 @@
+.text-hide            { .text-hide(); }
+.text-overflow        { .text-overflow(); }
+
+.text-display4        { font: @font-display4 }
+.text-display3        { font: @font-display3 }
+.text-display2        { font: @font-display2 }
+.text-display1        { font: @font-display1 }
+
+.text-headline        { font: @font-headline }
+.text-title           { font: @font-title }
+.text-subhead1        { font: @font-subhead1 }
+.text-subhead2        { font: @font-subhead2 }
+
+.text-body1           { font: @font-body1 }
+.text-body2           { font: @font-body2 }
+
+.text-caption         { font: @font-caption }
+.text-button          { font: @font-button  }
+
+.flex-fixed           { .flex-fixed();   }
+.flex-var             { .flex-var();     }
+.flex-grow            { .flex-grow();    }
+.flex-shrink          { .flex-shrink();  }
+
+.opacity-secondary { opacity: @opacity-secondary; }
+.opacity-primary   { opacity: @opacity-primary; }
+.opacity-disabled { opacity: @opacity-disabled; }
+
+.no-divider { border: none !important;  }
+.divider    { border: @divider-border;  }
+
+input, p, div, li, md-list-item, md-list, a, md-autocomplete, span, button {
+    &:focus {
+        outline-width: 0 !important;
+    }
+} 
