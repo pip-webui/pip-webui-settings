@@ -57,6 +57,9 @@
   .pip-settings .pip-content-container {
     width: calc(100% - 300px);
   }
+  .pip-settings pip-dropdown {
+    display: none;
+  }
 }
 @media (max-width: 716px) {
   .pip-settings .pip-content-container {
@@ -64,8 +67,7 @@
     left: 0 !important;
   }
   .pip-settings md-list.pip-menu {
-    width: 0;
-    border: none;
+    display: none;
   }
   .pip-settings .pip-body {
     min-height: calc(100% - 64px);

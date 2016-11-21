@@ -24,6 +24,10 @@
     .pip-content-container {
       width: ~"calc(100% - 300px)";
     }
+
+    pip-dropdown {
+      display: none;
+    }
   }
 
    @media (max-width: @pip-sm-size) {
@@ -32,8 +36,7 @@
       left: 0 !important;
     }
     md-list.pip-menu {
-      width: 0;
-      border: none;
+      display: none;
     }
     .pip-body {
       min-height: ~"calc(100% - 64px)";
