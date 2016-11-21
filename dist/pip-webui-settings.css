@@ -63,6 +63,10 @@
     width: 100%;
     left: 0 !important;
   }
+  .pip-settings md-list.pip-menu {
+    width: 0;
+    border: none;
+  }
   .pip-settings .pip-body {
     min-height: calc(100% - 64px);
   }
