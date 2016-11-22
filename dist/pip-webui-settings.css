@@ -49,33 +49,32 @@
   max-width: none !important;
   min-height: 100%;
 }
-@media (min-width: 716px) {
-  .pip-settings md-list.pip-menu {
-    width: 300px;
-    min-width: 300px;
-  }
-  .pip-settings .pip-content-container {
-    width: calc(100% - 300px);
-  }
-  .pip-settings pip-dropdown {
-    display: none;
-  }
-}
-@media (max-width: 716px) {
-  .pip-settings .pip-content-container {
-    width: 100%;
-    left: 0 !important;
-  }
-  .pip-settings md-list.pip-menu {
-    display: none;
-  }
-  .pip-settings .pip-body {
-    min-height: calc(100% - 64px);
-  }
-}
 .pip-settings.pip-card .pip-header ~ .pip-body,
 .pip-settings.pip-document .pip-header ~ .pip-body {
   padding-top: 24px !important;
+}
+.pip-gt-sm .pip-settings md-list.pip-menu {
+  width: 300px;
+  min-width: 300px;
+}
+.pip-gt-sm .pip-settings .pip-content-container {
+  width: calc(100% - 300px);
+}
+.pip-gt-sm .pip-settings pip-dropdown {
+  display: none;
+}
+.pip-xs .pip-settings .pip-content-container,
+.pip-sm .pip-settings .pip-content-container {
+  width: 100%;
+  left: 0 !important;
+}
+.pip-xs .pip-settings md-list.pip-menu,
+.pip-sm .pip-settings md-list.pip-menu {
+  display: none;
+}
+.pip-xs .pip-settings .pip-body,
+.pip-sm .pip-settings .pip-body {
+  min-height: calc(100% - 64px);
 }
 .pip-settings .md-tile-left {
   position: relative;
