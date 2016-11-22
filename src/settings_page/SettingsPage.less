@@ -3,7 +3,6 @@
 
 @pip-settings-list-width: 300px;
 @pip-settings-document-width: 960px;
-@pip-sm-size: 716px;
 
 .pip-settings {
 
@@ -15,7 +14,14 @@
     min-height: 100%
   }
 
-  @media (min-width: @pip-sm-size) {
+  &.pip-card .pip-header ~ .pip-body,
+  &.pip-document .pip-header ~ .pip-body {
+    padding-top: 24px !important;
+  }
+}
+
+.pip-gt-sm {
+  .pip-settings { 
     md-list.pip-menu {
       width: @pip-settings-list-width;
       min-width: @pip-settings-list-width;
@@ -29,8 +35,10 @@
       display: none;
     }
   }
+}
 
-   @media (max-width: @pip-sm-size) {
+.pip-xs, .pip-sm {
+  .pip-settings { 
     .pip-content-container {
       width: 100%;
       left: 0 !important;
@@ -41,10 +49,5 @@
     .pip-body {
       min-height: ~"calc(100% - 64px)";
     }
-  }
-
-  &.pip-card .pip-header ~ .pip-body,
-  &.pip-document .pip-header ~ .pip-body {
-    padding-top: 24px !important;
   }
 }
