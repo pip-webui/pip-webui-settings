@@ -1,11 +1,16 @@
 declare module pip.settings {
 
+import './settings_service/index';
+import './settings_page/index';
 
+import './SettingsPageController';
+import './SettingsPageRoutes';
 
 
 function configureSettingsPageRoutes($stateProvider: any): void;
 
 
+import './SettingsService';
 
 export class SettingsTab {
     state: string;
