@@ -8,6 +8,7 @@ class SettingsPageController {
 
     public tabs: any;
     public selected: any;
+    public onDropdownSelect: any;
 
     constructor(
         $log: ng.ILogService,
@@ -50,7 +51,10 @@ class SettingsPageController {
         pipNavService.breadcrumb.text = "Settings";
         pipNavService.actions.hide();
         pipNavService.appbar.removeShadow();
-
+        
+        this.onDropdownSelect = (state) => {
+            this.onNavigationSelect(state.state);
+        }
     }
 
     private initSelect(state: string) {
@@ -61,17 +65,13 @@ class SettingsPageController {
         this.selected.tabId = state;
     }
 
-    public onDropdownSelect(state) {
-        this.onNavigationSelect(state.state);
-    }
-
     public onNavigationSelect(state: string) {
         this.initSelect(state);
 
         if (this.selected.tab) {
             this._state.go(state);
-            }
         }
+    }
 }
 
 angular.module('pipSettings.Page')
