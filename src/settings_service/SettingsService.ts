@@ -13,13 +13,16 @@ export interface ISettingsService {
     getDefaultTab();
     showTitleText (newTitleText);
     showTitleLogo(newTitleLogo);
+    setDefaultTab(name: string);
     showNavIcon(value);
     getTabs();
 }
 
 export interface ISettingsProvider extends ng.IServiceProvider {
-    getDefaultTab();
-    addTab(tabObj);
+    getDefaultTab(): SettingsTab;
+    addTab(tabObj: any);
+    setDefaultTab(name: string): void;
+    getFullStateName(state: string): string;
 }
 
 export class SettingsConfig {
@@ -41,6 +44,20 @@ class SettingsService implements ISettingsService {
         "ngInject";
         this._rootScope = $rootScope;
         this._config = config;
+    }
+
+    private getFullStateName(state: string): string {
+        return 'settings.' + state;
+    }
+
+    public setDefaultTab(name: string): void {
+        if (!_.find(this._config.tabs, function (tab) {
+            return tab.state === 'settings.' + name;
+        })) {
+            throw new Error('Tab with state name "' + name + '" is not registered');
+        }
+
+        this._config.defaultTab = this.getFullStateName(name);
     }
 
     public getDefaultTab() {
@@ -105,7 +122,7 @@ class SettingsProvider implements ISettingsProvider {
         return _.cloneDeep(defaultTab);
     }
 
-    public addTab(tabObj) {
+    public addTab(tabObj: any) {
         var existingTab: SettingsTab;
 
         this.validateTab(tabObj);
@@ -132,7 +149,7 @@ class SettingsProvider implements ISettingsProvider {
         }
     }
 
-    public setDefaultTab(name: string) {
+    public setDefaultTab(name: string): void {
         // TODO [apidhirnyi] extract expression inside 'if' into variable. It isn't readable now.
         if (!_.find(this._config.tabs, function (tab) {
             return tab.state === 'settings.' + name;
