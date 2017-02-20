@@ -2,11 +2,6 @@ declare module pip.settings {
 
 
 
-
-function configureSettingsPageRoutes($stateProvider: any): void;
-
-
-
 export class SettingsTab {
     state: string;
     title: string;
@@ -36,6 +31,11 @@ export class SettingsConfig {
     titleLogo: boolean;
     isNavIcon: boolean;
 }
+
+
+
+function configureSettingsPageRoutes($stateProvider: any): void;
+
 
 
 
