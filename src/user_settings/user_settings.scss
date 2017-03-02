@@ -4,15 +4,15 @@
 .pip-settings {
   .md-tile-left {
     position: relative;
-    .rm(16px);
+    @include rm(16px);
     height: 80px;
     width: 80px
   }
 
   .pip-date {
     md-input-container {
-      .tm(4px);
-      .bm(4px);
+      @include tm(4px);
+      @include bm(4px);
     }
   }
 

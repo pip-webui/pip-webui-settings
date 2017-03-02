@@ -11,7 +11,7 @@ module.exports = {
         tsd: true,
         bundle: true,
         html: true,
-        less: true,
+        sass: true,
         lib: true,
         images: true,
         dist: false

@@ -1,0 +1,34 @@
+.text-hide            { @include text-hide(); }
+.text-overflow        { @include text-overflow(); }
+
+.text-display4        { font: $font-display4 }
+.text-display3        { font: $font-display3 }
+.text-display2        { font: $font-display2 }
+.text-display1        { font: $font-display1 }
+
+.text-headline        { font: $font-headline }
+.text-title           { font: $font-title }
+.text-subhead1        { font: $font-subhead1 }
+.text-subhead2        { font: $font-subhead2 }
+
+.text-body1           { font: $font-body1 }
+.text-body2           { font: $font-body2 }
+
+.text-caption         { font: $font-caption }
+.text-button          { font: $font-button  }
+
+.flex-fixed           { @include flex-fixed();   }
+.flex-var             { @include flex-var();     }
+.flex-grow            { @include flex-grow();    }
+.flex-shrink          { @include flex-shrink();  }
+
+.opacity-secondary { opacity: $opacity-secondary; }
+.opacity-primary   { opacity: $opacity-primary; }
+.opacity-disabled { opacity: $opacity-disabled; }
+
+.no-divider { border: none !important;  }
+.divider    { border: $divider-border;  }
+
+input:focus, p:focus, div:focus, li:focus, md-list-item:focus, md-list:focus, a:focus, md-autocomplete:focus, span:focus, button:focus {
+    outline-width: 0 !important;
+} 
