@@ -4,9 +4,16 @@ export class SettingsTab {
     public state: string;
     public title: string;
     public index: number;
-    public access: boolean;
+    public access: Function;
     public visible: boolean;
-    public stateConfig: any;
+    public stateConfig: SettingsStateConfig;
+}
+
+export class SettingsStateConfig {
+    public url: string;
+    public auth: boolean = false;
+    public templateUrl?: string;
+    public template?: string;
 }
 
 export interface ISettingsService {
@@ -111,19 +118,19 @@ class SettingsProvider implements ISettingsProvider {
     public getDefaultTab(): SettingsTab {
         let defaultTab: SettingsTab;
 
-        defaultTab = _.find(this._config.tabs, (p: SettingsTab) => {
-            return p.state === defaultTab.state;
+        defaultTab = _.find(this._config.tabs, (tab: SettingsTab) => {
+            return tab.state === defaultTab.state;
         });
 
         return _.cloneDeep(defaultTab);
     }
 
     public addTab(tabObj: SettingsTab) {
-        var existingTab: SettingsTab;
+        let existingTab: SettingsTab;
 
         this.validateTab(tabObj);
-        existingTab = _.find(this._config.tabs, (p) => {
-            return p.state === 'settings.' + tabObj.state;
+        existingTab = _.find(this._config.tabs, (tab: SettingsTab) => {
+            return tab.state === 'settings.' + tabObj.state;
         });
         if (existingTab) {
             throw new Error('Tab with state name "' + tabObj.state + '" is already registered');
@@ -147,7 +154,7 @@ class SettingsProvider implements ISettingsProvider {
 
     public setDefaultTab(name: string): void {
         // TODO [apidhirnyi] extract expression inside 'if' into variable. It isn't readable now.
-        if (!_.find(this._config.tabs, (tab) => {
+        if (!_.find(this._config.tabs, (tab: SettingsTab) => {
             return tab.state === 'settings.' + name;
         })) {
             throw new Error('Tab with state name "' + name + '" is not registered');

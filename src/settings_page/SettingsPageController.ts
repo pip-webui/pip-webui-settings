@@ -1,11 +1,24 @@
 // Prevent junk from going into typescript definitions
 
-import {ISettingsService} from '../settings_service/SettingsService';
+import {ISettingsService, SettingsTab} from '../settings_service/SettingsService';
 
-class SettingsPageController {
-    public tabs: any;
-    public selected: any;
-    public onDropdownSelect: any;
+export class SettingsPageSelectedTab {
+    public tab: SettingsTab;
+    public tabIndex: number = 0;
+    public tabId: string;
+}
+
+interface ISettingsPageController {
+    tabs: SettingsTab[];
+    selected: SettingsPageSelectedTab;
+    onDropdownSelect: Function;
+    onNavigationSelect(state: string): void;
+}
+
+class SettingsPageController implements ISettingsPageController {
+    public tabs: SettingsTab[];
+    public selected: SettingsPageSelectedTab;
+    public onDropdownSelect: Function;
 
     constructor(
         private $state: ng.ui.IStateService,
@@ -15,7 +28,7 @@ class SettingsPageController {
         $timeout: angular.ITimeoutService
     ) {
 
-        this.tabs = _.filter(pipSettings.getTabs(), function (tab: any) {
+        this.tabs = _.filter(pipSettings.getTabs(), (tab: SettingsTab) => {
                 if (tab.visible === true && (tab.access ? tab.access($rootScope['$user'], tab) : true)) {
                     return tab;
                 }
@@ -23,7 +36,7 @@ class SettingsPageController {
 
         this.tabs = _.sortBy(this.tabs, 'index');
 
-        this.selected = {};
+        this.selected = new SettingsPageSelectedTab();
         if (this.$state.current.name !== 'settings') {
             this.initSelect(this.$state.current.name);
         } else if (this.$state.current.name === 'settings' && pipSettings.getDefaultTab()) {
@@ -49,15 +62,15 @@ class SettingsPageController {
         }
     }
 
-    private initSelect(state: string) {
-        this.selected.tab = _.find(this.tabs, (tab: any) => {
+    private initSelect(state: string): void {
+        this.selected.tab = _.find(this.tabs, (tab: SettingsTab) => {
             return tab.state === state;
         });
         this.selected.tabIndex = _.indexOf(this.tabs, this.selected.tab);
         this.selected.tabId = state;
     }
 
-    public onNavigationSelect(state: string) {
+    public onNavigationSelect(state: string): void {
         this.initSelect(state);
 
         if (this.selected.tab) {

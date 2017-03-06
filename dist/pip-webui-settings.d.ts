@@ -2,6 +2,11 @@ declare module pip.settings {
 
 
 
+export class SettingsPageSelectedTab {
+    tab: SettingsTab;
+    tabIndex: number;
+    tabId: string;
+}
 
 function configureSettingsPageRoutes($stateProvider: any): void;
 
@@ -10,22 +15,28 @@ function configureSettingsPageRoutes($stateProvider: any): void;
 export class SettingsTab {
     state: string;
     title: string;
-    index: string;
-    access: boolean;
+    index: number;
+    access: Function;
     visible: boolean;
-    stateConfig: any;
+    stateConfig: SettingsStateConfig;
+}
+export class SettingsStateConfig {
+    url: string;
+    auth: boolean;
+    templateUrl?: string;
+    template?: string;
 }
 export interface ISettingsService {
-    getDefaultTab(): any;
-    showTitleText(newTitleText: any): any;
+    getDefaultTab(): SettingsTab;
+    showTitleText(newTitleText: string): void;
     showTitleLogo(newTitleLogo: any): any;
-    setDefaultTab(name: string): any;
-    showNavIcon(value: any): any;
-    getTabs(): any;
+    setDefaultTab(name: string): void;
+    showNavIcon(value: boolean): boolean;
+    getTabs(): SettingsTab[];
 }
 export interface ISettingsProvider extends ng.IServiceProvider {
     getDefaultTab(): SettingsTab;
-    addTab(tabObj: any): any;
+    addTab(tabObj: SettingsTab): void;
     setDefaultTab(name: string): void;
     getFullStateName(state: string): string;
 }
