@@ -3,24 +3,24 @@
 export class SettingsTab {
     public state: string;
     public title: string;
-    public index: string;
+    public index: number;
     public access: boolean;
     public visible: boolean;
     public stateConfig: any;
 }
 
 export interface ISettingsService {
-    getDefaultTab();
-    showTitleText (newTitleText);
+    getDefaultTab(): SettingsTab;
+    showTitleText (newTitleText: string): void;
     showTitleLogo(newTitleLogo);
-    setDefaultTab(name: string);
-    showNavIcon(value);
-    getTabs();
+    setDefaultTab(name: string): void;
+    showNavIcon(value: boolean): boolean;
+    getTabs(): SettingsTab[];
 }
 
 export interface ISettingsProvider extends ng.IServiceProvider {
     getDefaultTab(): SettingsTab;
-    addTab(tabObj: any);
+    addTab(tabObj: SettingsTab): void;
     setDefaultTab(name: string): void;
     getFullStateName(state: string): string;
 }
@@ -37,12 +37,9 @@ export class SettingsConfig {
 
 class SettingsService implements ISettingsService {
     private _config: SettingsConfig;
-    private _rootScope: ng.IRootScopeService;
 
-    public constructor($rootScope: ng.IRootScopeService, 
-                       config: SettingsConfig) {
+    public constructor(config: SettingsConfig) {
         "ngInject";
-        this._rootScope = $rootScope;
         this._config = config;
     }
 
@@ -51,7 +48,7 @@ class SettingsService implements ISettingsService {
     }
 
     public setDefaultTab(name: string): void {
-        if (!_.find(this._config.tabs, function (tab) {
+        if (!_.find(this._config.tabs, (tab: SettingsTab) => {
             return tab.state === 'settings.' + name;
         })) {
             throw new Error('Tab with state name "' + name + '" is not registered');
@@ -60,15 +57,16 @@ class SettingsService implements ISettingsService {
         this._config.defaultTab = this.getFullStateName(name);
     }
 
-    public getDefaultTab() {
-        var defaultTab;
-        defaultTab = _.find(this._config.tabs, function (p) {
-            return p.state === defaultTab;
+    public getDefaultTab(): SettingsTab {
+        let defaultTab: SettingsTab;
+
+        defaultTab = _.find(this._config.tabs, (tab: SettingsTab) => {
+            return tab.state === defaultTab.state;
         });
         return _.cloneDeep(defaultTab);
     }
 
-    public showTitleText (newTitleText: string) {
+    public showTitleText (newTitleText: string): string {
         if (newTitleText) {
             this._config.titleText = newTitleText;
             this._config.titleLogo = null;
@@ -86,14 +84,15 @@ class SettingsService implements ISettingsService {
         return this._config.titleLogo;
     }
 
-    public showNavIcon(value: boolean) {
+    public showNavIcon(value: boolean): boolean {
         if (value !== null && value !== undefined) {
             this._config.isNavIcon = !!value;
         }
 
         return this._config.isNavIcon;
     }
-    public getTabs() {
+
+    public getTabs(): SettingsTab[] {
         return _.cloneDeep(this._config.tabs);
     }
 
@@ -102,31 +101,28 @@ class SettingsService implements ISettingsService {
 class SettingsProvider implements ISettingsProvider {
     private _service: SettingsService;
     private _config: SettingsConfig = new SettingsConfig();
-    private _stateProvider: ng.ui.IStateProvider;
 
-    constructor($stateProvider: ng.ui.IStateProvider) {
-        this._stateProvider = $stateProvider;
-    }
+    constructor(private $stateProvider: ng.ui.IStateProvider) {}
 
-    public getFullStateName(state): string {
+    public getFullStateName(state: string): string {
         return 'settings.' + state;
     }
 
     public getDefaultTab(): SettingsTab {
-        var defaultTab;
+        let defaultTab: SettingsTab;
 
-        defaultTab = _.find(this._config.tabs, function (p) {
-            return p.state === defaultTab;
+        defaultTab = _.find(this._config.tabs, (p: SettingsTab) => {
+            return p.state === defaultTab.state;
         });
 
         return _.cloneDeep(defaultTab);
     }
 
-    public addTab(tabObj: any) {
+    public addTab(tabObj: SettingsTab) {
         var existingTab: SettingsTab;
 
         this.validateTab(tabObj);
-        existingTab = _.find(this._config.tabs, function (p) {
+        existingTab = _.find(this._config.tabs, (p) => {
             return p.state === 'settings.' + tabObj.state;
         });
         if (existingTab) {
@@ -141,7 +137,7 @@ class SettingsProvider implements ISettingsProvider {
             visible: tabObj.visible !== false,
             stateConfig: _.cloneDeep(tabObj.stateConfig)
         });
-        this._stateProvider.state(this.getFullStateName(tabObj.state), tabObj.stateConfig);
+        this.$stateProvider.state(this.getFullStateName(tabObj.state), tabObj.stateConfig);
 
         // if we just added first state and no default state is specified
         if (typeof this._config.defaultTab === 'undefined' && this._config.tabs.length === 1) {
@@ -151,14 +147,14 @@ class SettingsProvider implements ISettingsProvider {
 
     public setDefaultTab(name: string): void {
         // TODO [apidhirnyi] extract expression inside 'if' into variable. It isn't readable now.
-        if (!_.find(this._config.tabs, function (tab) {
+        if (!_.find(this._config.tabs, (tab) => {
             return tab.state === 'settings.' + name;
         })) {
             throw new Error('Tab with state name "' + name + '" is not registered');
         }
 
         this._config.defaultTab = this.getFullStateName(name);
-        //this._stateProvider.go(this._config.defaultTab);
+        //this.$stateProvider.go(this._config.defaultTab);
             //pipAuthStateProvider.redirect('settings', getFullStateName(name));
     }
 
@@ -167,7 +163,7 @@ class SettingsProvider implements ISettingsProvider {
      * If passed tab is not valid it will throw an error
      */
 
-    private validateTab(tabObj: SettingsTab) {
+    private validateTab(tabObj: SettingsTab): void {
         if (!tabObj || !_.isObject(tabObj)) {
             throw new Error('Invalid object');
         }
@@ -203,7 +199,7 @@ class SettingsProvider implements ISettingsProvider {
         return this._config.titleLogo;
     }
 
-    public showNavIcon(value) {
+    public showNavIcon(value: boolean): boolean {
         if (value !== null && value !== undefined) {
             this._config.isNavIcon = !!value;
         }
@@ -211,11 +207,12 @@ class SettingsProvider implements ISettingsProvider {
         return this._config.isNavIcon;
     }
 
-    public $get($rootScope, $state) {
+    public $get(): ISettingsService {
         "ngInject";
 
-        if (this._service == null)
-            this._service = new SettingsService($rootScope, this._config);
+        if (_.isNull(this._service) || _.isFunction(this._service)) {
+            this._service = new SettingsService(this._config);
+        }
         
         return this._service;
     }

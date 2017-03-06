@@ -1,30 +1,22 @@
 // Prevent junk from going into typescript definitions
-(() => {
+
+import {ISettingsService} from '../settings_service/SettingsService';
 
 class SettingsPageController {
-    private _log: ng.ILogService;
-    private _q: ng.IQService;
-    private _state: ng.ui.IStateService;
-
     public tabs: any;
     public selected: any;
     public onDropdownSelect: any;
 
     constructor(
-        $log: ng.ILogService,
-        $q: ng.IQService,
-        $state: ng.ui.IStateService,
-        pipNavService,
-        pipSettings,
-        $rootScope, 
-        $timeout
+        private $state: ng.ui.IStateService,
+        pipNavService: pip.nav.INavService,
+        pipSettings: ISettingsService,
+        $rootScope: ng.IRootScopeService, 
+        $timeout: angular.ITimeoutService
     ) {
-        this._log = $log;
-        this._q = $q;
-        this._state = $state;
 
         this.tabs = _.filter(pipSettings.getTabs(), function (tab: any) {
-                if (tab.visible === true && (tab.access ? tab.access($rootScope.$user, tab) : true)) {
+                if (tab.visible === true && (tab.access ? tab.access($rootScope['$user'], tab) : true)) {
                     return tab;
                 }
             });
@@ -32,12 +24,12 @@ class SettingsPageController {
         this.tabs = _.sortBy(this.tabs, 'index');
 
         this.selected = {};
-        if (this._state.current.name !== 'settings') {
-            this.initSelect(this._state.current.name);
-        } else if (this._state.current.name === 'settings' && pipSettings.getDefaultTab()) {
+        if (this.$state.current.name !== 'settings') {
+            this.initSelect(this.$state.current.name);
+        } else if (this.$state.current.name === 'settings' && pipSettings.getDefaultTab()) {
             this.initSelect(pipSettings.getDefaultTab().state);
         } else {
-            $timeout(function () {
+            $timeout(() => {
                 if (pipSettings.getDefaultTab()) {
                     this.initSelect(pipSettings.getDefaultTab().state);
                 }
@@ -58,9 +50,9 @@ class SettingsPageController {
     }
 
     private initSelect(state: string) {
-        this.selected.tab = _.find(this.tabs, function (tab: any) {
-                    return tab.state === state;
-                });
+        this.selected.tab = _.find(this.tabs, (tab: any) => {
+            return tab.state === state;
+        });
         this.selected.tabIndex = _.indexOf(this.tabs, this.selected.tab);
         this.selected.tabId = state;
     }
@@ -69,10 +61,12 @@ class SettingsPageController {
         this.initSelect(state);
 
         if (this.selected.tab) {
-            this._state.go(state);
+            this.$state.go(state);
         }
     }
 }
+
+(() => {
 
 angular.module('pipSettings.Page')
     .controller('pipSettingsPageController', SettingsPageController);
