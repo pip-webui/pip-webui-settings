@@ -1,7 +1,6 @@
 declare module pip.settings {
 
 
-
 export class SettingsPageSelectedTab {
     tab: SettingsTab;
     tabIndex: number;

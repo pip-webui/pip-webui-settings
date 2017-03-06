@@ -7,15 +7,7 @@ angular.module('pipSettings', [
     'pipSettings.Service',
     'pipSettings.Page'
 ]);
-},{"./settings_page/index":5,"./settings_service/index":8}],2:[function(require,module,exports){
-(function () {
-    'use strict';
-    angular.module('pipSettings', [
-        'pipSettings.Service',
-        'pipSettings.Page'
-    ]);
-})();
-},{}],3:[function(require,module,exports){
+},{"./settings_page/index":4,"./settings_service/index":7}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var SettingsPageSelectedTab = (function () {
@@ -25,62 +17,62 @@ var SettingsPageSelectedTab = (function () {
     return SettingsPageSelectedTab;
 }());
 exports.SettingsPageSelectedTab = SettingsPageSelectedTab;
-var SettingsPageController = (function () {
-    SettingsPageController.$inject = ['$state', 'pipNavService', 'pipSettings', '$rootScope', '$timeout'];
-    function SettingsPageController($state, pipNavService, pipSettings, $rootScope, $timeout) {
-        var _this = this;
-        this.$state = $state;
-        this.tabs = _.filter(pipSettings.getTabs(), function (tab) {
-            if (tab.visible === true && (tab.access ? tab.access($rootScope['$user'], tab) : true)) {
-                return tab;
-            }
-        });
-        this.tabs = _.sortBy(this.tabs, 'index');
-        this.selected = new SettingsPageSelectedTab();
-        if (this.$state.current.name !== 'settings') {
-            this.initSelect(this.$state.current.name);
-        }
-        else if (this.$state.current.name === 'settings' && pipSettings.getDefaultTab()) {
-            this.initSelect(pipSettings.getDefaultTab().state);
-        }
-        else {
-            $timeout(function () {
-                if (pipSettings.getDefaultTab()) {
-                    _this.initSelect(pipSettings.getDefaultTab().state);
-                }
-                if (!pipSettings.getDefaultTab() && _this.tabs.length > 0) {
-                    _this.initSelect(_this.tabs[0].state);
+(function () {
+    var SettingsPageController = (function () {
+        SettingsPageController.$inject = ['$state', 'pipNavService', 'pipSettings', '$rootScope', '$timeout'];
+        function SettingsPageController($state, pipNavService, pipSettings, $rootScope, $timeout) {
+            var _this = this;
+            this.$state = $state;
+            this.tabs = _.filter(pipSettings.getTabs(), function (tab) {
+                if (tab.visible === true && (tab.access ? tab.access($rootScope['$user'], tab) : true)) {
+                    return tab;
                 }
             });
+            this.tabs = _.sortBy(this.tabs, 'index');
+            this.selected = new SettingsPageSelectedTab();
+            if (this.$state.current.name !== 'settings') {
+                this.initSelect(this.$state.current.name);
+            }
+            else if (this.$state.current.name === 'settings' && pipSettings.getDefaultTab()) {
+                this.initSelect(pipSettings.getDefaultTab().state);
+            }
+            else {
+                $timeout(function () {
+                    if (pipSettings.getDefaultTab()) {
+                        _this.initSelect(pipSettings.getDefaultTab().state);
+                    }
+                    if (!pipSettings.getDefaultTab() && _this.tabs.length > 0) {
+                        _this.initSelect(_this.tabs[0].state);
+                    }
+                });
+            }
+            pipNavService.icon.showMenu();
+            pipNavService.breadcrumb.text = "Settings";
+            pipNavService.actions.hide();
+            pipNavService.appbar.removeShadow();
+            this.onDropdownSelect = function (state) {
+                _this.onNavigationSelect(state.state);
+            };
         }
-        pipNavService.icon.showMenu();
-        pipNavService.breadcrumb.text = "Settings";
-        pipNavService.actions.hide();
-        pipNavService.appbar.removeShadow();
-        this.onDropdownSelect = function (state) {
-            _this.onNavigationSelect(state.state);
+        SettingsPageController.prototype.initSelect = function (state) {
+            this.selected.tab = _.find(this.tabs, function (tab) {
+                return tab.state === state;
+            });
+            this.selected.tabIndex = _.indexOf(this.tabs, this.selected.tab);
+            this.selected.tabId = state;
         };
-    }
-    SettingsPageController.prototype.initSelect = function (state) {
-        this.selected.tab = _.find(this.tabs, function (tab) {
-            return tab.state === state;
-        });
-        this.selected.tabIndex = _.indexOf(this.tabs, this.selected.tab);
-        this.selected.tabId = state;
-    };
-    SettingsPageController.prototype.onNavigationSelect = function (state) {
-        this.initSelect(state);
-        if (this.selected.tab) {
-            this.$state.go(state);
-        }
-    };
-    return SettingsPageController;
-}());
-(function () {
+        SettingsPageController.prototype.onNavigationSelect = function (state) {
+            this.initSelect(state);
+            if (this.selected.tab) {
+                this.$state.go(state);
+            }
+        };
+        return SettingsPageController;
+    }());
     angular.module('pipSettings.Page')
         .controller('pipSettingsPageController', SettingsPageController);
 })();
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 'use strict';
 configureSettingsPageRoutes.$inject = ['$stateProvider'];
 function configureSettingsPageRoutes($stateProvider) {
@@ -95,7 +87,7 @@ function configureSettingsPageRoutes($stateProvider) {
 }
 angular.module('pipSettings.Page')
     .config(configureSettingsPageRoutes);
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 angular.module('pipSettings.Page', [
@@ -108,9 +100,9 @@ angular.module('pipSettings.Page', [
 ]);
 require("./SettingsPageController");
 require("./SettingsPageRoutes");
-},{"./SettingsPageController":3,"./SettingsPageRoutes":4}],6:[function(require,module,exports){
+},{"./SettingsPageController":2,"./SettingsPageRoutes":3}],5:[function(require,module,exports){
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 var SettingsTab = (function () {
@@ -267,7 +259,7 @@ var SettingsProvider = (function () {
     };
     SettingsProvider.prototype.$get = function () {
         "ngInject";
-        if (_.isNull(this._service) || _.isFunction(this._service)) {
+        if (_.isNull(this._service) || _.isUndefined(this._service)) {
             this._service = new SettingsService(this._config);
         }
         return this._service;
@@ -277,12 +269,12 @@ var SettingsProvider = (function () {
 angular
     .module('pipSettings.Service')
     .provider('pipSettings', SettingsProvider);
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 angular.module('pipSettings.Service', []);
 require("./SettingsService");
-},{"./SettingsService":7}],9:[function(require,module,exports){
+},{"./SettingsService":6}],8:[function(require,module,exports){
 (function () {
     'use strict';
     angular.module('pipUserSettings', [
@@ -295,7 +287,7 @@ require("./SettingsService");
         'pipSettings.Templates'
     ]);
 })();
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.BasicInfo', ['pipUserSettings.ChangePassword', 'pipUserSettings.VerifyEmail',
@@ -439,7 +431,7 @@ require("./SettingsService");
         }
     }]);
 })();
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.ChangePassword', []);
@@ -499,7 +491,7 @@ require("./SettingsService");
         }
     }]);
 })();
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.Sessions', [
@@ -577,7 +569,7 @@ require("./SettingsService");
         }
     }]);
 })();
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.Strings', ['pipTranslate']);
@@ -688,7 +680,7 @@ require("./SettingsService");
         });
     }]);
 })();
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function () {
     'use strict';
     var thisModule = angular.module('pipUserSettings.VerifyEmail', []);
@@ -746,7 +738,7 @@ require("./SettingsService");
         }
     }]);
 })();
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function(module) {
 try {
   module = angular.module('pipSettings.Templates');
@@ -809,7 +801,7 @@ module.run(['$templateCache', function($templateCache) {
 
 
 
-},{}]},{},[15,5,6,3,4,8,7,2,1,10,11,12,13,14,9])(15)
+},{}]},{},[14,4,5,2,3,7,6,1,9,10,11,12,13,8])(14)
 });
 
 //# sourceMappingURL=pip-webui-settings.js.map

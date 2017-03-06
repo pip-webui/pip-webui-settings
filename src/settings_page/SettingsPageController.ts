@@ -15,7 +15,11 @@ interface ISettingsPageController {
     onNavigationSelect(state: string): void;
 }
 
-class SettingsPageController implements ISettingsPageController {
+
+
+(() => {
+
+    class SettingsPageController implements ISettingsPageController {
     public tabs: SettingsTab[];
     public selected: SettingsPageSelectedTab;
     public onDropdownSelect: Function;
@@ -78,8 +82,6 @@ class SettingsPageController implements ISettingsPageController {
         }
     }
 }
-
-(() => {
 
 angular.module('pipSettings.Page')
     .controller('pipSettingsPageController', SettingsPageController);

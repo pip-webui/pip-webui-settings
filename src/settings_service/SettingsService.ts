@@ -217,7 +217,7 @@ class SettingsProvider implements ISettingsProvider {
     public $get(): ISettingsService {
         "ngInject";
 
-        if (_.isNull(this._service) || _.isFunction(this._service)) {
+        if (_.isNull(this._service) || _.isUndefined(this._service)) {
             this._service = new SettingsService(this._config);
         }
         
