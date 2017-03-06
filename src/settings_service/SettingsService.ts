@@ -125,7 +125,7 @@ class SettingsProvider implements ISettingsProvider {
         return _.cloneDeep(defaultTab);
     }
 
-    public addTab(tabObj: SettingsTab) {
+    public addTab(tabObj: SettingsTab): void {
         let existingTab: SettingsTab;
 
         this.validateTab(tabObj);
