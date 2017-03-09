@@ -1,7 +1,7 @@
 {
     "name":  "pip-webui-settings",
     "version":  "2.0.0",
-    "author":  "Digital Living Software Corp. <www.digitallivingsoftware.com>",
+    "author":  "Conceptual Vision Consulting LLC",
     "description":  "Extensible settings page for Pip.WebUI",
     "contributors":  [
                          {

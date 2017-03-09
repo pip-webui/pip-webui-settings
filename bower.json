@@ -1,36 +1,36 @@
 {
-    "name": "pip-webui-settings",
-    "version": "1.0.5",
-    "description": "Extensible settings page for Pip.WebUI",
-    "main": "",
-    "authors": [
-        {
-            "name": "Sergey Seroukhov",
-            "email": "seroukhov@gmail.com"
-        },
-        {
-            "name": "Katerina Negrienko",
-            "email": "katya@negrienko.com"
-        }
-    ],
-    "license": "MIT",
-    "keywords": [
-        "pip",
-        "webui",
-        "settings"
-    ],
-    "homepage": "https://github.com/pip-webui/pip-webui-settings",
-    "ignore": [
-        ".gitignore",
-        "cordova",
-        "node_modules",
-        "bower_components",
-        "src",
-        "tests",
-        "samples",
-        "scripts",
-        "build.*",
-        "gulpfile.js",
-        "karma.conf.js"
-    ]
+    "name":  "pip-webui-settings",
+    "version":  "2.0.0",
+    "description":  "Extensible settings page for Pip.WebUI",
+    "main":  "",
+    "authors":  [
+                    {
+                        "name":  "Sergey Seroukhov",
+                        "email":  "seroukhov@gmail.com"
+                    },
+                    {
+                        "name":  "Katerina Negrienko",
+                        "email":  "katya@negrienko.com"
+                    }
+                ],
+    "license":  "MIT",
+    "keywords":  [
+                     "pip",
+                     "webui",
+                     "settings"
+                 ],
+    "homepage":  "https://github.com/pip-webui/pip-webui-settings",
+    "ignore":  [
+                   ".gitignore",
+                   "cordova",
+                   "node_modules",
+                   "bower_components",
+                   "src",
+                   "tests",
+                   "samples",
+                   "scripts",
+                   "build.*",
+                   "gulpfile.js",
+                   "karma.conf.js"
+               ]
 }
