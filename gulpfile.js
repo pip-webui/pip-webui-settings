@@ -4,8 +4,8 @@ var gulp = require('gulp');
 require('pip-webui-tasks').all(gulp);
 
 // Define build tasks
-gulp.task('build', ['build-dev', 'build-prod']);
-gulp.task('rebuild', ['build-dev']);
+gulp.task('rebuild', ['build-dev', 'build-prod']);
+gulp.task('build', ['build-dev']);
 gulp.task('clean', ['build-clean']);
 gulp.task('watch', ['build-watch']);
 gulp.task('lint', ['less-lint', 'js-lint']);
