@@ -47,11 +47,5 @@ export class SettingsConfig {
     isNavIcon: boolean;
 }
 
-
-
-
-
-
-
 }
 
