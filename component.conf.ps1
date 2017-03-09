@@ -4,4 +4,4 @@ $Build = 'gulp'
 $Document = 'none'
 $Test = 'mocha'
 $Deploy = 'none'
-
+$Run = 'gulp'
