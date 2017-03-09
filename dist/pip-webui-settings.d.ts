@@ -1,6 +1,5 @@
 declare module pip.settings {
 
-
 export class SettingsPageSelectedTab {
     tab: SettingsTab;
     tabIndex: number;
@@ -46,6 +45,7 @@ export class SettingsConfig {
     titleLogo: boolean;
     isNavIcon: boolean;
 }
+
 
 }
 
