@@ -1,7 +1,7 @@
 module.exports = {
     module: {
         name: 'pipSettings',
-        styles: 'settings',
+        styles: 'index',
         export: 'pip.settings',
         standalone: 'pip.settings'
     },

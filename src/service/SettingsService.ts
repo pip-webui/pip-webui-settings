@@ -1,15 +1,7 @@
-import {
-    SettingsTab,
-    SettingsConfig
-} from './SettingsConfig';
-
-import {
-    ISettingsService
-} from './ISettingsService';
-
-import {
-    ISettingsProvider
-} from './ISettingsProvider';
+import { SettingsTab } from './SettingsTab';
+import { SettingsConfig } from './SettingsConfig';
+import { ISettingsService } from './ISettingsService';
+import { ISettingsProvider } from './ISettingsService';
 
 class SettingsService implements ISettingsService {
     private _config: SettingsConfig;
@@ -138,7 +130,6 @@ class SettingsProvider implements ISettingsProvider {
      * Validates passed tab config object
      * If passed tab is not valid it will throw an error
      */
-
     private validateTab(tabObj: SettingsTab): void {
         if (!tabObj || !_.isObject(tabObj)) {
             throw new Error('Invalid object');
@@ -195,6 +186,6 @@ class SettingsProvider implements ISettingsProvider {
 }
 
 angular
-    .module('pipSettings.Service', [])
+    .module('pipSettings.Service')
     .provider('pipSettings', SettingsProvider);
 

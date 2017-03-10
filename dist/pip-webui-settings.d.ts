@@ -1,11 +1,7 @@
 declare module pip.settings {
 
-export interface ISettingsProvider extends ng.IServiceProvider {
-    getDefaultTab(): SettingsTab;
-    addTab(tabObj: SettingsTab): void;
-    setDefaultTab(name: string): void;
-    getFullStateName(state: string): string;
-}
+
+
 
 export interface ISettingsService {
     getDefaultTab(): SettingsTab;
@@ -14,6 +10,34 @@ export interface ISettingsService {
     setDefaultTab(name: string): void;
     showNavIcon(value: boolean): boolean;
     getTabs(): SettingsTab[];
+}
+export interface ISettingsProvider extends ng.IServiceProvider {
+    getDefaultTab(): SettingsTab;
+    addTab(tabObj: SettingsTab): void;
+    setDefaultTab(name: string): void;
+    getFullStateName(state: string): string;
+}
+
+export class SettingsConfig {
+    defaultTab: string;
+    tabs: SettingsTab[];
+    titleText: string;
+    titleLogo: boolean;
+    isNavIcon: boolean;
+}
+
+export class SettingsPageSelectedTab {
+    tab: SettingsTab;
+    tabIndex: number;
+    tabId: string;
+}
+
+
+export class SettingsStateConfig {
+    url: string;
+    auth: boolean;
+    templateUrl?: string;
+    template?: string;
 }
 
 export class SettingsTab {
@@ -24,27 +48,6 @@ export class SettingsTab {
     visible: boolean;
     stateConfig: SettingsStateConfig;
 }
-export class SettingsStateConfig {
-    url: string;
-    auth: boolean;
-    templateUrl?: string;
-    template?: string;
-}
-export class SettingsPageSelectedTab {
-    tab: SettingsTab;
-    tabIndex: number;
-    tabId: string;
-}
-export class SettingsConfig {
-    defaultTab: string;
-    tabs: SettingsTab[];
-    titleText: string;
-    titleLogo: boolean;
-    isNavIcon: boolean;
-}
-
-
-
 
 
 }

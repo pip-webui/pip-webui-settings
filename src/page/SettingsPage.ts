@@ -1,13 +1,6 @@
-// Prevent junk from going into typescript definitions
-
-import {
-    ISettingsService
-} from '../common/ISettingsService';
-
-import {
-    SettingsTab,
-    SettingsPageSelectedTab
-} from '../common/SettingsConfig';
+import { ISettingsService } from '../service/ISettingsService';
+import { SettingsTab } from '../service/SettingsTab';
+import { SettingsPageSelectedTab } from '../service/SettingsPageSelectedTab';
 
 interface ISettingsPageController {
     tabs: SettingsTab[];
@@ -16,11 +9,7 @@ interface ISettingsPageController {
     onNavigationSelect(state: string): void;
 }
 
-
-
-(() => {
-
-    class SettingsPageController implements ISettingsPageController {
+class SettingsPageController implements ISettingsPageController {
     public tabs: SettingsTab[];
     public selected: SettingsPageSelectedTab;
     public onDropdownSelect: Function;
@@ -84,6 +73,6 @@ interface ISettingsPageController {
     }
 }
 
-angular.module('pipSettings.Page')
+angular
+    .module('pipSettings.Page')
     .controller('pipSettingsPageController', SettingsPageController);
-})();

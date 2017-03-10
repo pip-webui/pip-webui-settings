@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('pipSettings.Page', [
     'ui.router', 
     'pipSettings.Service',
@@ -10,5 +8,5 @@ angular.module('pipSettings.Page', [
     ]);
 
 
-import './SettingsPageController';
+import './SettingsPage';
 import './SettingsPageRoutes';
