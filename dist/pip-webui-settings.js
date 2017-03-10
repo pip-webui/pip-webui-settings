@@ -7,7 +7,6 @@ angular.module('pipSettings', [
     'pipSettings.Service',
     'pipSettings.Page'
 ]);
-
 },{"./settings_page/index":4,"./settings_service/index":7}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -73,7 +72,6 @@ exports.SettingsPageSelectedTab = SettingsPageSelectedTab;
     angular.module('pipSettings.Page')
         .controller('pipSettingsPageController', SettingsPageController);
 })();
-
 },{}],3:[function(require,module,exports){
 'use strict';
 configureSettingsPageRoutes.$inject = ['$stateProvider'];
@@ -89,7 +87,6 @@ function configureSettingsPageRoutes($stateProvider) {
 }
 angular.module('pipSettings.Page')
     .config(configureSettingsPageRoutes);
-
 },{}],4:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -103,7 +100,6 @@ angular.module('pipSettings.Page', [
 ]);
 require("./SettingsPageController");
 require("./SettingsPageRoutes");
-
 },{"./SettingsPageController":2,"./SettingsPageRoutes":3}],5:[function(require,module,exports){
 
 },{}],6:[function(require,module,exports){
@@ -273,13 +269,11 @@ var SettingsProvider = (function () {
 angular
     .module('pipSettings.Service')
     .provider('pipSettings', SettingsProvider);
-
 },{}],7:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 angular.module('pipSettings.Service', []);
 require("./SettingsService");
-
 },{"./SettingsService":6}],8:[function(require,module,exports){
 (function(module) {
 try {
