@@ -1,12 +1,11 @@
 'use strict';
 
-import './settings_service/index';
-import './settings_page/index';
+import './common/SettingsService';
+import './page/index';
 
 angular.module('pipSettings', [
     'pipSettings.Service',
     'pipSettings.Page'
 ]);
 
-export * from './settings_service';
-export * from './settings_page';
+export * from './page';

@@ -21,22 +21,6 @@ pipSettingsProvider.addTab({
     }
 });
 ```
-
-### Basic Info tab
-
-Basic Info tab allows to change user account and set preferences like language, theme. 
-Also here user change change his password or verify his primary email address.
-This tab requires presence of the standard **users** REST API.
-
-<img src="https://github.com/pip-webui/pip-webui-settings/raw/master/doc/images/img-settings-basic-info.png"/>
-
-### Active Sessions tab
-
-Active Sessions tab shows currently open user sessions and allows to close them.
-This tab requires presence of the standard **sessions** REST API.
-
-<img src="https://github.com/pip-webui/pip-webui-settings/raw/master/doc/images/img-settings-active-sessions.png"/>
-
 ## Learn more about the module
 
 - [User's guide](https://github.com/pip-webui/pip-webui-settings/blob/master/doc/UsersGuide.md)

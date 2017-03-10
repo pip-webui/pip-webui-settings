@@ -1,46 +1,15 @@
-'use strict';
+import {
+    SettingsTab,
+    SettingsConfig
+} from './SettingsConfig';
 
-export class SettingsTab {
-    public state: string;
-    public title: string;
-    public index: number;
-    public access: Function;
-    public visible: boolean;
-    public stateConfig: SettingsStateConfig;
-}
+import {
+    ISettingsService
+} from './ISettingsService';
 
-export class SettingsStateConfig {
-    public url: string;
-    public auth: boolean = false;
-    public templateUrl?: string;
-    public template?: string;
-}
-
-export interface ISettingsService {
-    getDefaultTab(): SettingsTab;
-    showTitleText (newTitleText: string): void;
-    showTitleLogo(newTitleLogo);
-    setDefaultTab(name: string): void;
-    showNavIcon(value: boolean): boolean;
-    getTabs(): SettingsTab[];
-}
-
-export interface ISettingsProvider extends ng.IServiceProvider {
-    getDefaultTab(): SettingsTab;
-    addTab(tabObj: SettingsTab): void;
-    setDefaultTab(name: string): void;
-    getFullStateName(state: string): string;
-}
-
-export class SettingsConfig {
-
-    public defaultTab: string;
-    public tabs: SettingsTab[] = [];
-    public titleText: string = 'SETTINGS_TITLE';
-    public titleLogo: boolean = null;
-    public isNavIcon: boolean = true;
-
-}
+import {
+    ISettingsProvider
+} from './ISettingsProvider';
 
 class SettingsService implements ISettingsService {
     private _config: SettingsConfig;
@@ -226,6 +195,6 @@ class SettingsProvider implements ISettingsProvider {
 }
 
 angular
-    .module('pipSettings.Service')
+    .module('pipSettings.Service', [])
     .provider('pipSettings', SettingsProvider);
 

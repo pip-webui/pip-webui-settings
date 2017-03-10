@@ -1,12 +1,13 @@
 // Prevent junk from going into typescript definitions
 
-import {ISettingsService, SettingsTab} from '../settings_service/SettingsService';
+import {
+    ISettingsService
+} from '../common/ISettingsService';
 
-export class SettingsPageSelectedTab {
-    public tab: SettingsTab;
-    public tabIndex: number = 0;
-    public tabId: string;
-}
+import {
+    SettingsTab,
+    SettingsPageSelectedTab
+} from '../common/SettingsConfig';
 
 interface ISettingsPageController {
     tabs: SettingsTab[];
