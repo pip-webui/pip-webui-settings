@@ -3,7 +3,6 @@ declare module pip.settings {
 
 
 
-
 export interface ISettingsService {
     getDefaultTab(): SettingsTab;
     showTitleText(newTitleText: string): void;
@@ -49,6 +48,7 @@ export class SettingsTab {
     visible: boolean;
     stateConfig: SettingsStateConfig;
 }
+
 
 }
 
