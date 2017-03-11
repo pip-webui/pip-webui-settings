@@ -11,7 +11,6 @@ angular.module('pipSettings', [
     'pipSettings.Page'
 ]);
 __export(require("./service"));
-
 },{"./page":4,"./service":11}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -58,6 +57,7 @@ var SettingsPageController = (function () {
         });
         this.selected.tabIndex = _.indexOf(this.tabs, this.selected.tab);
         this.selected.tabId = state;
+        this.$state.go(this.selected.tabId);
     };
     SettingsPageController.prototype.onNavigationSelect = function (state) {
         this.initSelect(state);
@@ -70,7 +70,6 @@ var SettingsPageController = (function () {
 angular
     .module('pipSettings.Page')
     .controller('pipSettingsPageController', SettingsPageController);
-
 },{"../service/SettingsPageSelectedTab":7}],3:[function(require,module,exports){
 {
     configureSettingsPageRoutes.$inject = ['$stateProvider'];
@@ -87,7 +86,6 @@ angular
     angular.module('pipSettings.Page')
         .config(configureSettingsPageRoutes);
 }
-
 },{}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -101,11 +99,9 @@ angular.module('pipSettings.Page', [
 ]);
 require("./SettingsPage");
 require("./SettingsPageRoutes");
-
 },{"./SettingsPage":2,"./SettingsPageRoutes":3}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-
 },{}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -119,7 +115,6 @@ var SettingsConfig = (function () {
     return SettingsConfig;
 }());
 exports.SettingsConfig = SettingsConfig;
-
 },{}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -130,7 +125,6 @@ var SettingsPageSelectedTab = (function () {
     return SettingsPageSelectedTab;
 }());
 exports.SettingsPageSelectedTab = SettingsPageSelectedTab;
-
 },{}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -153,9 +147,10 @@ var SettingsService = (function () {
         this._config.defaultTab = this.getFullStateName(name);
     };
     SettingsService.prototype.getDefaultTab = function () {
+        var _this = this;
         var defaultTab;
         defaultTab = _.find(this._config.tabs, function (tab) {
-            return tab.state === defaultTab.state;
+            return tab.state === _this._config.defaultTab;
         });
         return _.cloneDeep(defaultTab);
     };
@@ -276,7 +271,6 @@ var SettingsProvider = (function () {
 angular
     .module('pipSettings.Service')
     .provider('pipSettings', SettingsProvider);
-
 },{"./SettingsConfig":6}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -287,7 +281,6 @@ var SettingsStateConfig = (function () {
     return SettingsStateConfig;
 }());
 exports.SettingsStateConfig = SettingsStateConfig;
-
 },{}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -297,7 +290,6 @@ var SettingsTab = (function () {
     return SettingsTab;
 }());
 exports.SettingsTab = SettingsTab;
-
 },{}],11:[function(require,module,exports){
 "use strict";
 function __export(m) {
@@ -314,7 +306,6 @@ __export(require("./SettingsConfig"));
 __export(require("./SettingsPageSelectedTab"));
 __export(require("./SettingsStateConfig"));
 __export(require("./SettingsTab"));
-
 },{"./SettingsConfig":6,"./SettingsPageSelectedTab":7,"./SettingsService":8,"./SettingsStateConfig":9,"./SettingsTab":10}],12:[function(require,module,exports){
 (function(module) {
 try {
@@ -324,7 +315,39 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('page/SettingsPage.html',
-    '<md-toolbar class="pip-appbar-ext"></md-toolbar><pip-document width="800" min-height="400" class="pip-settings"><div class="pip-menu-container" ng-hide="vm.manager === false || !vm.tabs || vm.tabs.length < 1"><md-list class="pip-menu pip-simple-list" pip-selected="vm.selected.tabIndex" pip-selected-watch="vm.selected.navId" pip-select="vm.onNavigationSelect($event.id)"><md-list-item class="pip-simple-list-item pip-selectable flex" ng-repeat="tab in vm.tabs track by tab.state" ng-if="vm.$party.id == vm.$user.id || tab.state == \'settings.basic_info\'|| tab.state ==\'settings.contact_info\' || tab.state ==\'settings.blacklist\'" md-ink-ripple="" pip-id="{{:: tab.state }}"><p>{{::tab.title | translate}}</p></md-list-item></md-list><div class="pip-content-container"><pip-dropdown pip-actions="vm.tabs" pip-dropdown-select="vm.onDropdownSelect" pip-active-index="vm.selected.tabIndex"></pip-dropdown><div class="pip-body tp24-flex layout-column" ui-view=""></div></div></div><div class="layout-column layout-align-center-center flex" ng-show="vm.manager === false || !vm.tabs || vm.tabs.length < 1">{{::\'ERROR_400\' | translate}}</div></pip-document>');
+    '<md-toolbar class="pip-appbar-ext"></md-toolbar>\n' +
+    '<pip-document width="800" min-height="400"\n' +
+    '              class="pip-settings">\n' +
+    '\n' +
+    '    <div class="pip-menu-container"\n' +
+    '         ng-hide="vm.manager === false || !vm.tabs || vm.tabs.length < 1">\n' +
+    '        <md-list class="pip-menu pip-simple-list"\n' +
+    '                 pip-selected="vm.selected.tabIndex"\n' +
+    '                 pip-selected-watch="vm.selected.navId"\n' +
+    '                 pip-select="vm.onNavigationSelect($event.id)">\n' +
+    '            <md-list-item class="pip-simple-list-item pip-selectable flex"\n' +
+    '                          ng-repeat="tab in vm.tabs track by tab.state" ng-if="vm.$party.id == vm.$user.id ||\n' +
+    '                          tab.state == \'settings.basic_info\'|| tab.state ==\'settings.contact_info\'\n' +
+    '                          || tab.state ==\'settings.blacklist\'"\n' +
+    '                          md-ink-ripple\n' +
+    '                          pip-id="{{:: tab.state }}">\n' +
+    '                <p>{{::tab.title | translate}}</p>\n' +
+    '            </md-list-item>\n' +
+    '        </md-list>\n' +
+    '\n' +
+    '        <div class="pip-content-container">\n' +
+    '            <pip-dropdown pip-actions="vm.tabs"\n' +
+    '                          pip-dropdown-select="vm.onDropdownSelect"\n' +
+    '                          pip-active-index="vm.selected.tabIndex"></pip-dropdown>\n' +
+    '\n' +
+    '            <div class="pip-body tp24-flex layout-column" ui-view></div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '    <div class="layout-column layout-align-center-center flex"\n' +
+    '         ng-show="vm.manager === false || !vm.tabs || vm.tabs.length < 1">\n' +
+    '        {{::\'ERROR_400\' | translate}}\n' +
+    '    </div>\n' +
+    '</pip-document>');
 }]);
 })();
 

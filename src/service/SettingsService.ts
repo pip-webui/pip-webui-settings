@@ -29,7 +29,7 @@ class SettingsService implements ISettingsService {
         let defaultTab: SettingsTab;
 
         defaultTab = _.find(this._config.tabs, (tab: SettingsTab) => {
-            return tab.state === defaultTab.state;
+            return tab.state === this._config.defaultTab;
         });
         return _.cloneDeep(defaultTab);
     }
@@ -122,6 +122,7 @@ class SettingsProvider implements ISettingsProvider {
         }
 
         this._config.defaultTab = this.getFullStateName(name);
+        //console.log(this.$stateProvider);
         //this.$stateProvider.go(this._config.defaultTab);
             //pipAuthStateProvider.redirect('settings', getFullStateName(name));
     }
