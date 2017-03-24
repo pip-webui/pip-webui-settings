@@ -315,7 +315,39 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('page/SettingsPage.html',
-    '<md-toolbar class="pip-appbar-ext"></md-toolbar><pip-document width="800" min-height="400" class="pip-settings"><div class="pip-menu-container" ng-hide="vm.manager === false || !vm.tabs || vm.tabs.length < 1"><md-list class="pip-menu pip-simple-list" pip-selected="vm.selected.tabIndex" pip-selected-watch="vm.selected.navId" pip-select="vm.onNavigationSelect($event.id)"><md-list-item class="pip-simple-list-item pip-selectable flex" ng-repeat="tab in vm.tabs track by tab.state" ng-if="vm.$party.id == vm.$user.id || tab.state == \'settings.basic_info\'|| tab.state ==\'settings.contact_info\' || tab.state ==\'settings.blacklist\'" md-ink-ripple="" pip-id="{{:: tab.state }}"><p>{{::tab.title | translate}}</p></md-list-item></md-list><div class="pip-content-container"><pip-dropdown pip-actions="vm.tabs" pip-dropdown-select="vm.onDropdownSelect" pip-active-index="vm.selected.tabIndex"></pip-dropdown><div class="pip-body tp24-flex layout-column" ui-view=""></div></div></div><div class="layout-column layout-align-center-center flex" ng-show="vm.manager === false || !vm.tabs || vm.tabs.length < 1">{{::\'ERROR_400\' | translate}}</div></pip-document>');
+    '<md-toolbar class="pip-appbar-ext"></md-toolbar>\n' +
+    '<pip-document width="800" min-height="400"\n' +
+    '              class="pip-settings">\n' +
+    '\n' +
+    '    <div class="pip-menu-container"\n' +
+    '         ng-hide="vm.manager === false || !vm.tabs || vm.tabs.length < 1">\n' +
+    '        <md-list class="pip-menu pip-simple-list"\n' +
+    '                 pip-selected="vm.selected.tabIndex"\n' +
+    '                 pip-selected-watch="vm.selected.navId"\n' +
+    '                 pip-select="vm.onNavigationSelect($event.id)">\n' +
+    '            <md-list-item class="pip-simple-list-item pip-selectable flex"\n' +
+    '                          ng-repeat="tab in vm.tabs track by tab.state" ng-if="vm.$party.id == vm.$user.id ||\n' +
+    '                          tab.state == \'settings.basic_info\'|| tab.state ==\'settings.contact_info\'\n' +
+    '                          || tab.state ==\'settings.blacklist\'"\n' +
+    '                          md-ink-ripple\n' +
+    '                          pip-id="{{:: tab.state }}">\n' +
+    '                <p>{{::tab.title | translate}}</p>\n' +
+    '            </md-list-item>\n' +
+    '        </md-list>\n' +
+    '\n' +
+    '        <div class="pip-content-container">\n' +
+    '            <pip-dropdown pip-actions="vm.tabs"\n' +
+    '                          pip-dropdown-select="vm.onDropdownSelect"\n' +
+    '                          pip-active-index="vm.selected.tabIndex"></pip-dropdown>\n' +
+    '\n' +
+    '            <div class="pip-body tp24-flex layout-column" ui-view></div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '    <div class="layout-column layout-align-center-center flex"\n' +
+    '         ng-show="vm.manager === false || !vm.tabs || vm.tabs.length < 1">\n' +
+    '        {{::\'ERROR_400\' | translate}}\n' +
+    '    </div>\n' +
+    '</pip-document>');
 }]);
 })();
 
