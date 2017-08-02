@@ -1,3 +1,43 @@
+
+<div class="pip-main-menu pip-settings" ng-class="{'pip-single-content': vm.details}">
+	<div class="pip-menu">
+        <div class="pip-list-container pip-scroll divider-top">
+
+			<md-list class="pip-ref-list tp0 pip-settings-list"                 
+                pip-selected="vm.selected.tabIndex"
+                pip-selected-watch="vm.selected.navId"
+                pip-select="vm.onNavigationSelect($event.id)">
+
+				<md-list-item  class="pip-ref-list-item pointer divider-bottom pip-selectable" 
+                        ng-repeat="tab in vm.tabs track by tab.state" 
+                        pip-id="{{:: tab.state }}" md-ink-ripple>
+
+					<div ng-click="vm.onNavigationSelect($index)" class="layout-row layout-align-start-center flex">
+						<div class="pip-settings-icon layout-row layout-align-start-center {{ tab.iconClass ? tab.iconClass : 'pip-settings-icon-color'}}" 
+                            ng-if="tab.icon">
+							<md-icon class="" md-svg-icon="{{ tab.icon }}"></md-icon>
+						</div>
+						<div class="pip-content">
+							<p class="pip-title text-overflow flex">
+								{{ ::tab.title | translate }} -{{tab.icon}}
+							</p>
+						</div>
+                        <div class="pip-ref-list-item-end-icon">
+                            <md-icon class="" md-svg-icon="icons:chevron-right"></md-icon>
+                        </div>
+					</div>
+				</md-list-item>
+			</md-list>
+
+		</div>
+	</div>
+    <div class="pip-content-container">
+        <pip-document>
+            <div class="pip-body tp24-flex layout-column flex" ui-view></div>
+        </pip-document>
+	</div>
+</div>        
+<!--    
 <md-toolbar class="pip-appbar-ext"></md-toolbar>
 <pip-document width="800" min-height="400"
               class="pip-settings">
@@ -30,4 +70,4 @@
          ng-show="vm.manager === false || !vm.tabs || vm.tabs.length < 1">
         {{::'ERROR_400' | translate}}
     </div>
-</pip-document>
+</pip-document>-->

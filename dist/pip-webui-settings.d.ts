@@ -41,6 +41,8 @@ export class SettingsStateConfig {
 export class SettingsTab {
     state: string;
     title: string;
+    icon?: string;
+    iconClass?: string;
     index: number;
     access: Function;
     visible: boolean;

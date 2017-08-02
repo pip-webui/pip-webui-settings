@@ -100,6 +100,8 @@ class SettingsProvider implements ISettingsProvider {
         this._config.tabs.push({
             state: this.getFullStateName(tabObj.state),
             title: tabObj.title,
+            icon: tabObj.icon,
+            iconClass: tabObj.iconClass,
             index: tabObj.index || 100000,
             access: tabObj.access,
             visible: tabObj.visible !== false,

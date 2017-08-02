@@ -92,35 +92,28 @@
 input:focus, p:focus, div:focus, li:focus, md-list-item:focus, md-list:focus, a:focus, md-autocomplete:focus, span:focus, button:focus {
   outline-width: 0 !important; }
 
-.pip-settings .pip-content-container {
-  min-height: 100%; }
-
-.pip-settings .pip-body {
-  max-width: none !important;
-  min-height: 100%; }
-
-.pip-settings.pip-card .pip-header ~ .pip-body,
-.pip-settings.pip-document .pip-header ~ .pip-body {
-  padding-top: 24px !important; }
-
-.pip-gt-sm .pip-settings md-list.pip-menu {
-  width: 300px;
-  min-width: 300px; }
-
-.pip-gt-sm .pip-settings .pip-content-container {
-  width: calc(100% - 300px); }
-
-.pip-gt-sm .pip-settings pip-dropdown {
-  display: none; }
-
-.pip-xs .pip-settings .pip-content-container, .pip-sm .pip-settings .pip-content-container {
-  width: 100%;
-  left: 0 !important; }
-
-.pip-xs .pip-settings md-list.pip-menu, .pip-sm .pip-settings md-list.pip-menu {
-  display: none; }
-
-.pip-xs .pip-settings .pip-body, .pip-sm .pip-settings .pip-body {
-  min-height: calc(100% - 64px); }
+.pip-settings .pip-settings-list .pip-ref-list-item {
+  max-width: calc(100% - 16px); }
+  .pip-settings .pip-settings-list .pip-ref-list-item .pip-settings-icon {
+    width: 40px !important;
+    height: 40px !important;
+    text-align: center;
+    border-radius: 20px;
+    padding: 8px;
+    margin: 16px 16px 16px 0px; }
+    .pip-settings .pip-settings-list .pip-ref-list-item .pip-settings-icon md-icon {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      vertical-align: top !important;
+      margin: 0px !important;
+      padding: 0px !important;
+      color: #fff; }
+  .pip-settings .pip-settings-list .pip-ref-list-item .pip-settings-icon-color {
+    background-color: rgba(0, 0, 0, 0.87); }
+  .pip-settings .pip-settings-list .pip-ref-list-item .pip-content {
+    max-width: calc(100% - 92px);
+    padding-bottom: 16px;
+    padding-top: 16px; }
 
 /*# sourceMappingURL=pip-webui-settings.css.map */

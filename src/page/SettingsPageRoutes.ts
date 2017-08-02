@@ -2,7 +2,7 @@
     function configureSettingsPageRoutes($stateProvider) {
         $stateProvider
             .state('settings', {
-                url: '/settings?party_id',
+                url: '/settings?user_id&details',
                 auth: true,
                 controllerAs: 'vm',
                 controller: 'pipSettingsPageController',

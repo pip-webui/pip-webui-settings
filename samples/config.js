@@ -23,8 +23,8 @@
             // Set global constants
             //pipAppBarProvider.appTitleText('Sample Application');
 
-            pipSettingsProvider.showNavIcon(false);
-            pipSettingsProvider.showTitleLogo('images/piplife_logo.svg');
+            // pipSettingsProvider.showNavIcon(false);
+            // pipSettingsProvider.showTitleLogo('images/piplife_logo.svg');
 
             /*
             pipAppBarProvider.globalSecondaryActions([

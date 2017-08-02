@@ -16,12 +16,42 @@ __export(require("./service"));
 Object.defineProperty(exports, "__esModule", { value: true });
 var SettingsPageSelectedTab_1 = require("../service/SettingsPageSelectedTab");
 var SettingsPageController = (function () {
-    SettingsPageController.$inject = ['$state', 'pipNavService', 'pipSettings', '$rootScope', '$timeout'];
-    function SettingsPageController($state, pipNavService, pipSettings, $rootScope, $timeout) {
+    SettingsPageController.$inject = ['$state', '$rootScope', '$injector', '$timeout', '$location', 'pipNavService', 'pipSettings', 'pipMedia'];
+    function SettingsPageController($state, $rootScope, $injector, $timeout, $location, pipNavService, pipSettings, pipMedia) {
         var _this = this;
         this.$state = $state;
-        this.tabs = _.filter(pipSettings.getTabs(), function (tab) {
-            if (tab.visible === true && (tab.access ? tab.access($rootScope['$user'], tab) : true)) {
+        this.$rootScope = $rootScope;
+        this.$injector = $injector;
+        this.$timeout = $timeout;
+        this.$location = $location;
+        this.pipNavService = pipNavService;
+        this.pipSettings = pipSettings;
+        this.pipMedia = pipMedia;
+        this.translateInit();
+        this.mediaSizeGtSm = this.pipMedia('gt-sm');
+        this.initTabs();
+        if (!this.pipMedia('gt-sm')) {
+            this.details = $location.search().details == 'details' ? true : false;
+        }
+        else {
+            this.details = false;
+            this.$location.search('details', 'main');
+        }
+        this.cleanUpFunc = $rootScope.$on('pipMainResized', function () {
+            if (_this.mediaSizeGtSm !== _this.pipMedia('gt-sm')) {
+                _this.mediaSizeGtSm = _this.pipMedia('gt-sm');
+                if (_this.pipMedia('gt-sm')) {
+                    _this.details = false;
+                }
+                _this.appHeader();
+            }
+        });
+        this.appHeader();
+    }
+    SettingsPageController.prototype.initTabs = function () {
+        var _this = this;
+        this.tabs = _.filter(this.pipSettings.getTabs(), function (tab) {
+            if (tab.visible === true && (tab.access ? tab.access(_this.$rootScope['$user'], tab) : true)) {
                 return tab;
             }
         });
@@ -30,37 +60,84 @@ var SettingsPageController = (function () {
         if (this.$state.current.name !== 'settings') {
             this.initSelect(this.$state.current.name);
         }
-        else if (this.$state.current.name === 'settings' && pipSettings.getDefaultTab()) {
-            this.initSelect(pipSettings.getDefaultTab().state);
+        else if (this.$state.current.name === 'settings' && this.pipSettings.getDefaultTab()) {
+            this.initSelect(this.pipSettings.getDefaultTab().state);
         }
         else {
-            $timeout(function () {
-                if (pipSettings.getDefaultTab()) {
-                    _this.initSelect(pipSettings.getDefaultTab().state);
+            this.$timeout(function () {
+                if (_this.pipSettings.getDefaultTab()) {
+                    _this.initSelect(_this.pipSettings.getDefaultTab().state);
                 }
-                if (!pipSettings.getDefaultTab() && _this.tabs.length > 0) {
+                if (!_this.pipSettings.getDefaultTab() && _this.tabs.length > 0) {
                     _this.initSelect(_this.tabs[0].state);
                 }
             });
         }
-        pipNavService.icon.showMenu();
-        pipNavService.breadcrumb.text = "Settings";
-        pipNavService.actions.hide();
-        pipNavService.appbar.removeShadow();
-        this.onDropdownSelect = function (state) {
-            _this.onNavigationSelect(state.state);
-        };
-    }
+    };
+    SettingsPageController.prototype.translateInit = function () {
+        this._pipTranslate = this.$injector.has('pipTranslate') ? this.$injector.get('pipTranslate') : null;
+        if (this._pipTranslate && this._pipTranslate.setTranslations) {
+            this._pipTranslate.setTranslations('en', {
+                PIP_SETTINGS: 'Settings',
+                PIP_SETTINGS_DETAILS: 'Settings details'
+            });
+            this._pipTranslate.setTranslations('ru', {
+                PIP_SETTINGS: 'Настройки',
+                PIP_SETTINGS_DETAILS: 'Подробно'
+            });
+        }
+    };
+    SettingsPageController.prototype.toMainFromDetails = function () {
+        this.$location.search('details', 'main');
+        this.details = false;
+        this.appHeader();
+    };
+    SettingsPageController.prototype.appHeader = function () {
+        var _this = this;
+        this.pipNavService.breadcrumb.breakpoint = 'gt-sm';
+        if (!this.pipMedia('gt-sm')) {
+            var detailsTitle = this.selected && this.selected.tab ? this.selected.tab.title : 'PIP_SETTINGS_DETAILS';
+            if (this.details) {
+                this.pipNavService.icon.showBack(function () {
+                    _this.toMainFromDetails();
+                });
+                this.pipNavService.breadcrumb.items = [
+                    {
+                        title: "PIP_SETTINGS", click: function () {
+                            _this.toMainFromDetails();
+                        }
+                    },
+                    {
+                        title: detailsTitle, click: function () { }, subActions: []
+                    }
+                ];
+            }
+            else {
+                this.pipNavService.icon.showMenu();
+                this.pipNavService.breadcrumb.text = "PIP_SETTINGS";
+            }
+        }
+        else {
+            this.pipNavService.icon.showMenu();
+            this.pipNavService.breadcrumb.text = "PIP_SETTINGS";
+        }
+        this.pipNavService.actions.hide();
+        this.pipNavService.appbar.removeShadow();
+    };
     SettingsPageController.prototype.initSelect = function (state) {
         this.selected.tab = _.find(this.tabs, function (tab) {
             return tab.state === state;
         });
         this.selected.tabIndex = _.indexOf(this.tabs, this.selected.tab);
         this.selected.tabId = state;
-        this.$state.go(this.selected.tabId);
     };
     SettingsPageController.prototype.onNavigationSelect = function (state) {
         this.initSelect(state);
+        if (!this.pipMedia('gt-sm')) {
+            this.details = true;
+            this.$location.search('details', 'details');
+            this.appHeader();
+        }
         if (this.selected.tab) {
             this.$state.go(state);
         }
@@ -76,7 +153,7 @@ angular
     function configureSettingsPageRoutes($stateProvider) {
         $stateProvider
             .state('settings', {
-            url: '/settings?party_id',
+            url: '/settings?user_id&details',
             auth: true,
             controllerAs: 'vm',
             controller: 'pipSettingsPageController',
@@ -207,6 +284,8 @@ var SettingsProvider = (function () {
         this._config.tabs.push({
             state: this.getFullStateName(tabObj.state),
             title: tabObj.title,
+            icon: tabObj.icon,
+            iconClass: tabObj.iconClass,
             index: tabObj.index || 100000,
             access: tabObj.access,
             visible: tabObj.visible !== false,
@@ -315,6 +394,46 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('page/SettingsPage.html',
+    '\n' +
+    '<div class="pip-main-menu pip-settings" ng-class="{\'pip-single-content\': vm.details}">\n' +
+    '	<div class="pip-menu">\n' +
+    '        <div class="pip-list-container pip-scroll divider-top">\n' +
+    '\n' +
+    '			<md-list class="pip-ref-list tp0 pip-settings-list"                 \n' +
+    '                pip-selected="vm.selected.tabIndex"\n' +
+    '                pip-selected-watch="vm.selected.navId"\n' +
+    '                pip-select="vm.onNavigationSelect($event.id)">\n' +
+    '\n' +
+    '				<md-list-item  class="pip-ref-list-item pointer divider-bottom pip-selectable" \n' +
+    '                        ng-repeat="tab in vm.tabs track by tab.state" \n' +
+    '                        pip-id="{{:: tab.state }}" md-ink-ripple>\n' +
+    '\n' +
+    '					<div ng-click="vm.onNavigationSelect($index)" class="layout-row layout-align-start-center flex">\n' +
+    '						<div class="pip-pic pip-settings-icon layout-row layout-align-start-center {{ tab.iconClass ? tab.iconClass : \'pip-settings-icon-color\'}}" \n' +
+    '                            ng-if="tab.icon">\n' +
+    '							<md-icon class="" md-svg-icon="{{ tab.icon }}"></md-icon>\n' +
+    '						</div>\n' +
+    '						<div class="pip-content">\n' +
+    '							<p class="pip-title text-overflow flex">\n' +
+    '								{{ ::tab.title | translate }} -{{tab.icon}}\n' +
+    '							</p>\n' +
+    '						</div>\n' +
+    '                        <div class="pip-ref-list-item-end-icon">\n' +
+    '                            <md-icon class="" md-svg-icon="icons:chevron-right"></md-icon>\n' +
+    '                        </div>\n' +
+    '					</div>\n' +
+    '				</md-list-item>\n' +
+    '			</md-list>\n' +
+    '\n' +
+    '		</div>\n' +
+    '	</div>\n' +
+    '    <div class="pip-content-container">\n' +
+    '        <pip-document>\n' +
+    '            <div class="pip-body tp24-flex layout-column flex" ui-view></div>\n' +
+    '        </pip-document>\n' +
+    '	</div>\n' +
+    '</div>        \n' +
+    '<!--    \n' +
     '<md-toolbar class="pip-appbar-ext"></md-toolbar>\n' +
     '<pip-document width="800" min-height="400"\n' +
     '              class="pip-settings">\n' +
@@ -347,7 +466,7 @@ module.run(['$templateCache', function($templateCache) {
     '         ng-show="vm.manager === false || !vm.tabs || vm.tabs.length < 1">\n' +
     '        {{::\'ERROR_400\' | translate}}\n' +
     '    </div>\n' +
-    '</pip-document>');
+    '</pip-document>-->');
 }]);
 })();
 
