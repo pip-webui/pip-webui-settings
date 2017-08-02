@@ -12,14 +12,14 @@
                         ng-repeat="tab in vm.tabs track by tab.state" 
                         pip-id="{{:: tab.state }}" md-ink-ripple>
 
-					<div ng-click="vm.onNavigationSelect($index)" class="layout-row layout-align-start-center flex">
+					<div ng-click="vm.onNavigationSelect(tab.state)" class="layout-row layout-align-start-center flex">
 						<div class="pip-settings-icon layout-row layout-align-start-center {{ tab.iconClass ? tab.iconClass : 'pip-settings-icon-color'}}" 
                             ng-if="tab.icon">
 							<md-icon class="" md-svg-icon="{{ tab.icon }}"></md-icon>
 						</div>
-						<div class="pip-content">
+						<div class="pip-content {{ tab.icon ? '' : 'pip-settings-without-icon' }}">
 							<p class="pip-title text-overflow flex">
-								{{ ::tab.title | translate }} -{{tab.icon}}
+								{{ ::tab.title | translate }}
 							</p>
 						</div>
                         <div class="pip-ref-list-item-end-icon">

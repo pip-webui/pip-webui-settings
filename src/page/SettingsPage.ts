@@ -11,7 +11,7 @@ interface ISettingsPageController {
 
 class SettingsPageController implements ISettingsPageController {
     private _pipTranslate: pip.services.ITranslateService
-        
+
     public tabs: SettingsTab[];
     public selected: SettingsPageSelectedTab;
     // public onDropdownSelect: Function;
@@ -96,7 +96,7 @@ class SettingsPageController implements ISettingsPageController {
                 PIP_SETTINGS: 'Настройки',
                 PIP_SETTINGS_DETAILS: 'Подробно'
             });
-        }        
+        }
     }
     private toMainFromDetails(): void {
         this.$location.search('details', 'main');
@@ -142,18 +142,16 @@ class SettingsPageController implements ISettingsPageController {
         });
         this.selected.tabIndex = _.indexOf(this.tabs, this.selected.tab);
         this.selected.tabId = state;
-    //    this.$state.go(this.selected.tabId);
+        this.$state.go(this.selected.tabId);
     }
 
     public onNavigationSelect(state: string): void {
         this.initSelect(state);
+
         if (!this.pipMedia('gt-sm')) {
             this.details = true;
             this.$location.search('details', 'details');
             this.appHeader();
-        }
-        if (this.selected.tab) {
-            this.$state.go(state);
         }
     }
 }

@@ -130,6 +130,7 @@ var SettingsPageController = (function () {
         });
         this.selected.tabIndex = _.indexOf(this.tabs, this.selected.tab);
         this.selected.tabId = state;
+        this.$state.go(this.selected.tabId);
     };
     SettingsPageController.prototype.onNavigationSelect = function (state) {
         this.initSelect(state);
@@ -137,9 +138,6 @@ var SettingsPageController = (function () {
             this.details = true;
             this.$location.search('details', 'details');
             this.appHeader();
-        }
-        if (this.selected.tab) {
-            this.$state.go(state);
         }
     };
     return SettingsPageController;
@@ -408,14 +406,14 @@ module.run(['$templateCache', function($templateCache) {
     '                        ng-repeat="tab in vm.tabs track by tab.state" \n' +
     '                        pip-id="{{:: tab.state }}" md-ink-ripple>\n' +
     '\n' +
-    '					<div ng-click="vm.onNavigationSelect($index)" class="layout-row layout-align-start-center flex">\n' +
-    '						<div class="pip-pic pip-settings-icon layout-row layout-align-start-center {{ tab.iconClass ? tab.iconClass : \'pip-settings-icon-color\'}}" \n' +
+    '					<div ng-click="vm.onNavigationSelect(tab.state)" class="layout-row layout-align-start-center flex">\n' +
+    '						<div class="pip-settings-icon layout-row layout-align-start-center {{ tab.iconClass ? tab.iconClass : \'pip-settings-icon-color\'}}" \n' +
     '                            ng-if="tab.icon">\n' +
     '							<md-icon class="" md-svg-icon="{{ tab.icon }}"></md-icon>\n' +
     '						</div>\n' +
-    '						<div class="pip-content">\n' +
+    '						<div class="pip-content {{ tab.icon ? \'\' : \'pip-settings-without-icon\' }}">\n' +
     '							<p class="pip-title text-overflow flex">\n' +
-    '								{{ ::tab.title | translate }} -{{tab.icon}}\n' +
+    '								{{ ::tab.title | translate }}\n' +
     '							</p>\n' +
     '						</div>\n' +
     '                        <div class="pip-ref-list-item-end-icon">\n' +

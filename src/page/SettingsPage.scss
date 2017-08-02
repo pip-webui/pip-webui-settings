@@ -3,6 +3,8 @@
 
 .pip-settings {
     .pip-settings-list {
+        overflow-x: hidden;
+
         .pip-ref-list-item {
             max-width: calc(100% - 16px);
 
@@ -30,9 +32,13 @@
             }
 
             .pip-content {
-                max-width: calc(100% - 92px);
+                max-width: calc(100% - 96px);
                 padding-bottom: 16px;
                 padding-top: 16px;     
+            }
+
+            .pip-settings-without-icon.pip-content {
+                max-width: calc(100% - 40px);
             }
 
             .pip-ref-list-item-end-icon {
