@@ -22,6 +22,7 @@ class SettingsPageController implements ISettingsPageController {
     constructor(
         private $state: ng.ui.IStateService,
         private $rootScope: ng.IRootScopeService,
+        $scope: ng.IScope,
         private $injector: ng.auto.IInjectorService,
         private $timeout: angular.ITimeoutService,
         private $location: ng.ILocationService,
@@ -54,9 +55,12 @@ class SettingsPageController implements ISettingsPageController {
             }
         });
         this.appHeader();
-        // this.onDropdownSelect = (state) => {
-        //     this.onNavigationSelect(state.state);
-        // }
+
+        $scope.$on('$destroy', () => {
+            if (angular.isFunction(this.cleanUpFunc)) {
+                this.cleanUpFunc();
+            }
+        });
     }
 
     private initTabs(): void {
