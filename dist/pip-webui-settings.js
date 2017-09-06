@@ -16,8 +16,8 @@ __export(require("./service"));
 Object.defineProperty(exports, "__esModule", { value: true });
 var SettingsPageSelectedTab_1 = require("../service/SettingsPageSelectedTab");
 var SettingsPageController = (function () {
-    SettingsPageController.$inject = ['$state', '$rootScope', '$injector', '$timeout', '$location', 'pipNavService', 'pipSettings', 'pipMedia'];
-    function SettingsPageController($state, $rootScope, $injector, $timeout, $location, pipNavService, pipSettings, pipMedia) {
+    SettingsPageController.$inject = ['$state', '$rootScope', '$scope', '$injector', '$timeout', '$location', 'pipNavService', 'pipSettings', 'pipMedia'];
+    function SettingsPageController($state, $rootScope, $scope, $injector, $timeout, $location, pipNavService, pipSettings, pipMedia) {
         var _this = this;
         this.$state = $state;
         this.$rootScope = $rootScope;
@@ -47,6 +47,11 @@ var SettingsPageController = (function () {
             }
         });
         this.appHeader();
+        $scope.$on('$destroy', function () {
+            if (angular.isFunction(_this.cleanUpFunc)) {
+                _this.cleanUpFunc();
+            }
+        });
     }
     SettingsPageController.prototype.initTabs = function () {
         var _this = this;
