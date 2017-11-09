@@ -37,6 +37,10 @@ var SettingsPageController = (function () {
             this.details = false;
             this.$location.search('details', 'main');
         }
+        this.cleanUpSelectFunc = $rootScope.$on('$stateChangeSuccess', function () {
+            var state = _this.$state.current.name;
+            _this.initSelect(state, false);
+        });
         this.cleanUpFunc = $rootScope.$on('pipMainResized', function () {
             if (_this.mediaSizeGtSm !== _this.pipMedia('gt-sm')) {
                 _this.mediaSizeGtSm = _this.pipMedia('gt-sm');
@@ -50,6 +54,9 @@ var SettingsPageController = (function () {
         $scope.$on('$destroy', function () {
             if (angular.isFunction(_this.cleanUpFunc)) {
                 _this.cleanUpFunc();
+            }
+            if (angular.isFunction(_this.cleanUpSelectFunc)) {
+                _this.cleanUpSelectFunc();
             }
         });
     }
@@ -129,13 +136,15 @@ var SettingsPageController = (function () {
         this.pipNavService.actions.hide();
         this.pipNavService.appbar.removeShadow();
     };
-    SettingsPageController.prototype.initSelect = function (state) {
+    SettingsPageController.prototype.initSelect = function (state, updateState) {
+        if (updateState === void 0) { updateState = true; }
         this.selected.tab = _.find(this.tabs, function (tab) {
             return tab.state === state;
         });
         this.selected.tabIndex = _.indexOf(this.tabs, this.selected.tab);
         this.selected.tabId = state;
-        this.$state.go(this.selected.tabId);
+        if (updateState === true)
+            this.$state.go(this.selected.tabId);
     };
     SettingsPageController.prototype.onNavigationSelect = function (state) {
         this.initSelect(state);
