@@ -16,6 +16,7 @@ class SettingsPageController implements ISettingsPageController {
     public selected: SettingsPageSelectedTab;
     // public onDropdownSelect: Function;
     private cleanUpFunc: Function;
+    private cleanUpSelectFunc: Function;
     private mediaSizeGtSm: boolean;
     public details: boolean;
 
@@ -43,6 +44,11 @@ class SettingsPageController implements ISettingsPageController {
             this.details = false;
             this.$location.search('details', 'main');
         }
+            
+        this.cleanUpSelectFunc = $rootScope.$on('$stateChangeSuccess', () => {
+            let state = this.$state.current.name;
+            this.initSelect(state, false);
+        });
 
         this.cleanUpFunc = $rootScope.$on('pipMainResized', () => {
             if (this.mediaSizeGtSm !== this.pipMedia('gt-sm')) {
@@ -59,6 +65,10 @@ class SettingsPageController implements ISettingsPageController {
         $scope.$on('$destroy', () => {
             if (angular.isFunction(this.cleanUpFunc)) {
                 this.cleanUpFunc();
+            }
+            
+            if (angular.isFunction(this.cleanUpSelectFunc)) {
+                this.cleanUpSelectFunc();
             }
         });
     }
@@ -140,13 +150,13 @@ class SettingsPageController implements ISettingsPageController {
         this.pipNavService.appbar.removeShadow();
     }
 
-    private initSelect(state: string): void {
+    private initSelect(state: string, updateState: boolean = true): void {
         this.selected.tab = _.find(this.tabs, (tab: SettingsTab) => {
             return tab.state === state;
         });
         this.selected.tabIndex = _.indexOf(this.tabs, this.selected.tab);
         this.selected.tabId = state;
-        this.$state.go(this.selected.tabId);
+        if (updateState === true) this.$state.go(this.selected.tabId);
     }
 
     public onNavigationSelect(state: string): void {
