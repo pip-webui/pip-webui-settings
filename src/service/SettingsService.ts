@@ -34,7 +34,7 @@ class SettingsService implements ISettingsService {
         return _.cloneDeep(defaultTab);
     }
 
-    public showTitleText (newTitleText: string): string {
+    public showTitleText(newTitleText: string): string {
         if (newTitleText) {
             this._config.titleText = newTitleText;
             this._config.titleLogo = null;
@@ -70,7 +70,7 @@ class SettingsProvider implements ISettingsProvider {
     private _service: SettingsService;
     private _config: SettingsConfig = new SettingsConfig();
 
-    constructor(private $stateProvider: ng.ui.IStateProvider) {}
+    constructor(private $stateProvider: ng.ui.IStateProvider) { "ngInject"; }
 
     public getFullStateName(state: string): string {
         return 'settings.' + state;
@@ -126,7 +126,7 @@ class SettingsProvider implements ISettingsProvider {
         this._config.defaultTab = this.getFullStateName(name);
         //console.log(this.$stateProvider);
         //this.$stateProvider.go(this._config.defaultTab);
-            //pipAuthStateProvider.redirect('settings', getFullStateName(name));
+        //pipAuthStateProvider.redirect('settings', getFullStateName(name));
     }
 
     /**
@@ -151,7 +151,7 @@ class SettingsProvider implements ISettingsProvider {
         }
     }
 
-    public showTitleText (newTitleText: string): string {
+    public showTitleText(newTitleText: string): string {
         if (newTitleText) {
             this._config.titleText = newTitleText;
             this._config.titleLogo = null;
@@ -183,12 +183,12 @@ class SettingsProvider implements ISettingsProvider {
         if (_.isNull(this._service) || _.isUndefined(this._service)) {
             this._service = new SettingsService(this._config);
         }
-        
+
         return this._service;
     }
 }
 
 angular
-    .module('pipSettings.Service')
+    .module('pipSettings.Service', ['ui.router'])
     .provider('pipSettings', SettingsProvider);
 

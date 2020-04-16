@@ -271,6 +271,7 @@ var SettingsService = (function () {
 var SettingsProvider = (function () {
     SettingsProvider.$inject = ['$stateProvider'];
     function SettingsProvider($stateProvider) {
+        "ngInject";
         this.$stateProvider = $stateProvider;
         this._config = new SettingsConfig_1.SettingsConfig();
     }
@@ -360,7 +361,7 @@ var SettingsProvider = (function () {
     return SettingsProvider;
 }());
 angular
-    .module('pipSettings.Service')
+    .module('pipSettings.Service', ['ui.router'])
     .provider('pipSettings', SettingsProvider);
 },{"./SettingsConfig":6}],9:[function(require,module,exports){
 "use strict";
@@ -387,7 +388,6 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-angular.module('pipSettings.Service', []);
 require("./SettingsConfig");
 require("./SettingsPageSelectedTab");
 require("./SettingsStateConfig");
@@ -406,79 +406,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('page/SettingsPage.html',
-    '\n' +
-    '<div class="pip-main-menu pip-settings" ng-class="{\'pip-single-content\': vm.details}">\n' +
-    '	<div class="pip-menu">\n' +
-    '        <div class="pip-list-container pip-scroll divider-top">\n' +
-    '\n' +
-    '			<md-list class="pip-ref-list tp0 pip-settings-list"                 \n' +
-    '                pip-selected="vm.selected.tabIndex"\n' +
-    '                pip-selected-watch="vm.selected.navId"\n' +
-    '                pip-select="vm.onNavigationSelect($event.id)">\n' +
-    '\n' +
-    '				<md-list-item  class="pip-ref-list-item pointer divider-bottom pip-selectable" \n' +
-    '                        ng-repeat="tab in vm.tabs track by tab.state" \n' +
-    '                        pip-id="{{:: tab.state }}" md-ink-ripple>\n' +
-    '\n' +
-    '					<div ng-click="vm.onNavigationSelect(tab.state)" class="layout-row layout-align-start-center flex">\n' +
-    '						<div class="pip-settings-icon layout-row layout-align-start-center {{ tab.iconClass ? tab.iconClass : \'pip-settings-icon-color\'}}" \n' +
-    '                            ng-if="tab.icon">\n' +
-    '							<md-icon class="" md-svg-icon="{{ tab.icon }}"></md-icon>\n' +
-    '						</div>\n' +
-    '						<div class="pip-content {{ tab.icon ? \'\' : \'pip-settings-without-icon\' }}">\n' +
-    '							<p class="pip-title text-overflow flex">\n' +
-    '								{{ ::tab.title | translate }}\n' +
-    '							</p>\n' +
-    '						</div>\n' +
-    '                        <div class="pip-ref-list-item-end-icon">\n' +
-    '                            <md-icon class="" md-svg-icon="icons:chevron-right"></md-icon>\n' +
-    '                        </div>\n' +
-    '					</div>\n' +
-    '				</md-list-item>\n' +
-    '			</md-list>\n' +
-    '\n' +
-    '		</div>\n' +
-    '	</div>\n' +
-    '    <div class="pip-content-container">\n' +
-    '        <pip-document>\n' +
-    '            <div class="pip-body tp24-flex layout-column flex" ui-view></div>\n' +
-    '        </pip-document>\n' +
-    '	</div>\n' +
-    '</div>        \n' +
-    '<!--    \n' +
-    '<md-toolbar class="pip-appbar-ext"></md-toolbar>\n' +
-    '<pip-document width="800" min-height="400"\n' +
-    '              class="pip-settings">\n' +
-    '\n' +
-    '    <div class="pip-menu-container"\n' +
-    '         ng-hide="vm.manager === false || !vm.tabs || vm.tabs.length < 1">\n' +
-    '        <md-list class="pip-menu pip-simple-list"\n' +
-    '                 pip-selected="vm.selected.tabIndex"\n' +
-    '                 pip-selected-watch="vm.selected.navId"\n' +
-    '                 pip-select="vm.onNavigationSelect($event.id)">\n' +
-    '            <md-list-item class="pip-simple-list-item pip-selectable flex"\n' +
-    '                          ng-repeat="tab in vm.tabs track by tab.state" ng-if="vm.$party.id == vm.$user.id ||\n' +
-    '                          tab.state == \'settings.basic_info\'|| tab.state ==\'settings.contact_info\'\n' +
-    '                          || tab.state ==\'settings.blacklist\'"\n' +
-    '                          md-ink-ripple\n' +
-    '                          pip-id="{{:: tab.state }}">\n' +
-    '                <p>{{::tab.title | translate}}</p>\n' +
-    '            </md-list-item>\n' +
-    '        </md-list>\n' +
-    '\n' +
-    '        <div class="pip-content-container">\n' +
-    '            <pip-dropdown pip-actions="vm.tabs"\n' +
-    '                          pip-dropdown-select="vm.onDropdownSelect"\n' +
-    '                          pip-active-index="vm.selected.tabIndex"></pip-dropdown>\n' +
-    '\n' +
-    '            <div class="pip-body tp24-flex layout-column" ui-view></div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '    <div class="layout-column layout-align-center-center flex"\n' +
-    '         ng-show="vm.manager === false || !vm.tabs || vm.tabs.length < 1">\n' +
-    '        {{::\'ERROR_400\' | translate}}\n' +
-    '    </div>\n' +
-    '</pip-document>-->');
+    '<div class="pip-main-menu pip-settings" ng-class="{\'pip-single-content\': vm.details}"><div class="pip-menu"><div class="pip-list-container pip-scroll divider-top"><md-list class="pip-ref-list tp0 pip-settings-list" pip-selected="vm.selected.tabIndex" pip-selected-watch="vm.selected.navId" pip-select="vm.onNavigationSelect($event.id)"><md-list-item class="pip-ref-list-item pointer divider-bottom pip-selectable" ng-repeat="tab in vm.tabs track by tab.state" pip-id="{{:: tab.state }}" md-ink-ripple=""><div ng-click="vm.onNavigationSelect(tab.state)" class="layout-row layout-align-start-center flex"><div class="pip-settings-icon layout-row layout-align-start-center {{ tab.iconClass ? tab.iconClass : \'pip-settings-icon-color\'}}" ng-if="tab.icon"><md-icon class="" md-svg-icon="{{ tab.icon }}"></md-icon></div><div class="pip-content {{ tab.icon ? \'\' : \'pip-settings-without-icon\' }}"><p class="pip-title text-overflow flex">{{ ::tab.title | translate }}</p></div><div class="pip-ref-list-item-end-icon"><md-icon class="" md-svg-icon="icons:chevron-right"></md-icon></div></div></md-list-item></md-list></div></div><div class="pip-content-container"><pip-document><div class="pip-body tp24-flex layout-column flex" ui-view=""></div></pip-document></div></div>');
 }]);
 })();
 

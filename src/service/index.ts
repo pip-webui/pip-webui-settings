@@ -1,5 +1,3 @@
-angular.module('pipSettings.Service', []);
-
 import './SettingsConfig';
 import './SettingsPageSelectedTab';
 import './SettingsStateConfig';
