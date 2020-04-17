@@ -68,9 +68,18 @@ class SettingsService implements ISettingsService {
 
 class SettingsProvider implements ISettingsProvider {
     private _service: SettingsService;
+    private _stateProvider: { state: Function };
     private _config: SettingsConfig = new SettingsConfig();
 
-    constructor(private $stateProvider: ng.ui.IStateProvider) { "ngInject"; }
+    constructor($stateProvider: ng.ui.IStateProvider) { "ngInject"; this._stateProvider = $stateProvider; }
+
+    public set stateProvider(stateProvider: { state: Function }) {
+        this._stateProvider = stateProvider;
+    }
+
+    public get stateProvider(): { state: Function } {
+        return this._stateProvider;
+    }
 
     public getFullStateName(state: string): string {
         return 'settings.' + state;
@@ -107,7 +116,7 @@ class SettingsProvider implements ISettingsProvider {
             visible: tabObj.visible !== false,
             stateConfig: _.cloneDeep(tabObj.stateConfig)
         });
-        this.$stateProvider.state(this.getFullStateName(tabObj.state), tabObj.stateConfig);
+        this._stateProvider.state(this.getFullStateName(tabObj.state), tabObj.stateConfig);
 
         // if we just added first state and no default state is specified
         if (typeof this._config.defaultTab === 'undefined' && this._config.tabs.length === 1) {

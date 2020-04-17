@@ -272,9 +272,19 @@ var SettingsProvider = (function () {
     SettingsProvider.$inject = ['$stateProvider'];
     function SettingsProvider($stateProvider) {
         "ngInject";
-        this.$stateProvider = $stateProvider;
         this._config = new SettingsConfig_1.SettingsConfig();
+        this._stateProvider = $stateProvider;
     }
+    Object.defineProperty(SettingsProvider.prototype, "stateProvider", {
+        get: function () {
+            return this._stateProvider;
+        },
+        set: function (stateProvider) {
+            this._stateProvider = stateProvider;
+        },
+        enumerable: true,
+        configurable: true
+    });
     SettingsProvider.prototype.getFullStateName = function (state) {
         return 'settings.' + state;
     };
@@ -304,7 +314,7 @@ var SettingsProvider = (function () {
             visible: tabObj.visible !== false,
             stateConfig: _.cloneDeep(tabObj.stateConfig)
         });
-        this.$stateProvider.state(this.getFullStateName(tabObj.state), tabObj.stateConfig);
+        this._stateProvider.state(this.getFullStateName(tabObj.state), tabObj.stateConfig);
         if (typeof this._config.defaultTab === 'undefined' && this._config.tabs.length === 1) {
             this.setDefaultTab(tabObj.state);
         }

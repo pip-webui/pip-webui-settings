@@ -10,6 +10,7 @@ export interface ISettingsService {
 }
 
 export interface ISettingsProvider extends ng.IServiceProvider {
+    stateProvider: { state: Function };
     getDefaultTab(): SettingsTab;
     addTab(tabObj: SettingsTab): void;
     setDefaultTab(name: string): void;
